@@ -177,11 +177,37 @@ Each neuron in a neural network uses an **activation function** to determine if 
 
 #### Common Activation Functions:
 
-![img](https://cdn-images-1.medium.com/max/1600/1*ExCiN5HtxmNL15ILHKMUiA.png)
+1. **ReLU (Rectified Linear Unit):**
+   - **Formula:** 
+     $$
+     \text{ReLU}(x) = \max(0, x)
+     $$
+   - **How it works:** If the input is positive, ReLU outputs the same value; otherwise, it outputs 0.
+   - **Why it's useful:** ReLU introduces non-linearity and is easy to compute. It helps networks learn faster but can "die" if too many neurons output 0.
+   - **Chess analogy:** If your move is promising (positive), you keep it; if it is risky (negative), you discard it.
 
-![img](https://cdn-images-1.medium.com/max/1600/1*XNjFUqlz3AMKb42jITHorw.png)
+---
 
-![img](https://cdn-images-1.medium.com/max/1600/1*_TSyNn73yMdRpARz6wEyKg.png)
+2. **Sigmoid:**
+   - **Formula:** 
+     $$
+     \sigma(x) = \frac{1}{1 + e^{-x}}
+     $$
+   - **How it works:** Compresses input into a range between 0 and 1.
+   - **Why it's useful:** It is great for **probabilities** (like binary classification) but can cause issues like **vanishing gradients** in deep networks.
+   - **Chess analogy:** Imagine assessing the chance of winning after each move—Sigmoid gives you a score between 0 and 1, telling you how confident you should be about your chances.
+
+---
+
+3. **Tanh:**
+   
+   - **Formula:** 
+     $$
+     \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
+     $$
+   - **How it works:** Squashes input into a range between -1 and 1.
+   - **Why it's useful:** Like Sigmoid but centered at 0, making it better for **data with negative values**.
+   - **Chess analogy:** It is like evaluating each move on a scale from "terrible" (-1) to "excellent" (+1).
 
 #### Why Activation Functions Matter in Backpropagation
 
