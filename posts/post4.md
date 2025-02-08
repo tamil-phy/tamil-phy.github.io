@@ -178,6 +178,7 @@ Each neuron in a neural network uses an **activation function** to determine if 
 #### Common Activation Functions:
 
 1. **ReLU (Rectified Linear Unit):**
+   
    - **Formula:** 
      $$
      \text{ReLU}(x) = \max(0, x)
@@ -189,6 +190,7 @@ Each neuron in a neural network uses an **activation function** to determine if 
 ---
 
 2. **Sigmoid:**
+   
    - **Formula:** 
      $$
      \sigma(x) = \frac{1}{1 + e^{-x}}
