@@ -26,7 +26,9 @@ Some commonly used **loss functions** include:
 
 - **Mean Squared Error (MSE):** This function works well for predictions involving numbers. It measures the average squared difference between the predicted and actual values.
 
-<img src="https://cdn-images-1.medium.com/max/1600/1*DmPzXRYGOQnHSH4fv8S70Q.png" alt="img" style="zoom: 20%;" />
+$$
+E = \frac{1}{2} \sum \left( y_{\text{pred}} - y_{\text{actual}} \right)^2
+$$
 
 - It is like asking, “How badly did my move backfire?” The bigger the gap between your intended outcome and the actual result, the higher the error.
 - **Cross-Entropy Loss:** This loss function is useful for classification tasks, like deciding the best move from several possibilities. It measures the difference between the predicted probabilities and the actual correct move. If your predicted best move was wrong, the cross-entropy loss shows how much your decision deviated from the optimal move.
@@ -45,8 +47,9 @@ The neural network applies **partial derivatives** through the **chain rule of c
 
 Here’s a simplified example:
 
-<img src="https://cdn-images-1.medium.com/max/1600/1*ozabkULvSAQZTivoy5aJ5Q.png" alt="img" style="zoom: 20%;" />
-
+$$
+\frac{\partial E}{\partial w} = \text{Gradient of Error with respect to Weight}
+$$
 **If the gradient is large**, it means the parameter (weight) played a significant role in causing the error. It is like realizing that the early queen move had a huge impact on your loss.
 
 **If the gradient is small**, it means the parameter didn’t have much influence on the error. It is like noticing that a pawn move in the middle of the game didn’t really affect the outcome.
@@ -67,24 +70,28 @@ In backpropagation, the network calculates how the error at the **output layer**
 
 For a neuron (z) in a hidden layer that connects to the predicted output (y_pred), the total gradient is given by:
 
-<img src="https://cdn-images-1.medium.com/max/1600/1*xheDebMSw4op7NReZIufjQ.png" alt="img" style="zoom: 20%;" />
-
+$$
+\frac{\partial E}{\partial w} = \frac{\partial E}{\partial y_{\text{pred}}} \cdot \frac{\partial y_{\text{pred}}}{\partial z} \cdot \frac{\partial z}{\partial w}
+$$
 This formula tells us that the gradient — the amount the weight (w) contributed to the error — depends on three factors:
 
-<img src="https://cdn-images-1.medium.com/max/1600/1*LWC2-ULNgLnBLymD4a-Nww.png" alt="img" style="zoom: 20%;" />
-
+$$
+\frac{\partial E}{\partial y_{\text{pred}}}
+$$
 How much the **error changes** with respect to the predicted output.
 
 **Chess analogy:** This is like asking, “How big was my loss because of my final move?”
 
-<img src="https://cdn-images-1.medium.com/max/1600/1*nFMcojocS2bccRH0qr9HHQ.png" alt="img" style="zoom: 20%;" />
-
+$$
+\frac{\partial y_{\text{pred}}}{\partial z}
+$$
 How much the **predicted output changes** with respect to the hidden layer neuron (z).
 
 **Chess analogy:** This reflects how much your earlier moves (like moving a rook) influenced your final position.
 
-<img src="https://cdn-images-1.medium.com/max/1600/1*kdeWPhb2sAW8K6k18Sf5WA.png" alt="img" style="zoom: 20%;" />
-
+$$
+\frac{\partial z}{\partial w}
+$$
 How much the **hidden neuron’s value changes** with respect to the weight (w).
 
 **Chess analogy:** This is like figuring out how much an individual decision (like deploying a knight instead of a bishop) affected the overall game.
@@ -93,8 +100,11 @@ Just like you go back through each move to figure out what led to your loss, the
 
 For a neuron (z) in the hidden layer connected to an output (y_pred), the total gradient is:
 
-<img src="https://cdn-images-1.medium.com/max/1600/1*xheDebMSw4op7NReZIufjQ.png" alt="img" style="zoom: 20%;" />
 
+
+$$
+\frac{\partial E}{\partial w} = \frac{\partial E}{\partial y_{\text{pred}}} \cdot \frac{\partial y_{\text{pred}}}{\partial z} \cdot \frac{\partial z}{\partial w}
+$$
 This shows that the total gradient depends on **how the output changes with respect to the weight.**
 
 #### Step 4: Adjusting Weights and Biases — Fine-Tuning Your Strategy with Gradient Descent
@@ -107,7 +117,17 @@ This is exactly what **gradient descent** does: it makes small adjustments to we
 
 When the network calculates the **gradient** (the slope of the error with respect to a weight), it uses that information to adjust the weight. Specifically, it adjusts the weight in the **opposite direction of the gradient** to reduce the error.
 
-<img src="https://cdn-images-1.medium.com/max/1600/1*RPuX6aUE9p9V3kuJ_zEl5Q.png" alt="img" style="zoom: 20%;" />
+The formula for updating weights is:
+
+$$
+w_{\text{new}} = w_{\text{old}} - \eta \cdot \frac{\partial E}{\partial w}
+$$
+
+Where:
+- $$( w_{\text{new}})$$ is the updated weight.
+- $$( w_{\text{old}})$$ is the current weight value.
+- $$( \eta )$$ is the **learning rate**, which controls how big of a step the adjustment will take.
+- $$( \frac{\partial E}{\partial w})$$ is the **gradient**, which measures how sensitive the error is to changes in that weight.
 
 Let us say your chess strategy assigns **a weight of 0.8** to moving your queen early (you have a lot of confidence in this strategy). After losing the game, you analyze your moves and find that the **gradient of the error with respect to this weight** is 0.3.
 
@@ -117,7 +137,21 @@ Now, let’s say the **learning rate** is \eta = 0.1, meaning you want to make s
 
 #### Calculating the New Weight
 
-<img src="https://cdn-images-1.medium.com/max/1600/1*bWP4fhYNPfK5MNAiLOJ_FQ.png" alt="img" style="zoom: 20%;" />
+Using the weight update formula:
+
+$$
+w_{\text{new}} = w_{\text{old}} - \eta \cdot \frac{\partial E}{\partial w}
+$$
+
+Substitute the values:
+
+$$
+w_{\text{new}} = 0.8 - (0.1 \cdot 0.3)
+$$
+
+$$
+w_{\text{new}} = 0.8 - 0.03 = 0.77
+$$
 
 So, the new weight for **moving your queen early** becomes **0.77**. This means you slightly reduce the importance of that move, but you’re not abandoning it entirely — you’re just adjusting your approach to avoid repeating the same mistake.
 
