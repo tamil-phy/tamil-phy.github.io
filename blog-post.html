@@ -37,7 +37,10 @@
     </nav>
 
     <div class="container mt-5">
+        <!-- Dynamic Blog Title -->
         <h2 id="blog-title">Blog Post</h2>
+        
+        <!-- Rendered Markdown Content -->
         <div id="markdown-content" class="blog-content"></div>
     </div>
 
@@ -49,13 +52,20 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Get query parameter for file
+            // Get query parameters for file and title
             const urlParams = new URLSearchParams(window.location.search);
-            const file = urlParams.get('file');
+            const file = urlParams.get('file'); // Markdown file path
+            const title = urlParams.get('title'); // Blog post title
             const content = document.getElementById('markdown-content');
+            const blogTitle = document.getElementById('blog-title');
 
+            // Update the blog title dynamically
+            if (title) {
+                blogTitle.textContent = title;
+            }
+
+            // Fetch and render the Markdown file
             if (file) {
-                // Fetch and render the Markdown file
                 fetch(file)
                     .then(response => {
                         if (!response.ok) {
