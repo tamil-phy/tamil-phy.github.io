@@ -85,33 +85,32 @@
                 <a class="blog-title" href="blog-post.html?file=posts/post7.md&title=Artificial%20Intelligence%20Introduction%20in%20tamil">
                     செய்யறிவு என்றால் என்ன?
                 </a>
-                <div class="blog-description"> AI என்பது கணினிகள் மனிதர்களைப் போல அறிவார்ந்த முடிவுகளை எடுக்க மற்றும் புதிதாக கற்றுக்கொள்ள உதவுகின்ற ஒரு முறை. </div>
+                <div class="blog-description">AI என்பது கணினிகள் மனிதர்களைப் போல அறிவார்ந்த முடிவுகளை எடுக்க மற்றும் புதிதாக கற்றுக்கொள்ள உதவுகின்ற ஒரு முறை.</div>
             </li>
             <li>
                 <a class="blog-title" href="blog-post.html?file=posts/post8.md&title=Large%20Language%20Model%20Introduction%20in%20tamil">
                     Large Language Models (LLMs) என்றால் என்ன?
                 </a>
-                <div class="blog-description"> Large Language Models (LLMs) என்பது பெரிய அளவிலான உரைத் தரவுகளில் பயிற்சியளிக்கப்பட்ட, மனிதர்கள் போன்ற மொழியாற்றலை வழங்கும் மென்பொருள் மாடல்கள் ஆகும். </div>
+                <div class="blog-description">Large Language Models (LLMs) என்பது பெரிய அளவிலான உரைத் தரவுகளில் பயிற்சியளிக்கப்பட்ட, மனிதர்கள் போன்ற மொழியாற்றலை வழங்கும் மென்பொருள் மாடல்கள் ஆகும்.</div>
             </li>
             <li>
                 <a class="blog-title" href="blog-post.html?file=posts/post9.md&title=Large%20Language%20Model%20How%20Do%20They%20Work%20in%20tamil">
                     LLM-களின் கட்டமைப்பு மற்றும் செயல்பாடு 
                 </a>
-                <div class="blog-description"> LLM-கள் எப்படி வேலை செய்கின்றன? </div>
+                <div class="blog-description">LLM-கள் எப்படி வேலை செய்கின்றன?</div>
             </li>
             <li>
                 <a class="blog-title" href="blog-post.html?file=posts/post10.md&title=NumPy%20in%20tamil">
                     NumPy – அறிமுகம்
                 </a>
-                <div class="blog-description"> NumPy வழிகாட்டி </div>
+                <div class="blog-description">NumPy வழிகாட்டி</div>
             </li>
             <li>
                 <a class="blog-title" href="blog-post.html?file=posts/post11.md&title=Word2Vec%20in%20tamil">
                     Word2Vec – அறிமுகம்
                 </a>
-                <div class="blog-description"> Word2Vec: வார்த்தைகளை வெக்டர்களாக மாற்றும் ஒரு தொழில்நுட்பம் பற்றி ஓர் அறிமுகம்  </div>
+                <div class="blog-description">Word2Vec: வார்த்தைகளை வெக்டர்களாக மாற்றும் ஒரு தொழில்நுட்பம் பற்றி ஓர் அறிமுகம்</div>
             </li>
-            <!-- Add more blog titles here -->
         </ul>
     </div>
 
@@ -120,5 +119,16 @@
             © 2025 My Website. All Rights Reserved.
         </div>
     </footer>
+
+    <script>
+        // JavaScript to reverse the blog list
+        document.addEventListener("DOMContentLoaded", function () {
+            const blogList = document.getElementById("blog-list");
+            const blogItems = Array.from(blogList.children); // Convert HTMLCollection to Array
+            blogItems.reverse(); // Reverse the array
+            blogList.innerHTML = ""; // Clear the current list
+            blogItems.forEach(item => blogList.appendChild(item)); // Append the reversed items
+        });
+    </script>
 </body>
 </html>
