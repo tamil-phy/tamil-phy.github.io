@@ -30,7 +30,7 @@ Transformers மாதிரிகள் உரையில் உள்ள வ�
 
 Positional Encoding கணக்கிடுவதற்கான சூத்திரங்கள்:
 
-​					$[\mathbf{P}_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{\frac{2i}{d}}}\right)]$
+​					$$[\mathbf{P}_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{\frac{2i}{d}}}\right)]$$
 
 ​					$[\mathbf{P}_{(pos, 2i+1)} = \cos\left(\frac{pos}{10000^{\frac{2i}{d}}}\right)]$
 
