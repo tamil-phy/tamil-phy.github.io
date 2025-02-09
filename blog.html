@@ -18,6 +18,10 @@
             margin-bottom: 10px;
         }
     </style>
+    <!-- MathJax CDN for rendering equations -->
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -61,19 +65,19 @@
                 <a class="blog-title" href="blog-post.html?file=posts/post3.md&title=Numerical%20Methods%20using%20Python">
                      Numerical Methods using Python
                 </a>
-                <div class="blog-description">Numerical methods implemented in Python.</div>
+                <div class="blog-description">Numerical methods implemented in Python, including equations like $f(x) = x^2$.</div>
             </li>
             <li>
                 <a class="blog-title" href="blog-post.html?file=posts/post4.md&title=Backward%20Propagation">
                     Backward Propagation
                 </a>
-                <div class="blog-description">My Understanding of Backward Propagation</div>
+                <div class="blog-description">My Understanding of Backward Propagation, such as $E = \frac{1}{2} \sum (y_i - \hat{y}_i)^2$.</div>
             </li>
             <li>
                 <a class="blog-title" href="blog-post.html?file=posts/post5.md&title=Stochastic%20Gradient%20Descent">
                     Stochastic Gradient Descent (SGD)
                 </a>
-                <div class="blog-description">My Understanding of Stochastic Gradient Descent</div>
+                <div class="blog-description">Includes details like $w_{t+1} = w_t - \eta \nabla f(w_t)$.</div>
             </li>
             <li>
                 <a class="blog-title" href="blog-post.html?file=posts/post6.md&title=Artificial%20Intelligence%20History%20in%20tamil">
@@ -127,13 +131,13 @@
     </footer>
 
     <script>
-        // JavaScript to reverse the blog list
+        // JavaScript to reverse the blog list dynamically
         document.addEventListener("DOMContentLoaded", function () {
             const blogList = document.getElementById("blog-list");
             const blogItems = Array.from(blogList.children); // Convert HTMLCollection to Array
-            blogItems.reverse(); // Reverse the array
-            blogList.innerHTML = ""; // Clear the current list
-            blogItems.forEach(item => blogList.appendChild(item)); // Append the reversed items
+            blogItems.reverse(); // Reverse the order of the array
+            blogList.innerHTML = ""; // Clear existing list
+            blogItems.forEach(item => blogList.appendChild(item)); // Append items in reversed order
         });
     </script>
 </body>
