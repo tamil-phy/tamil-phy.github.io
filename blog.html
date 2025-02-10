@@ -167,26 +167,26 @@
 
     <script>
         // JavaScript to reverse the blog list dynamically
-        document.addEventListener("DOMContentLoaded", function () {
-            const blogList = document.getElementById("blog-list");
-            const blogItems = Array.from(blogList.children); // Convert HTMLCollection to Array
-            blogItems.reverse(); // Reverse the order of the array
-            blogList.innerHTML = ""; // Clear existing list
-            blogItems.forEach(item => blogList.appendChild(item)); // Append items in reversed order
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     const blogList = document.getElementById("blog-list");
+        //     const blogItems = Array.from(blogList.children); // Convert HTMLCollection to Array
+        //     blogItems.reverse(); // Reverse the order of the array
+        //     blogList.innerHTML = ""; // Clear existing list
+        //     blogItems.forEach(item => blogList.appendChild(item)); // Append items in reversed order
 
-            // Filter blogs by category
-            const categoryFilter = document.getElementById("categoryFilter");
-            categoryFilter.addEventListener("change", function () {
-                const selectedCategory = categoryFilter.value;
-                blogItems.forEach(item => {
-                    if (selectedCategory === "all" || item.dataset.category === selectedCategory) {
-                        item.style.display = "";
-                    } else {
-                        item.style.display = "none";
-                    }
-                });
-            });
-        });
+        //     // Filter blogs by category
+        //     const categoryFilter = document.getElementById("categoryFilter");
+        //     categoryFilter.addEventListener("change", function () {
+        //         const selectedCategory = categoryFilter.value;
+        //         blogItems.forEach(item => {
+        //             if (selectedCategory === "all" || item.dataset.category === selectedCategory) {
+        //                 item.style.display = "";
+        //             } else {
+        //                 item.style.display = "none";
+        //             }
+        //         });
+        //     });
+        // });
     </script>
 </body>
 </html>
