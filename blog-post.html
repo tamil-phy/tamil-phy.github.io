@@ -12,9 +12,11 @@
             tex: {
                 inlineMath: [['$', '$'], ['\\(', '\\)']],
                 displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true, // Allows escaping characters like `$`
+                tags: "ams", // Support for AMS math environments like `align`
             },
             options: {
-                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"], // Ignore these tags
             },
         };
     </script>
