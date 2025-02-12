@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Post</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .note-content {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">Back</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="notes.html">Notes</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <!-- Dynamic Note Title -->
+        <h2 id="note-title">Note Post</h2>
+        
+        <!-- Rendered Markdown Content -->
+        <div id="markdown-content" class="note-content"></div>
+    </div>
+
+    <footer class="bg-light text-center text-lg-start mt-5">
+        <div class="text-center p-3">
+            © 2025 My Website. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get query parameters for file and title
+            const urlParams = new URLSearchParams(window.location.search);
+            const file = urlParams.get('file'); // Markdown file path
+            const title = urlParams.get('title'); // Note title
+            const content = document.getElementById('markdown-content');
+            const noteTitle = document.getElementById('note-title');
+
+            // Update the note title dynamically
+            if (title) {
+                noteTitle.textContent = decodeURIComponent(title);
+            }
+
+            // Fetch and render the Markdown file
+            if (file) {
+                fetch(file)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.text();
+                    })
+                    .then(text => {
+                        content.innerHTML = marked.parse(text);
+                        MathJax.typesetPromise(); // Render MathJax equations
+                    })
+                    .catch(error => {
+                        console.error('Error loading markdown:', error);
+                        content.innerHTML = '<p>Unable to load the note content. Please try again later.</p>';
+                    });
+            } else {
+                content.innerHTML = '<p>No note file specified.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
