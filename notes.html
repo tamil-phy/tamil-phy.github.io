@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Notes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .note-title {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        .note-description {
+            font-style: italic;
+            color: gray;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">Tamil Arasan</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blog.html">Blogs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="notes.html">Notes</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2>Personal Notes</h2>
+        <ul id="note-list">
+            <li>
+                <a class="note-title" href="note-post.html?file=notes/note1.md&title=Physics%20Notes%20on%20Quantum%20Mechanics">
+                    Physics Notes on Quantum Mechanics
+                </a>
+                <div class="note-description">Key concepts of quantum mechanics.</div>
+            </li>
+            <li>
+                <a class="note-title" href="note-post.html?file=notes/note2.md&title=Machine%20Learning%20Tips">
+                    Machine Learning Tips
+                </a>
+                <div class="note-description">My personal tips for debugging ML models.</div>
+            </li>
+            <li>
+                <a class="note-title" href="note-post.html?file=notes/note3.md&title=Understanding%20Lagrangian%20Mechanics">
+                    Understanding Lagrangian Mechanics
+                </a>
+                <div class="note-description">Notes on Lagrangian mechanics with examples.</div>
+            </li>
+        </ul>
+    </div>
+
+    <footer class="bg-light text-center text-lg-start mt-5">
+        <div class="text-center p-3">
+            © 2025 My Website. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const noteList = document.getElementById("note-list");
+            const noteItems = Array.from(noteList.children); // Convert HTMLCollection to Array
+            noteItems.reverse(); // Reverse the order of the array
+            noteList.innerHTML = ""; // Clear existing list
+            noteItems.forEach(item => noteList.appendChild(item)); // Append items in reversed order
+        });
+    </script>
+</body>
+</html>
