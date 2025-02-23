@@ -125,7 +125,6 @@ Self-Attention செயல்முறை பின்வரும் படி
      ]
      $$
      
-     
    - $( d_k )$ 
    
      என்பது Key-ன் பரிமாணம் (Dimension). 
@@ -374,7 +373,7 @@ Residual Connections என்பது ஒரு முக்கியமான
 
 ---
 
-### **6. Transformers-ன் பயிற்சி (Training the Transformer):**
+### **6. Training the Transformer:**
 
 Transformers-ன் பயிற்சி **Cross-Entropy Loss** மூலம் செய்யப்படுகிறது. இது predicted output மற்றும் actual output-க்கு இடையேயான வித்தியாசத்தை கணக்கிடுகிறது.
 
