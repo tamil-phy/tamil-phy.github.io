@@ -52,6 +52,7 @@
     <div class="container mt-5">
         <!-- Dynamic Blog Title -->
         <h2 id="blog-title">Blog Post</h2>
+        <div id="audio-player" class="mb-4"></div>
         
         <!-- Rendered Markdown Content -->
         <div id="markdown-content" class="blog-content"></div>
@@ -75,6 +76,16 @@
             // Update the blog title dynamically
             if (title) {
                 blogTitle.textContent = title;
+            }
+
+            // Insert audio player if provided
+            const audioFile = urlParams.get('audio');  // WAV file URL via ?audio=path/to/file.wav
+            if (audioFile) {
+                document.getElementById('audio-player').innerHTML = `
+                    <audio controls>
+                      <source src="${audioFile}" type="audio/wav">
+                      Your browser does not support audio playback.
+                    </audio>`;
             }
 
             // Fetch and render the Markdown file
