@@ -52,8 +52,10 @@
     <div class="container mt-5">
         <!-- Dynamic Blog Title -->
         <h2 id="blog-title">Blog Post</h2>
-        <div id="audio-player" class="mb-4"></div>
         
+        <!-- Audio player container -->
+        <div id="audio-player" class="mb-3"></div>
+
         <!-- Rendered Markdown Content -->
         <div id="markdown-content" class="blog-content"></div>
     </div>
@@ -73,19 +75,24 @@
             const content = document.getElementById('markdown-content');
             const blogTitle = document.getElementById('blog-title');
 
-            // Update the blog title dynamically
-            if (title) {
-                blogTitle.textContent = title;
-            }
-
-            // Insert audio player if provided
-            const audioFile = urlParams.get('audio');  // WAV file URL via ?audio=path/to/file.wav
-            if (audioFile) {
-                document.getElementById('audio-player').innerHTML = `
-                    <audio controls>
-                      <source src="${audioFile}" type="audio/wav">
-                      Your browser does not support audio playback.
-                    </audio>`;
+            // Audio player via mapping.json
+            if (file) {
+                const baseName = file.match(/\/([^\/]+)\.md$/)?.[1];
+                if (baseName) {
+                    fetch('audio-mapping.json')
+                      .then(res => res.json())
+                      .then(mapping => {
+                        const audioUrl = mapping[baseName];
+                        if (audioUrl) {
+                            document.getElementById('audio-player').innerHTML = `
+                              <audio controls>
+                                <source src="${audioUrl}" type="audio/wav">
+                                Your browser does not support audio playback.
+                              </audio>`;
+                        }
+                      })
+                      .catch(console.error);
+                }
             }
 
             // Fetch and render the Markdown file
