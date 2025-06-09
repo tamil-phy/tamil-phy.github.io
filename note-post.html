@@ -3,62 +3,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Note Post</title>
+    <title>Note | Tamil Arasan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&family=Hind+Madurai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                tags: "ams",
+                macros: {
+                    "\\R": "\\mathbb{R}",
+                    "\\N": "\\mathbb{N}",
+                    "\\Z": "\\mathbb{Z}",
+                    "\\C": "\\mathbb{C}"
+                }
+            },
+            options: {
+                skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"],
+                renderActions: {
+                    addMenu: [0, '', ''],
+                    checkLoading: [100, 50, 500]
+                }
+            },
+            startup: {
+                typeset: true,
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                }
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
     <style>
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #8338ec;
+            --accent-color: #ff006e;
+            --light-bg: #f8f9fa;
+            --dark-text: #212529;
+            --light-text: #6c757d;
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.8;
+            color: var(--dark-text);
+            background-color: #ffffff;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            background-color: white !important;
+        }
+        
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            position: relative;
+            margin: 0 10px;
+            transition: var(--transition);
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        .nav-link.active:after {
+            width: 100%;
+        }
+        
+        .note-header {
+            padding: 50px 0 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 0 0 50px 50px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .note-title {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .note-meta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+        
+        .note-meta i {
+            margin-right: 5px;
+        }
+        
         .note-content {
-            margin-top: 20px;
+            margin-top: 30px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        /* Math styling */
+        .math-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        /* Code block styling */
+        pre, code {
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            padding: 0.2em 0.4em;
+            font-family: monospace;
+        }
+        
+        pre {
+            padding: 1em;
+            overflow-x: auto;
+        }
+        
+        /* Image styling */
+        .note-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* Table styling */
+        table {
+            width: 100%;
+            margin: 1.5rem 0;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+        }
+        
+        /* Blockquote styling */
+        blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1rem;
+            margin-left: 0;
+            color: var(--light-text);
+            font-style: italic;
+        }
+        
+        /* Footer styling */
+        footer {
+            background-color: var(--light-bg);
+            padding: 30px 0;
+            margin-top: 80px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .footer-text {
+            color: var(--light-text);
+        }
+        
+        /* Table of contents */
+        .toc {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .toc-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .toc-title i {
+            margin-right: 10px;
+        }
+        
+        .toc ul {
+            padding-left: 20px;
+        }
+        
+        .toc li {
+            margin-bottom: 5px;
+        }
+        
+        .toc a {
+            color: var(--dark-text);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .toc a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .note-header {
+                padding: 30px 0 20px;
+            }
+            
+            .note-content {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="index.html">Back</a>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Tamil Arasan</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">Home</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="blog.html">Blogs</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link active" href="notes.html">Notes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="papers.html">Papers</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <!-- Dynamic Note Title -->
-        <h2 id="note-title">Note Post</h2>
+    <!-- Note Header Section -->
+    <section class="note-header">
+        <div class="container">
+            <h1 id="note-title" class="note-title">Note</h1>
+            <div class="note-meta">
+                <span id="note-date"><i class="far fa-calendar-alt"></i> <span id="date-value">Date</span></span>
+                <span id="note-category"><i class="fas fa-tag"></i> <span id="category-value">Category</span></span>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Table of Contents (will be populated by JavaScript) -->
+        <div id="toc" class="toc" style="display: none;">
+            <div class="toc-title"><i class="fas fa-list"></i> Table of Contents</div>
+            <div id="toc-content"></div>
+        </div>
         
         <!-- Rendered Markdown Content -->
         <div id="markdown-content" class="note-content"></div>
     </div>
 
-    <footer class="bg-light text-center text-lg-start mt-5">
-        <div class="text-center p-3">
-            © 2025 My Website. All Rights Reserved.
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="footer-text mb-0">© 2025 Tamil Arasan Bakthavatchalam. All Rights Reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="footer-text mb-0">Physicist • AI Engineer • Writer</p>
+                </div>
+            </div>
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Get query parameters for file and title
             const urlParams = new URLSearchParams(window.location.search);
             const file = urlParams.get('file'); // Markdown file path
             const title = urlParams.get('title'); // Note title
+            const category = urlParams.get('category') || 'Notes'; // Note category
+            const date = urlParams.get('date') || new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); // Note date
+            
             const content = document.getElementById('markdown-content');
             const noteTitle = document.getElementById('note-title');
+            const dateValue = document.getElementById('date-value');
+            const categoryValue = document.getElementById('category-value');
+            const tocElement = document.getElementById('toc');
+            const tocContent = document.getElementById('toc-content');
 
-            // Update the note title dynamically
+            // Update the note metadata dynamically
             if (title) {
+                document.title = decodeURIComponent(title) + " | Tamil Arasan's Notes";
                 noteTitle.textContent = decodeURIComponent(title);
+            }
+            
+            dateValue.textContent = date;
+            categoryValue.textContent = category;
+
+            // Function to generate Table of Contents
+            function generateTableOfContents(content) {
+                const headings = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+                
+                if (headings.length < 3) {
+                    // Don't show TOC if there are fewer than 3 headings
+                    return false;
+                }
+                
+                const toc = document.createElement('ul');
+                let currentLevel = 0;
+                let currentList = toc;
+                let listStack = [];
+                
+                headings.forEach((heading, index) => {
+                    // Add ID to heading if it doesn't have one
+                    if (!heading.id) {
+                        heading.id = 'heading-' + index;
+                    }
+                    
+                    const level = parseInt(heading.tagName.charAt(1));
+                    
+                    // Create list item
+                    const listItem = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.href = '#' + heading.id;
+                    link.textContent = heading.textContent;
+                    listItem.appendChild(link);
+                    
+                    // Handle nesting
+                    if (level > currentLevel) {
+                        // Go deeper
+                        const nestedList = document.createElement('ul');
+                        listStack.push(currentList);
+                        currentList.lastChild.appendChild(nestedList);
+                        currentList = nestedList;
+                    } else if (level < currentLevel) {
+                        // Go up
+                        while (level < currentLevel) {
+                            currentList = listStack.pop();
+                            currentLevel--;
+                        }
+                    }
+                    
+                    currentList.appendChild(listItem);
+                    currentLevel = level;
+                });
+                
+                return toc;
+            }
+            
+            // Function to wrap math blocks for better styling
+            function processMathBlocks(html) {
+                return html.replace(
+                    /<p>\s*\$\$(.*?)\$\$\s*<\/p>/gs, 
+                    '<div class="math-container">$$$$1$$</div>'
+                );
             }
 
             // Fetch and render the Markdown file
@@ -71,15 +413,69 @@
                         return response.text();
                     })
                     .then(text => {
-                        content.innerHTML = marked.parse(text);
-                        MathJax.typesetPromise(); // Render MathJax equations
+                        // Configure marked for better code and math handling
+                        marked.setOptions({
+                            highlight: function(code, lang) {
+                                return code;
+                            },
+                            breaks: true,
+                            gfm: true
+                        });
+                        
+                        // Process the content
+                        let processedContent = marked.parse(text);
+                        processedContent = processMathBlocks(processedContent);
+                        content.innerHTML = processedContent;
+                        
+                        // Generate table of contents
+                        const tocList = generateTableOfContents(content);
+                        if (tocList) {
+                            tocContent.appendChild(tocList);
+                            tocElement.style.display = 'block';
+                        }
+                        
+                        // Render MathJax equations
+                        MathJax.typesetPromise().then(() => {
+                            console.log('MathJax rendering complete');
+                        }).catch(err => {
+                            console.error('MathJax error:', err);
+                        });
+                        
+                        // Add target="_blank" to external links
+                        document.querySelectorAll('#markdown-content a').forEach(link => {
+                            if (link.hostname !== window.location.hostname) {
+                                link.setAttribute('target', '_blank');
+                                link.setAttribute('rel', 'noopener noreferrer');
+                            }
+                        });
+                        
+                        // Add copy button to code blocks
+                        document.querySelectorAll('pre code').forEach(codeBlock => {
+                            const container = codeBlock.parentNode;
+                            const copyButton = document.createElement('button');
+                            copyButton.className = 'btn btn-sm btn-outline-secondary copy-button';
+                            copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+                            copyButton.style.position = 'absolute';
+                            copyButton.style.top = '5px';
+                            copyButton.style.right = '5px';
+                            copyButton.addEventListener('click', () => {
+                                navigator.clipboard.writeText(codeBlock.textContent);
+                                copyButton.innerHTML = '<i class="fas fa-check"></i>';
+                                setTimeout(() => {
+                                    copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+                                }, 2000);
+                            });
+                            
+                            container.style.position = 'relative';
+                            container.appendChild(copyButton);
+                        });
                     })
                     .catch(error => {
                         console.error('Error loading markdown:', error);
-                        content.innerHTML = '<p>Unable to load the note content. Please try again later.</p>';
+                        content.innerHTML = '<div class="alert alert-danger"><p>Unable to load the note content. Please try again later.</p><p>Error: ' + error.message + '</p></div>';
                     });
             } else {
-                content.innerHTML = '<p>No note file specified.</p>';
+                content.innerHTML = '<div class="alert alert-warning">No note file specified.</div>';
             }
         });
     </script>

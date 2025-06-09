@@ -3,35 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Notes</title>
+    <title>Notes | Tamil Arasan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&family=Hind+Madurai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #8338ec;
+            --accent-color: #ff006e;
+            --light-bg: #f8f9fa;
+            --dark-text: #212529;
+            --light-text: #6c757d;
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.8;
+            color: var(--dark-text);
+            background-color: #ffffff;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            background-color: white !important;
+        }
+        
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            position: relative;
+            margin: 0 10px;
+            transition: var(--transition);
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        .nav-link.active:after {
+            width: 100%;
+        }
+        
+        .notes-header {
+            padding: 50px 0 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 0 0 50px 50px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .notes-header h1 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .notes-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--light-text);
+        }
+        
+        .filter-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .filter-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .category-btn {
+            border: 2px solid transparent;
+            border-radius: 30px;
+            padding: 8px 20px;
+            margin-right: 10px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .category-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .category-btn:hover:not(.active) {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .search-container {
+            position: relative;
+            margin-top: 20px;
+        }
+        
+        .search-container input {
+            border-radius: 30px;
+            padding-left: 40px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .search-container i {
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            color: var(--light-text);
+        }
+        
+        .note-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .note-item {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .note-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .note-item[lang="ta"] {
+            border-left-color: var(--accent-color);
+        }
+        
         .note-title {
-            cursor: pointer;
-            color: blue;
-            text-decoration: underline;
-            font-weight: bold;
-        }
-        .note-description {
-            font-style: italic;
-            color: gray;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--dark-text);
+            text-decoration: none;
+            font-weight: 700;
+            display: block;
             margin-bottom: 10px;
+            transition: var(--transition);
         }
+        
+        .note-title:hover {
+            color: var(--primary-color);
+        }
+        
+        .note-description {
+            color: var(--light-text);
+            margin-bottom: 15px;
+            font-style: normal;
+        }
+        
+        .note-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .note-category {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+        
+        .note-category.tamil {
+            background-color: rgba(255, 0, 110, 0.1);
+            color: var(--accent-color);
+        }
+        
+        .note-category.english {
+            background-color: rgba(58, 134, 255, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .note-category.science {
+            background-color: rgba(131, 56, 236, 0.1);
+            color: var(--secondary-color);
+        }
+        
         .note-date {
-            font-size: 0.9em;
-            color: #6c757d;
+            color: var(--light-text);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .note-date i {
+            margin-right: 5px;
+        }
+        
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-color);
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .read-more i {
+            margin-left: 5px;
+            transition: var(--transition);
+        }
+        
+        .read-more:hover {
+            color: var(--secondary-color);
+        }
+        
+        .read-more:hover i {
+            transform: translateX(3px);
+        }
+        
+        [lang="ta"] {
+            font-family: 'Hind Madurai', sans-serif;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--light-text);
+        }
+        
+        footer {
+            background-color: var(--light-bg);
+            padding: 30px 0;
+            margin-top: 80px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .footer-text {
+            color: var(--light-text);
+        }
+        
+        @media (max-width: 768px) {
+            .notes-header {
+                padding: 30px 0;
+            }
+            
+            .category-btn {
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
             <a class="navbar-brand" href="index.html">Tamil Arasan</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">Home</a>
                     </li>
@@ -41,58 +301,209 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="notes.html">Notes</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="papers.html">Papers</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <h2>Personal Notes</h2>
-        <ul id="note-list">
-            <li>
-                <a class="note-title" href="note-post.html?file=notes/note1.md&title=Newton%20First%20law%20in%20tamil">
-                    அறிவியல் அறிவோம் வா - நியூட்டன் முதல் விதி
-                </a>
-                <div class="note-description">நியூட்டன் முதல் விதி</div>
-                <div class="note-date">Date: 2025-02-12</div>
-            </li>
-            <li>
-                <a class="note-title" href="note-post.html?file=notes/note2.md&title=God:%20Common%20Sense">
-                    When Common Sense Spoke to Me
-                </a>
-                <div class="note-description">God == Common Sense</div>
-                <div class="note-date">Date: 2025-02-12</div>
-            </li>
-            <li>
-                <a class="note-title" href="note-post.html?file=notes/note3.md&title=SciML%20Physics%20Data%20Model">
-                    SciML: Scientific Machine Learning
-                </a>
-                <div class="note-description">Bridging Physics and Data-Driven Models</div>
-                <div class="note-date">Date: 2025-02-13</div>
-            </li>
-            <li>
-                <a class="note-title" href="note-post.html?file=notes/note4.md&title=iheart%20Model">
-                    Integrated Heart Model
-                </a>
-                <div class="note-description">Integrated Heart Model, a mathematical framework that captures the heart's complexity</div>
-                <div class="note-date">Date: 2025-02-13</div>
-            </li>
-        </ul>
+    <!-- Notes Header Section -->
+    <section class="notes-header">
+        <div class="container">
+            <h1>My Notes</h1>
+            <p>A collection of thoughts, ideas, and learnings across science, philosophy, and technology</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Filters and Search -->
+        <div class="filter-container">
+            <h3 class="filter-title">Filter Notes</h3>
+            <div class="d-flex flex-wrap">
+                <button class="btn category-btn active" data-category="all">All Notes</button>
+                <button class="btn category-btn" data-category="tamil">தமிழ் | Tamil</button>
+                <button class="btn category-btn" data-category="english">English</button>
+                <button class="btn category-btn" data-category="science">Science</button>
+                <button class="btn category-btn" data-category="philosophy">Philosophy</button>
+            </div>
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" class="form-control" placeholder="Search notes...">
+            </div>
+        </div>
+
+        <!-- Notes List -->
+        <div class="row">
+            <div class="col-12">
+                <ul id="note-list" class="note-list">
+                    <li class="note-item" data-category="tamil" lang="ta">
+                        <a class="note-title" href="note-post.html?file=notes/note1.md&title=Newton%20First%20law%20in%20tamil&category=Science&date=February%2012,%202025">
+                            அறிவியல் அறிவோம் வா - நியூட்டன் முதல் விதி
+                        </a>
+                        <div class="note-description">நியூட்டன் முதல் விதி</div>
+                        <div class="note-meta">
+                            <div>
+                                <span class="note-category tamil">தமிழ்</span>
+                                <span class="note-category science">Science</span>
+                            </div>
+                            <div class="note-date"><i class="far fa-calendar-alt"></i> February 12, 2025</div>
+                        </div>
+                        <a href="note-post.html?file=notes/note1.md&title=Newton%20First%20law%20in%20tamil&category=Science&date=February%2012,%202025" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
+                    </li>
+                    <li class="note-item" data-category="english philosophy">
+                        <a class="note-title" href="note-post.html?file=notes/note2.md&title=God:%20Common%20Sense&category=Philosophy&date=February%2012,%202025">
+                            When Common Sense Spoke to Me
+                        </a>
+                        <div class="note-description">God == Common Sense</div>
+                        <div class="note-meta">
+                            <div>
+                                <span class="note-category english">English</span>
+                                <span class="note-category science">Philosophy</span>
+                            </div>
+                            <div class="note-date"><i class="far fa-calendar-alt"></i> February 12, 2025</div>
+                        </div>
+                        <a href="note-post.html?file=notes/note2.md&title=God:%20Common%20Sense&category=Philosophy&date=February%2012,%202025" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </li>
+                    <li class="note-item" data-category="english science">
+                        <a class="note-title" href="note-post.html?file=notes/note3.md&title=SciML%20Physics%20Data%20Model&category=Science&date=February%2013,%202025">
+                            SciML: Scientific Machine Learning
+                        </a>
+                        <div class="note-description">Bridging Physics and Data-Driven Models</div>
+                        <div class="note-meta">
+                            <div>
+                                <span class="note-category english">English</span>
+                                <span class="note-category science">Science</span>
+                            </div>
+                            <div class="note-date"><i class="far fa-calendar-alt"></i> February 13, 2025</div>
+                        </div>
+                        <a href="note-post.html?file=notes/note3.md&title=SciML%20Physics%20Data%20Model&category=Science&date=February%2013,%202025" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </li>
+                    <li class="note-item" data-category="english science">
+                        <a class="note-title" href="note-post.html?file=notes/note4.md&title=iheart%20Model&category=Science&date=February%2013,%202025">
+                            Integrated Heart Model
+                        </a>
+                        <div class="note-description">Integrated Heart Model, a mathematical framework that captures the heart's complexity</div>
+                        <div class="note-meta">
+                            <div>
+                                <span class="note-category english">English</span>
+                                <span class="note-category science">Science</span>
+                            </div>
+                            <div class="note-date"><i class="far fa-calendar-alt"></i> February 13, 2025</div>
+                        </div>
+                        <a href="note-post.html?file=notes/note4.md&title=iheart%20Model&category=Science&date=February%2013,%202025" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </li>
+                </ul>
+                
+                <!-- No Results Message -->
+                <div id="no-results" class="no-results" style="display: none;">
+                    <i class="fas fa-search fa-3x mb-3"></i>
+                    <h3>No matching notes found</h3>
+                    <p>Try adjusting your search or filter criteria</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <footer class="bg-light text-center text-lg-start mt-5">
-        <div class="text-center p-3">
-            © 2025 My Website. All Rights Reserved.
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="footer-text mb-0">© 2025 Tamil Arasan Bakthavatchalam. All Rights Reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="footer-text mb-0">Physicist • AI Engineer • Writer</p>
+                </div>
+            </div>
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const noteList = document.getElementById("note-list");
-            const noteItems = Array.from(noteList.children); // Convert HTMLCollection to Array
-            noteItems.reverse(); // Reverse the order of the array
-            noteList.innerHTML = ""; // Clear existing list
-            noteItems.forEach(item => noteList.appendChild(item)); // Append items in reversed order
+            const searchInput = document.getElementById("searchInput");
+            const noResults = document.getElementById("no-results");
+            const categoryButtons = document.querySelectorAll(".category-btn");
+            const noteItems = Array.from(noteList.children);
+            
+            // Initialize counters for categories
+            const totalNotes = noteItems.length;
+            const tamilNotes = noteItems.filter(item => item.dataset.category.includes("tamil")).length;
+            const englishNotes = noteItems.filter(item => item.dataset.category.includes("english")).length;
+            const scienceNotes = noteItems.filter(item => item.dataset.category.includes("science")).length;
+            const philosophyNotes = noteItems.filter(item => item.dataset.category.includes("philosophy")).length;
+            
+            // Update button text with counts
+            categoryButtons.forEach(btn => {
+                const category = btn.dataset.category;
+                if (category === "all") {
+                    btn.innerHTML = `All Notes <span class="badge bg-secondary ms-1">${totalNotes}</span>`;
+                } else if (category === "tamil") {
+                    btn.innerHTML = `தமிழ் | Tamil <span class="badge bg-secondary ms-1">${tamilNotes}</span>`;
+                } else if (category === "english") {
+                    btn.innerHTML = `English <span class="badge bg-secondary ms-1">${englishNotes}</span>`;
+                } else if (category === "science") {
+                    btn.innerHTML = `Science <span class="badge bg-secondary ms-1">${scienceNotes}</span>`;
+                } else if (category === "philosophy") {
+                    btn.innerHTML = `Philosophy <span class="badge bg-secondary ms-1">${philosophyNotes}</span>`;
+                }
+            });
+            
+            // Filter function
+            function filterNotes() {
+                const activeCategory = document.querySelector(".category-btn.active").dataset.category;
+                const searchTerm = searchInput.value.toLowerCase();
+                let visibleCount = 0;
+                
+                noteItems.forEach(item => {
+                    const categories = item.dataset.category.split(" ");
+                    const title = item.querySelector(".note-title").textContent.toLowerCase();
+                    const description = item.querySelector(".note-description").textContent.toLowerCase();
+                    const matchesCategory = activeCategory === "all" || categories.includes(activeCategory);
+                    const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+                    
+                    if (matchesCategory && matchesSearch) {
+                        item.style.display = "";
+                        visibleCount++;
+                    } else {
+                        item.style.display = "none";
+                    }
+                });
+                
+                // Show/hide no results message
+                if (visibleCount === 0) {
+                    noResults.style.display = "block";
+                } else {
+                    noResults.style.display = "none";
+                }
+            }
+            
+            // Event listeners
+            categoryButtons.forEach(btn => {
+                btn.addEventListener("click", function() {
+                    // Remove active class from all buttons
+                    categoryButtons.forEach(b => b.classList.remove("active"));
+                    // Add active class to clicked button
+                    this.classList.add("active");
+                    // Filter notes
+                    filterNotes();
+                });
+            });
+            
+            searchInput.addEventListener("input", filterNotes);
+            
+            // Sort notes by date (newest first)
+            noteItems.sort((a, b) => {
+                const dateA = a.querySelector(".note-date").textContent;
+                const dateB = b.querySelector(".note-date").textContent;
+                return new Date(dateB) - new Date(dateA);
+            });
+            
+            // Clear and re-append sorted items
+            noteList.innerHTML = "";
+            noteItems.forEach(item => noteList.appendChild(item));
         });
     </script>
 </body>

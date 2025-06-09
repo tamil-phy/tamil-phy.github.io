@@ -3,18 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Papers</title>
+    <title>Papers | Tamil Arasan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #8338ec;
+            --accent-color: #ff006e;
+            --light-bg: #f8f9fa;
+            --dark-text: #212529;
+            --light-text: #6c757d;
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.8;
+            color: var(--dark-text);
+            background-color: #ffffff;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            background-color: white !important;
+        }
+        
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            position: relative;
+            margin: 0 10px;
+            transition: var(--transition);
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        .nav-link.active:after {
+            width: 100%;
+        }
+        
+        .papers-header {
+            padding: 50px 0 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 0 0 50px 50px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .papers-header h1 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .papers-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--light-text);
+        }
+        
+        .filter-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .filter-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .category-btn {
+            border: 2px solid transparent;
+            border-radius: 30px;
+            padding: 8px 20px;
+            margin-right: 10px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .category-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .category-btn:hover:not(.active) {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .search-container {
+            position: relative;
+            margin-top: 20px;
+        }
+        
+        .search-container input {
+            border-radius: 30px;
+            padding-left: 40px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .search-container i {
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            color: var(--light-text);
+        }
+        
+        .paper-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .paper-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .paper-card.sciml {
+            border-left-color: var(--primary-color);
+        }
+        
+        .paper-card.nlp {
+            border-left-color: var(--secondary-color);
+        }
+        
+        .paper-card.physics {
+            border-left-color: var(--accent-color);
+        }
+        
+        .paper-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--dark-text);
+            text-decoration: none;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+        
+        .paper-title:hover {
+            color: var(--primary-color);
+        }
+        
+        .paper-authors {
+            color: var(--light-text);
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .paper-journal {
+            font-style: italic;
+            color: var(--light-text);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .paper-abstract {
+            color: var(--dark-text);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            display: none;
+        }
+        
+        .paper-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .paper-category {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            margin-right: 5px;
+        }
+        
+        .paper-category.sciml {
+            background-color: rgba(58, 134, 255, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .paper-category.nlp {
+            background-color: rgba(131, 56, 236, 0.1);
+            color: var(--secondary-color);
+        }
+        
+        .paper-category.physics {
+            background-color: rgba(255, 0, 110, 0.1);
+            color: var(--accent-color);
+        }
+        
+        .paper-date {
+            color: var(--light-text);
+            font-size: 0.85rem;
+        }
+        
+        .paper-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .paper-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-color);
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .paper-link i {
+            margin-right: 5px;
+        }
+        
+        .paper-link:hover {
+            color: var(--secondary-color);
+        }
+        
+        .toggle-abstract {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            padding: 0;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .toggle-abstract i {
+            margin-left: 5px;
+            transition: var(--transition);
+        }
+        
+        .toggle-abstract.active i {
+            transform: rotate(180deg);
+        }
+        
+        .category-header {
+            position: relative;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .category-header:after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent-color);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--light-text);
+        }
+        
+        footer {
+            background-color: var(--light-bg);
+            padding: 30px 0;
+            margin-top: 80px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .footer-text {
+            color: var(--light-text);
+        }
+        
+        @media (max-width: 768px) {
+            .papers-header {
+                padding: 30px 0;
+            }
+            
+            .category-btn {
+                margin-bottom: 10px;
+            }
+            
+            .paper-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
             <a class="navbar-brand" href="index.html">Tamil Arasan</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">Home</a>
                     </li>
@@ -24,72 +355,220 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="papers.html">Papers</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="notes.html">Notes</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <h2>Papers</h2>
+    <!-- Header Section -->
+    <header class="papers-header">
+        <div class="container">
+            <h1>Academic Publications</h1>
+            <p>A collection of my research papers in Scientific Machine Learning, Natural Language Processing, and Physical Sciences.</p>
+        </div>
+    </header>
 
-        <h3>Scientific Machine Learning</h3>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title"><a href="https://link.springer.com/chapter/10.1007/978-3-031-50631-4_34" class="text-decoration-none">Active Learning for Probabilistic Machine Learning based Modeling of Dynamical Systems</a></h5>
+    <div class="container">
+        <!-- Filters and Search -->
+        <div class="filter-container">
+            <h3 class="filter-title">Filter Publications</h3>
+            <div class="d-flex flex-wrap">
+                <button class="category-btn active" data-category="all">All</button>
+                <button class="category-btn" data-category="sciml">Scientific ML</button>
+                <button class="category-btn" data-category="nlp">NLP</button>
+                <button class="category-btn" data-category="physics">Physics</button>
             </div>
-        </div>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title"><a href="https://www.sciencedirect.com/science/article/pii/S0960077923004101" class="text-decoration-none">Data-driven Multi-Valley Dark Solitons of Multi-component Manakov Model using Physics Informed Neural Network</a></h5>
-            </div>
-        </div>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title"><a href="https://www.researchgate.net/profile/Tamil-Arasan-Bakthavatchalam/publication/361701779_PRIMER_ON_SOLVING_DIFFERENTIAL_EQUATIONS_USING_MACHINE_LEARNING_TECHNIQUES/links/63a2b9a751f6c723c6b76146/PRIMER-ON-SOLVING-DIFFERENTIAL-EQUATIONS-USING-MACHINE-LEARNING-TECHNIQUES.pdf" class="text-decoration-none">Primer On Solving Differential Equations Using Machine Learning Techniques</a></h5>
-            </div>
-        </div>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title"><a href="https://www.nature.com/articles/s41598-021-84336-0" class="text-decoration-none">Bayesian Optimization Of Bose-Einstein Condensates</a></h5>
-            </div>
-        </div>
-
-        <h3 class="mt-4">Natural Language Processing (NLP)</h3>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title"><a href="http://uttamam.org/papers/20_17.pdf" class="text-decoration-none">SymSpell and LSTM based Spell-Checkers for Tamil</a></h5>
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" class="form-control" placeholder="Search papers...">
             </div>
         </div>
 
-        <h3 class="mt-4">Physical Science</h3>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title"><a href="https://d1wqtxts1xzle7.cloudfront.net/102865405/s11071-019-05354-220230531-1-v7yev0-libre.pdf?1685549046=&response-content-disposition=inline%3B+filename%3DDynamics_of_solitons_in_the_fourth_order.pdf&Expires=1721293657&Signature=fFiRhgaLPkpwM35~EX-kvM~5WGSEKKhybCufCm1mIVDri3ONktosPs-aHT7eK67MSAG~eUzCiyfhRJ3AByNNaZlyeVAssBVR4xbiFsC9tX778kccdkU~3t~sM6GYi5j4WaO9~1UxOQ0PZcXYHSzjawN3QmdzVNGnAq2aTwyLM-VuKjVfCQhCtT3mFqOSUiPkF~nTZ7IGiTOHG2K92fg0Hy7eXEsMr25CUq0FCdkGLLyOvXndzYMeDhswGVt7VrBE~buSCcKZ6PNk8YM-OjBRY2BYb~4Jcmic5wOTWArvahaYEjyMpYRKGeQAmYYBGchDISXvhVLbI9b2MYCnn00Oag__&Key-Pair-Id=APKAJLOHF5GGSLRBV4ZA" class="text-decoration-none">Dynamics of Solitons in the Fourth-order Nonlocal Nonlinear Schrödinger Equation</a></h5>
+        <!-- Papers List -->
+        <div id="papersList">
+            <!-- Scientific Machine Learning Papers -->
+            <div class="paper-card sciml">
+                <a href="https://link.springer.com/chapter/10.1007/978-3-031-50631-4_34" class="paper-title" target="_blank">Active Learning for Probabilistic Machine Learning based Modeling of Dynamical Systems</a>
+                <p class="paper-authors">Tamil Arasan Bakthavatchalam, Sai Kiran Karthik, Vishal Subramanian, Raghunathan Rengaswamy</p>
+                <p class="paper-journal">International Conference on Computational Science 2023</p>
+                <p class="paper-abstract">This paper presents an active learning framework for probabilistic machine learning models of dynamical systems, enhancing sample efficiency and model accuracy while providing uncertainty quantification.</p>
+                <div class="paper-meta">
+                    <span><i class="fas fa-calendar-alt"></i> 2023</span>
+                    <span><i class="fas fa-tag"></i> Scientific ML</span>
+                </div>
+            </div>
+
+            <div class="paper-card sciml">
+                <a href="https://www.sciencedirect.com/science/article/pii/S0960077923004101" class="paper-title" target="_blank">Data-driven Multi-Valley Dark Solitons of Multi-component Manakov Model using Physics Informed Neural Network</a>
+                <p class="paper-authors">Tamil Arasan Bakthavatchalam, Vishal Subramanian, Raghunathan Rengaswamy</p>
+                <p class="paper-journal">Chaos, Solitons & Fractals, 2023</p>
+                <p class="paper-abstract">This study employs Physics-Informed Neural Networks to discover multi-valley dark soliton solutions in the multi-component Manakov model, demonstrating the effectiveness of data-driven approaches for complex nonlinear systems.</p>
+                <div class="paper-meta">
+                    <span><i class="fas fa-calendar-alt"></i> 2023</span>
+                    <span><i class="fas fa-tag"></i> Scientific ML</span>
+                </div>
+            </div>
+
+            <div class="paper-card sciml">
+                <a href="https://www.researchgate.net/profile/Tamil-Arasan-Bakthavatchalam/publication/361701779_PRIMER_ON_SOLVING_DIFFERENTIAL_EQUATIONS_USING_MACHINE_LEARNING_TECHNIQUES/links/63a2b9a751f6c723c6b76146/PRIMER-ON-SOLVING-DIFFERENTIAL-EQUATIONS-USING-MACHINE-LEARNING-TECHNIQUES.pdf" class="paper-title" target="_blank">Primer On Solving Differential Equations Using Machine Learning Techniques</a>
+                <p class="paper-authors">Tamil Arasan Bakthavatchalam, Vishal Subramanian, Raghunathan Rengaswamy</p>
+                <p class="paper-journal">Technical Report, 2022</p>
+                <p class="paper-abstract">A comprehensive introduction to solving differential equations using various machine learning approaches, including neural networks, Gaussian processes, and physics-informed methods.</p>
+                <div class="paper-meta">
+                    <span><i class="fas fa-calendar-alt"></i> 2022</span>
+                    <span><i class="fas fa-tag"></i> Scientific ML</span>
+                </div>
+            </div>
+
+            <div class="paper-card sciml">
+                <a href="https://www.nature.com/articles/s41598-021-84336-0" class="paper-title" target="_blank">Bayesian Optimization Of Bose-Einstein Condensates</a>
+                <p class="paper-authors">Sai Kiran Rajendran, Tamil Arasan Bakthavatchalam, et al.</p>
+                <p class="paper-journal">Scientific Reports, 2021</p>
+                <p class="paper-abstract">This work demonstrates the application of Bayesian optimization techniques to efficiently tune experimental parameters for Bose-Einstein condensate production, significantly reducing experimental overhead.</p>
+                <div class="paper-meta">
+                    <span><i class="fas fa-calendar-alt"></i> 2021</span>
+                    <span><i class="fas fa-tag"></i> Scientific ML</span>
+                </div>
+            </div>
+
+            <!-- NLP Papers -->
+            <div class="paper-card nlp">
+                <a href="http://uttamam.org/papers/20_17.pdf" class="paper-title" target="_blank">SymSpell and LSTM based Spell-Checkers for Tamil</a>
+                <p class="paper-authors">Tamil Arasan Bakthavatchalam, Anand Kumar M</p>
+                <p class="paper-journal">Forum for Information Retrieval Evaluation, 2020</p>
+                <p class="paper-abstract">This paper presents novel spell-checking approaches for Tamil language using SymSpell algorithm and LSTM neural networks, addressing the challenges of morphologically rich languages.</p>
+                <div class="paper-meta">
+                    <span><i class="fas fa-calendar-alt"></i> 2020</span>
+                    <span><i class="fas fa-tag"></i> NLP</span>
+                </div>
+            </div>
+
+            <!-- Physics Papers -->
+            <div class="paper-card physics">
+                <a href="https://link.springer.com/article/10.1007/s11071-019-05354-2" class="paper-title" target="_blank">Dynamics of Solitons in the Fourth-order Nonlocal Nonlinear Schrödinger Equation</a>
+                <p class="paper-authors">Tamil Arasan Bakthavatchalam, Alagar Karthick, et al.</p>
+                <p class="paper-journal">Nonlinear Dynamics, 2019</p>
+                <p class="paper-abstract">An investigation of soliton dynamics in the fourth-order nonlocal nonlinear Schrödinger equation, revealing novel behaviors and stability properties of these nonlinear wave structures.</p>
+                <div class="paper-meta">
+                    <span><i class="fas fa-calendar-alt"></i> 2019</span>
+                    <span><i class="fas fa-tag"></i> Physics</span>
+                </div>
+            </div>
+
+            <div class="paper-card physics">
+                <a href="#" class="paper-title">Analytical Signatures Of Ultracold Atoms</a>
+                <p class="paper-authors">Tamil Arasan Bakthavatchalam, et al.</p>
+                <p class="paper-journal">Preprint, 2018</p>
+                <p class="paper-abstract">A theoretical study of analytical signatures in ultracold atomic systems, providing new insights into quantum many-body physics and potential experimental observables.</p>
+                <div class="paper-meta">
+                    <span><i class="fas fa-calendar-alt"></i> 2018</span>
+                    <span><i class="fas fa-tag"></i> Physics</span>
+                </div>
+            </div>
+
+            <div class="paper-card physics">
+                <a href="https://www.sciencedirect.com/science/article/abs/pii/S0925346720306042" class="paper-title" target="_blank">Structural, Linear and Nonlinear Optical, Electrical, Piezoelectric and Thermal Investigation on New Semi-Organic Single Crystal for Microelectronics and High Power Laser Applications</a>
+                <p class="paper-authors">Alagar Karthick, Tamil Arasan Bakthavatchalam, et al.</p>
+                <p class="paper-journal">Optical Materials, 2020</p>
+                <p class="paper-abstract">A comprehensive characterization of a novel semi-organic crystal, Brucinium Di-Hydrogen Borate Hydrate, revealing its potential for microelectronics and high-power laser applications.</p>
+                <div class="paper-meta">
+                    <span><i class="fas fa-calendar-alt"></i> 2020</span>
+                    <span><i class="fas fa-tag"></i> Physics</span>
+                </div>
+            </div>
+
+            <div class="paper-card physics">
+                <a href="https://www.sciencedirect.com/science/article/abs/pii/S0022286018313991" class="paper-title" target="_blank">Structural, Optical and Piezoelectric Investigation on Brucinium Bromide Hydrate Non Linear Optical Single Crystal</a>
+                <p class="paper-authors">Alagar Karthick, Tamil Arasan Bakthavatchalam, et al.</p>
+                <p class="paper-journal">Journal of Molecular Structure, 2019</p>
+                <p class="paper-abstract">Investigation of Brucinium Bromide Hydrate crystal properties for applications in optical parametric oscillators, high-power lasers, piezo-sensors and transducers.</p>
+                <div class="paper-meta">
+                    <span><i class="fas fa-calendar-alt"></i> 2019</span>
+                    <span><i class="fas fa-tag"></i> Physics</span>
+                </div>
             </div>
         </div>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title"><a href="#" class="text-decoration-none">Analytical Signatures Of Ultracold Atoms</a></h5>
-            </div>
-        </div>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title"><a href="https://www.sciencedirect.com/science/article/abs/pii/S0925346720306042" class="text-decoration-none">Structural, Linear and Nonlinear Optical, Electrical, Piezoelectric and Thermal Investigation on New Semi-Organic Single Crystal for Microelectronics and High Power Laser Applications: A Brucinium Di-Hydrogen Borate Hydrate</a></h5>
-            </div>
-        </div>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title"><a href="https://www.sciencedirect.com/science/article/abs/pii/S0022286018313991" class="text-decoration-none">Structural, Optical and Piezoelectric Investigation on Brucinium Bromide Hydrate Non Linear Optical Single Crystal for Optical Parametric Oscillators, High-Power Laser, Piezo-Sensors and Transducers Applications</a></h5>
-            </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="text-center py-5" style="display: none;">
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h4>No papers found</h4>
+            <p class="text-muted">Try adjusting your search or filter criteria</p>
         </div>
     </div>
 
-    <footer class="bg-light text-center text-lg-start mt-5">
-        <div class="text-center p-3">
-            © 2024 My Website
+    <footer class="mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="footer-text mb-0">© 2025 Tamil Arasan Bakthavatchalam. All Rights Reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="social-links justify-content-md-end">
+                        <a href="https://github.com/tamil-phy" class="social-link" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://twitter.com/tamilphy" class="social-link" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.linkedin.com/in/tamil-arasan/" class="social-link" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const searchInput = document.getElementById('searchInput');
+            const paperCards = document.querySelectorAll('.paper-card');
+            const noResults = document.getElementById('noResults');
+            
+            function filterPapers() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
+                
+                let visibleCount = 0;
+                
+                paperCards.forEach(card => {
+                    const title = card.querySelector('.paper-title').textContent.toLowerCase();
+                    const abstract = card.querySelector('.paper-abstract').textContent.toLowerCase();
+                    const authors = card.querySelector('.paper-authors').textContent.toLowerCase();
+                    const cardCategory = card.classList.contains('sciml') ? 'sciml' : 
+                                        card.classList.contains('nlp') ? 'nlp' : 'physics';
+                    
+                    const matchesSearch = title.includes(searchTerm) || 
+                                        abstract.includes(searchTerm) || 
+                                        authors.includes(searchTerm);
+                    const matchesCategory = activeCategory === 'all' || cardCategory === activeCategory;
+                    
+                    if (matchesSearch && matchesCategory) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+            }
+            
+            // Event listeners
+            categoryButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    filterPapers();
+                });
+            });
+            
+            searchInput.addEventListener('input', filterPapers);
+            
+            // Initialize
+            filterPapers();
+        });
+    </script>
 </body>
 </html>
