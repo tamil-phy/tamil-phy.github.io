@@ -397,20 +397,32 @@
                             content.setAttribute('lang', 'ta');
                         }
                         
-                        // Wrap math blocks for better styling
+                        // Wrap math blocks for better styling and ensure proper MathJax processing
                         processedContent = processedContent.replace(
                             /<p>\s*\$\$(.*?)\$\$\s*<\/p>/gs, 
                             '<div class="math-container">$$$$1$$</div>'
                         );
                         
+                        // Fix inline math rendering
+                        processedContent = processedContent.replace(
+                            /<p>(.*?)\$(.*?)\$(.*?)<\/p>/g,
+                            '<p>$1<span class="inline-math">\$$2\$</span>$3</p>'
+                        );
+                        
                         content.innerHTML = processedContent;
                         
-                        // Render MathJax equations
-                        MathJax.typesetPromise().then(() => {
-                            console.log('MathJax rendering complete');
-                        }).catch(err => {
-                            console.error('MathJax error:', err);
-                        });
+                        // Render MathJax equations with a slight delay to ensure DOM is ready
+                        setTimeout(() => {
+                            try {
+                                MathJax.typesetPromise([content]).then(() => {
+                                    console.log('MathJax rendering complete');
+                                }).catch(err => {
+                                    console.error('MathJax error:', err);
+                                });
+                            } catch (mathJaxError) {
+                                console.error('Error initializing MathJax:', mathJaxError);
+                            }
+                        }, 100);
                         
                         // Add target="_blank" to external links
                         document.querySelectorAll('#markdown-content a').forEach(link => {

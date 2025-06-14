@@ -343,86 +343,23 @@
             
             dateValue.textContent = date;
             categoryValue.textContent = category;
-
-            // Function to generate Table of Contents
-            function generateTableOfContents(content) {
-                const headings = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
-                
-                if (headings.length < 3) {
-                    // Don't show TOC if there are fewer than 3 headings
-                    return false;
-                }
-                
-                const toc = document.createElement('ul');
-                let currentLevel = 0;
-                let currentList = toc;
-                let listStack = [];
-                
-                headings.forEach((heading, index) => {
-                    // Add ID to heading if it doesn't have one
-                    if (!heading.id) {
-                        heading.id = 'heading-' + index;
-                    }
-                    
-                    const level = parseInt(heading.tagName.charAt(1));
-                    
-                    // Create list item
-                    const listItem = document.createElement('li');
-                    const link = document.createElement('a');
-                    link.href = '#' + heading.id;
-                    link.textContent = heading.textContent;
-                    listItem.appendChild(link);
-                    
-                    // Handle nesting
-                    if (level > currentLevel) {
-                        // Go deeper
-                        const nestedList = document.createElement('ul');
-                        listStack.push(currentList);
-                        
-                        // Make sure there's a lastChild before trying to append to it
-                        if (currentList.lastChild) {
-                            currentList.lastChild.appendChild(nestedList);
-                            currentList = nestedList;
-                        } else {
-                            // If there's no lastChild, append the list item first, then the nested list
-                            currentList.appendChild(listItem);
-                            listItem.appendChild(nestedList);
-                            currentList = nestedList;
-                            continue; // Skip the normal append at the end of the loop
-                        }
-                    } else if (level < currentLevel) {
-                        // Go up
-                        while (level < currentLevel) {
-                            currentList = listStack.pop() || currentList; // Fallback if stack is empty
-                            currentLevel--;
-                        }
-                    }
-                    
-                    currentList.appendChild(listItem);
-                    currentLevel = level;
-                });
-                
-                return toc;
-            }
             
-            // Function to wrap math blocks for better styling
-            function processMathBlocks(html) {
-                return html.replace(
-                    /<p>\s*\$\$(.*?)\$\$\s*<\/p>/gs, 
-                    '<div class="math-container">$$$$1$$</div>'
-                );
-            }
-
             // Fetch and render the Markdown file
             if (file) {
+                console.log('Attempting to fetch file:', file);
+                content.innerHTML = '<p>Loading content...</p>';
+                
                 fetch(file)
                     .then(response => {
+                        console.log('Fetch response status:', response.status);
                         if (!response.ok) {
                             throw new Error('Network response was not ok ' + response.statusText);
                         }
                         return response.text();
                     })
                     .then(text => {
+                        console.log('File content received, length:', text.length);
+                        
                         // Configure marked for better code and math handling
                         marked.setOptions({
                             highlight: function(code, lang) {
@@ -434,22 +371,58 @@
                         
                         // Process the content
                         let processedContent = marked.parse(text);
-                        processedContent = processMathBlocks(processedContent);
-                        content.innerHTML = processedContent;
                         
-                        // Generate table of contents
-                        const tocList = generateTableOfContents(content);
-                        if (tocList) {
-                            tocContent.appendChild(tocList);
+                        // Wrap math blocks for better styling and ensure proper MathJax processing
+                        processedContent = processedContent.replace(
+                            /<p>\s*\$\$(.*?)\$\$\s*<\/p>/gs, 
+                            '<div class="math-container">$$$$1$$</div>'
+                        );
+                        
+                        // Fix inline math rendering
+                        processedContent = processedContent.replace(
+                            /<p>(.*?)\$(.*?)\$(.*?)<\/p>/g,
+                            '<p>$1<span class="inline-math">\$$2\$</span>$3</p>'
+                        );
+                        
+                        content.innerHTML = processedContent;
+                        console.log('Content rendered to DOM');
+                        
+                        // Generate simple table of contents
+                        const headings = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+                        if (headings.length >= 3) {
+                            const toc = document.createElement('ul');
+                            
+                            headings.forEach((heading, index) => {
+                                // Add ID to heading if it doesn't have one
+                                if (!heading.id) {
+                                    heading.id = 'heading-' + index;
+                                }
+                                
+                                const listItem = document.createElement('li');
+                                const link = document.createElement('a');
+                                link.href = '#' + heading.id;
+                                link.textContent = heading.textContent;
+                                listItem.appendChild(link);
+                                toc.appendChild(listItem);
+                            });
+                            
+                            tocContent.innerHTML = '';
+                            tocContent.appendChild(toc);
                             tocElement.style.display = 'block';
                         }
                         
-                        // Render MathJax equations
-                        MathJax.typesetPromise().then(() => {
-                            console.log('MathJax rendering complete');
-                        }).catch(err => {
-                            console.error('MathJax error:', err);
-                        });
+                        // Render MathJax equations with a slight delay to ensure DOM is ready
+                        setTimeout(() => {
+                            try {
+                                MathJax.typesetPromise([content]).then(() => {
+                                    console.log('MathJax rendering complete');
+                                }).catch(err => {
+                                    console.error('MathJax error:', err);
+                                });
+                            } catch (mathJaxError) {
+                                console.error('Error initializing MathJax:', mathJaxError);
+                            }
+                        }, 100);
                         
                         // Add target="_blank" to external links
                         document.querySelectorAll('#markdown-content a').forEach(link => {
