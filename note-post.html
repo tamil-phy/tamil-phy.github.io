@@ -378,12 +378,22 @@
                         // Go deeper
                         const nestedList = document.createElement('ul');
                         listStack.push(currentList);
-                        currentList.lastChild.appendChild(nestedList);
-                        currentList = nestedList;
+                        
+                        // Make sure there's a lastChild before trying to append to it
+                        if (currentList.lastChild) {
+                            currentList.lastChild.appendChild(nestedList);
+                            currentList = nestedList;
+                        } else {
+                            // If there's no lastChild, append the list item first, then the nested list
+                            currentList.appendChild(listItem);
+                            listItem.appendChild(nestedList);
+                            currentList = nestedList;
+                            continue; // Skip the normal append at the end of the loop
+                        }
                     } else if (level < currentLevel) {
                         // Go up
                         while (level < currentLevel) {
-                            currentList = listStack.pop();
+                            currentList = listStack.pop() || currentList; // Fallback if stack is empty
                             currentLevel--;
                         }
                     }
