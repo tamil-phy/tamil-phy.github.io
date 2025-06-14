@@ -10,39 +10,39 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&family=Hind+Madurai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Load MathJax first, then configure it -->    
     <script>
         window.MathJax = {
             tex: {
                 inlineMath: [['$', '$'], ['\\(', '\\)']],
                 displayMath: [['$$', '$$'], ['\\[', '\\]']],
                 processEscapes: true,
+                processEnvironments: true,
                 tags: "ams",
                 macros: {
-                    // Add common macros here if needed
                     "\\R": "\\mathbb{R}",
-                    "\\N": "\\mathbb{N}"
+                    "\\N": "\\mathbb{N}",
+                    "\\Z": "\\mathbb{Z}",
+                    "\\C": "\\mathbb{C}"
                 }
             },
             options: {
                 skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"],
-                renderActions: {
-                    // Improve equation rendering
-                    addMenu: [0, '', ''],
-                    checkLoading: [100, 50, 500]
-                }
+                processHtmlClass: "math"
             },
             startup: {
-                typeset: true,
-                ready: () => {
-                    MathJax.startup.defaultReady();
+                pageReady: function() {
+                    console.log('MathJax is ready');
+                    return MathJax.startup.defaultPageReady();
                 }
             },
-            svg: {
-                fontCache: 'global'
+            chtml: {
+                scale: 1.1,
+                fontURL: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2'
             }
         };
     </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
     <style>
         :root {
             --primary-color: #3a86ff;
@@ -389,6 +389,12 @@
                             gfm: true
                         });
                         
+                        // Process the content with simple configuration
+                        marked.setOptions({
+                            breaks: true,
+                            gfm: true
+                        });
+                        
                         // Process the content
                         let processedContent = marked.parse(text);
                         
@@ -397,32 +403,49 @@
                             content.setAttribute('lang', 'ta');
                         }
                         
-                        // Wrap math blocks for better styling and ensure proper MathJax processing
+                        // Process math blocks for better styling
                         processedContent = processedContent.replace(
                             /<p>\s*\$\$(.*?)\$\$\s*<\/p>/gs, 
                             '<div class="math-container">$$$$1$$</div>'
                         );
                         
-                        // Fix inline math rendering
+                        // Mark paragraphs containing math with a class
                         processedContent = processedContent.replace(
-                            /<p>(.*?)\$(.*?)\$(.*?)<\/p>/g,
-                            '<p>$1<span class="inline-math">\$$2\$</span>$3</p>'
+                            /<p>([^<]*\$[^<]*\$[^<]*)<\/p>/g,
+                            '<p class="math">$1</p>'
                         );
                         
                         content.innerHTML = processedContent;
                         
-                        // Render MathJax equations with a slight delay to ensure DOM is ready
-                        setTimeout(() => {
+                        // Force MathJax to typeset the content
+                        if (typeof MathJax !== 'undefined') {
                             try {
-                                MathJax.typesetPromise([content]).then(() => {
-                                    console.log('MathJax rendering complete');
-                                }).catch(err => {
-                                    console.error('MathJax error:', err);
-                                });
+                                // Clear any previous typesetting
+                                if (MathJax.typesetClear) {
+                                    MathJax.typesetClear([content]);
+                                }
+                                
+                                // Wait a bit longer to ensure DOM is fully ready
+                                setTimeout(() => {
+                                    console.log('Attempting to typeset math...');
+                                    MathJax.typesetPromise([content]).then(() => {
+                                        console.log('MathJax rendering complete');
+                                    }).catch(err => {
+                                        console.error('MathJax error:', err);
+                                        // Try one more time with a longer delay
+                                        setTimeout(() => {
+                                            MathJax.typesetPromise([content]).catch(e => {
+                                                console.error('Final MathJax attempt failed:', e);
+                                            });
+                                        }, 500);
+                                    });
+                                }, 200);
                             } catch (mathJaxError) {
                                 console.error('Error initializing MathJax:', mathJaxError);
                             }
-                        }, 100);
+                        } else {
+                            console.error('MathJax is not defined');
+                        }
                         
                         // Add target="_blank" to external links
                         document.querySelectorAll('#markdown-content a').forEach(link => {
