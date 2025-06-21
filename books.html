@@ -3,7 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books | Tamil Arasan</title>
+    <title>Published Books | Tamil Arasan</title>
+    <meta name="description" content="Explore self-published books on science, technology, and more by Tamil Arasan. Available in both Tamil and English.">
+    <meta name="keywords" content="self-published books, Tamil books, science books, technology books, Tamil Arasan">
+    <meta name="author" content="Tamil Arasan">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tamil-phy.github.io/books.html">
+    <meta property="og:title" content="Published Books | Tamil Arasan">
+    <meta property="og:description" content="Explore self-published books on science, technology, and more by Tamil Arasan. Available in both Tamil and English.">
+    <meta property="og:image" content="https://tamil-phy.github.io/images/books-preview.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://tamil-phy.github.io/books.html">
+    <meta property="twitter:title" content="Published Books | Tamil Arasan">
+    <meta property="twitter:description" content="Explore self-published books on science, technology, and more by Tamil Arasan. Available in both Tamil and English.">
+    <meta property="twitter:image" content="https://tamil-phy.github.io/images/books-preview.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://tamil-phy.github.io/books.html">
+    
+    <!-- Stylesheets -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,16 +94,25 @@
         }
         
         .book-header {
-            padding: 50px 0 30px;
+            padding: 70px 0;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             border-radius: 0 0 50px 50px;
-            margin-bottom: 30px;
-            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
         }
         
-        .book-header h1 {
-            color: var(--primary-color);
-            margin-bottom: 15px;
+        .book-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCAwaDEwMHYxMDBIMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNODAgNTBhMzAgMzAgMCAxIDEtNjAgMCAzMCAzMCAwIDAgMSA2MCAweiIgZmlsbD0icmdiYSg1OCwgMTM0LCAyNTUsIDAuMDUpIi8+PC9zdmc+');
+            background-size: 300px;
+            opacity: 0.5;
+            z-index: 0;
         }
         
         .book-header p {
@@ -266,45 +297,166 @@
             z-index: 2;
         }
         
-        .book-list {
-            list-style-type: none;
-            padding: 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+        .author-badge {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-right: 10px;
         }
         
-        @media (max-width: 768px) {
-            .featured-posts-container {
-                grid-template-columns: 1fr;
-            }
+        .author-info {
+            margin-top: 25px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 12px 20px;
+            display: inline-block;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+        }
+        
+        .book-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
         }
         
         .book-item {
             background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            padding: 25px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            transition: var(--transition);
+            border-radius: 12px;
+            padding: 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
-            border-top: 5px solid transparent;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .book-cover {
+            height: 180px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .book-cover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+        
+        .book-item:hover .book-cover-overlay {
+            background: rgba(0,0,0,0.1);
+        }
+        
+        .book-cover-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            opacity: 0.9;
+        }
+        
+        .book-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .book-meta-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .book-date {
+            font-size: 0.85rem;
+            color: var(--light-text);
+        }
+        
+        .book-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-text);
+            text-decoration: none;
+            margin-bottom: 10px;
+            display: block;
+            transition: color 0.2s ease;
+        }
+        
+        .book-title:hover {
+            color: var(--primary-color);
+        }
+        
+        .book-description {
+            color: var(--light-text);
+            margin-bottom: 15px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        
+        .book-author {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .author-name {
+            font-weight: 600;
+            color: var(--dark-text);
+            font-size: 0.9rem;
+        }
+        
+        .book-meta-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .book-stats {
+            font-size: 0.85rem;
+            color: var(--light-text);
+        }
+        
+        .book-stats i {
+            margin-right: 5px;
+            color: var(--primary-color);
         }
         
         .book-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-7px);
             box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
         
-        .book-item[data-category="Tamil"] {
-            border-top-color: var(--accent-color);
+        .book-item[data-category="Tamil"] .book-cover {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #ff6b6b 100%);
         }
         
-        .book-item[data-category="English"] {
-            border-top-color: var(--primary-color);
+        .book-item[data-category="English"] .book-cover {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
         }
         
         .book-title {
@@ -398,8 +550,31 @@
             transform: translateX(3px);
         }
         
+        /* Tamil text styling */
         [lang="ta"] {
             font-family: 'Hind Madurai', sans-serif;
+        }
+        
+        /* Tamil specific book card styling */
+        .book-item[lang="ta"] .book-title {
+            font-family: 'Hind Madurai', sans-serif;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+        
+        .book-item[lang="ta"] .book-description {
+            font-family: 'Hind Madurai', sans-serif;
+            line-height: 1.7;
+        }
+        
+        .book-item[lang="ta"] .book-cover-title {
+            font-family: 'Hind Madurai', sans-serif;
+            font-weight: 700;
+        }
+        
+        /* Ensure proper spacing for Tamil characters */
+        .book-item[lang="ta"] .book-content {
+            letter-spacing: 0.01em;
         }
         
         .no-results {
@@ -473,8 +648,32 @@
     <!-- Books Header Section -->
     <section class="book-header">
         <div class="container">
-            <h1>My Books</h1>
-            <p>A collection of books I've read, reviewed, and recommend across various genres</p>
+            <div class="row align-items-center">
+                <div class="col-lg-8 col-md-7">
+                    <h1 class="display-4 fw-bold">My Published Works</h1>
+                    <p class="lead">Explore my collection of self-published books on science, technology, and more</p>
+                </div>
+                <div class="col-lg-4 col-md-5 d-none d-md-block">
+                    <div class="book-stack-graphic">
+                        <div class="book-stack-item"></div>
+                        <div class="book-stack-item"></div>
+                        <div class="book-stack-item"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="author-info">
+                        <div class="d-flex align-items-center">
+                            <div class="author-badge">Author</div>
+                            <div class="ms-3">
+                                <h5 class="mb-0">Tamil Arasan</h5>
+                                <p class="text-muted mb-0"><small>Researcher & Writer</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -524,13 +723,29 @@
                 </div>
                 <ul id="book-list" class="book-list">
         <li class="book-item" data-category="Tamil" lang="ta">
-            <a class="book-title" href="books-post.html?file=books/numpy.md&title=NumPy%20in%20tamil">
-                NumPy – அறிமுகம்
-            </a>
-            <div class="book-description">LLMs: மனித மொழியை இயந்திரங்களின் புரிதலுக்கு எளியதாக்கும் தொழில்நுட்பம்!</div>
-            <div class="book-meta">
-                <span class="book-category tamil">தமிழ்</span>
-                <a href="books-post.html?file=books/numpy.md&title=NumPy%20in%20tamil" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
+            <div class="book-cover">
+                <div class="book-cover-overlay">
+                    <div class="book-cover-title">NumPy</div>
+                </div>
+            </div>
+            <div class="book-content">
+                <div class="book-meta-top">
+                    <span class="book-category tamil">தமிழ்</span>
+                    <span class="book-date">2025</span>
+                </div>
+                <a class="book-title" href="books-post.html?file=books/numpy.md&title=NumPy%20in%20tamil">
+                    NumPy – அறிமுகம்
+                </a>
+                <div class="book-description">LLMs: மனித மொழியை இயந்திரங்களின் புரிதலுக்கு எளியதாக்கும் தொழில்நுட்பம்!</div>
+                <div class="book-author">
+                    <span class="author-name">Tamil Arasan</span>
+                </div>
+                <div class="book-meta-bottom">
+                    <div class="book-stats">
+                        <span><i class="fas fa-book-open"></i> 12 chapters</span>
+                    </div>
+                    <a href="books-post.html?file=books/numpy.md&title=NumPy%20in%20tamil" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
+                </div>
             </div>
         </li>       
     </ul>
