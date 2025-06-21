@@ -214,9 +214,16 @@
             padding-left: 15px; /* Reduce padding for nested items */
         }
         
-        /* Adjust main content margin when sidebar is open */
+        /* Adjust main content when sidebar is open */
+        .content-container {
+            transition: transform 0.3s ease;
+            width: 100%;
+            position: relative;
+        }
+        
+        /* Use transform instead of margin for better performance and compatibility */
         .content-container.sidebar-open {
-            margin-left: 320px; /* Match the sidebar width */
+            transform: translateX(320px);
         }
         
         .sidebar-toc-container.show {
@@ -283,15 +290,6 @@
         
         .toc-toggle-btn:hover {
             background-color: var(--secondary-color);
-        }
-        
-        /* Adjust main content when sidebar is open */
-        .content-container {
-            transition: margin-left 0.3s ease;
-        }
-        
-        .content-container.sidebar-open {
-            margin-left: 300px;
         }
         
         /* Original TOC sidebar styles (modified) */
@@ -851,6 +849,11 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar-toc');
             const contentContainer = document.querySelector('.container');
+            
+            // Add content-container class if it doesn't exist
+            if (!contentContainer.classList.contains('content-container')) {
+                contentContainer.classList.add('content-container');
+            }
             
             sidebar.classList.toggle('show');
             contentContainer.classList.toggle('sidebar-open');
