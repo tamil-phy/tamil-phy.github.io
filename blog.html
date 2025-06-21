@@ -75,7 +75,7 @@
             padding: 50px 0 30px;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             border-radius: 0 0 50px 50px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             text-align: center;
         }
         
@@ -142,32 +142,169 @@
             color: var(--light-text);
         }
         
+        .featured-posts-section {
+            margin-bottom: 40px;
+        }
+        
+        .featured-posts-heading {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .featured-posts-heading h3 {
+            margin-bottom: 0;
+            margin-right: 10px;
+        }
+        
+        .featured-badge {
+            background-color: var(--accent-color);
+            color: white;
+            font-size: 0.8rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        .featured-posts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .featured-post {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid var(--primary-color);
+        }
+        
+        .featured-post[data-category="Tamil"] {
+            border-top-color: var(--accent-color);
+        }
+        
+        .featured-post-img {
+            height: 180px;
+            background-color: #f0f0f0;
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .featured-post-content {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .featured-post-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--dark-text);
+            text-decoration: none;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 15px;
+            transition: var(--transition);
+            line-height: 1.3;
+        }
+        
+        .featured-post-title:hover {
+            color: var(--primary-color);
+        }
+        
+        .featured-post-date {
+            color: var(--light-text);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .featured-post-date i {
+            margin-right: 5px;
+            opacity: 0.7;
+        }
+        
+        .featured-post-description {
+            color: var(--light-text);
+            margin-bottom: 20px;
+            font-style: normal;
+            flex-grow: 1;
+        }
+        
+        .featured-post-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 15px;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .featured-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+        
         .blog-list {
             list-style-type: none;
             padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .featured-posts-container {
+                grid-template-columns: 1fr;
+            }
         }
         
         .blog-item {
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            padding: 25px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
             transition: var(--transition);
-            border-left: 4px solid transparent;
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid transparent;
         }
         
         .blog-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
         
         .blog-item[data-category="Tamil"] {
-            border-left-color: var(--accent-color);
+            border-top-color: var(--accent-color);
         }
         
         .blog-item[data-category="English"] {
-            border-left-color: var(--primary-color);
+            border-top-color: var(--primary-color);
         }
         
         .blog-title {
@@ -177,8 +314,9 @@
             text-decoration: none;
             font-weight: 700;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             transition: var(--transition);
+            line-height: 1.3;
         }
         
         .blog-title:hover {
@@ -187,24 +325,41 @@
         
         .blog-description {
             color: var(--light-text);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             font-style: normal;
+            flex-grow: 1;
         }
         
         .blog-meta {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: 15px;
+            margin-top: auto;
+            padding-top: 15px;
             font-size: 0.9rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .blog-date {
+            color: var(--light-text);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .blog-date i {
+            margin-right: 5px;
+            opacity: 0.7;
         }
         
         .blog-category {
             display: inline-block;
-            padding: 3px 10px;
+            padding: 5px 12px;
             border-radius: 20px;
             font-weight: 500;
             font-size: 0.8rem;
+            letter-spacing: 0.5px;
         }
         
         .blog-category.tamil {
@@ -272,6 +427,17 @@
             .language-btn {
                 margin-bottom: 10px;
             }
+            
+            .blog-list {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .blog-list {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -324,18 +490,43 @@
             </div>
         </div>
 
+        <!-- Featured Posts Section -->
+        <div class="featured-posts-section">
+            <div class="featured-posts-heading">
+                <h3>Featured Posts</h3>
+                <span class="featured-badge">New</span>
+            </div>
+            <div class="featured-posts-container" id="featured-posts">
+                <!-- Featured posts will be dynamically inserted here -->
+            </div>
+        </div>
+        
         <!-- Blog List -->
         <div class="row">
             <div class="col-12">
+                <h3 class="mb-4">All Posts</h3>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>Showing <span id="visible-count">0</span> of <span id="total-count">0</span> posts</div>
+                    <div>
+                        <label for="posts-per-page" class="me-2">Posts per page:</label>
+                        <select id="posts-per-page" class="form-select form-select-sm d-inline-block w-auto">
+                            <option value="6">6</option>
+                            <option value="12" selected>12</option>
+                            <option value="24">24</option>
+                            <option value="all">All</option>
+                        </select>
+                    </div>
+                </div>
                 <ul id="blog-list" class="blog-list">
-        <li class="blog-item" data-category="English">
-            <a class="blog-title" href="blog-post.html?file=posts/post1.md&title=All%20about%20Neural%20Networks">
-                All about Neural Networks
+        <li class="blog-item" data-category="Tamil" lang="ta" data-date="2025-06-15">
+            <a class="blog-title" href="blog-post.html?file=posts/post20.md&title=PyTorch%20An%20Introduction">
+                பைடார்ச் அறிமுகம்
             </a>
-            <div class="blog-description">An introduction to Neural Networks.</div>
+            <div class="blog-date"><i class="far fa-calendar-alt"></i> June 15, 2025</div>
+            <div class="blog-description">"பைடார்ச் என்றால் என்ன?"</div>
             <div class="blog-meta">
-                <span class="blog-category english">English</span>
-                <a href="blog-post.html?file=posts/post1.md&title=All%20about%20Neural%20Networks" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                <span class="blog-category tamil">தமிழ்</span>
+                <a href="blog-post.html?file=posts/post20.md&title=PyTorch%20An%20Introduction" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
             </div>
         </li>
         <li class="blog-item" data-category="English">
@@ -368,10 +559,11 @@
                 <a href="blog-post.html?file=posts/post4.md&title=Backward%20Propagation" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
             </div>
         </li>
-        <li class="blog-item" data-category="English">
+        <li class="blog-item" data-category="English" data-date="2025-04-20">
             <a class="blog-title" href="blog-post.html?file=posts/post5.md&title=Stochastic%20Gradient%20Descent">
                 Stochastic Gradient Descent (SGD)
             </a>
+            <div class="blog-date"><i class="far fa-calendar-alt"></i> April 20, 2025</div>
             <div class="blog-description">My Understanding of Stochastic Gradient Descent</div>
             <div class="blog-meta">
                 <span class="blog-category english">English</span>
@@ -438,10 +630,11 @@
                 <a href="blog-post.html?file=posts/post9.md&title=Large%20Language%20Model%20Introduction%20in%20tamil" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
             </div>
         </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
+        <li class="blog-item" data-category="Tamil" lang="ta" data-date="2025-05-15">
             <a class="blog-title" href="blog-post.html?file=posts/post10.md&title=Large%20Language%20Model%20How%20Do%20They%20Work%20in%20tamil">
                 LLM-களின் கட்டமைப்பு மற்றும் செயல்பாடு
             </a>
+            <div class="blog-date"><i class="far fa-calendar-alt"></i> May 15, 2025</div>
             <div class="blog-description">LLM-கள் எப்படி வேலை செய்கின்றன?</div>
             <div class="blog-meta">
                 <span class="blog-category tamil">தமிழ்</span>
@@ -498,10 +691,11 @@
                 <a href="blog-post.html?file=posts/post14.md&title=Encoder%20and%20Decoder" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
             </div>
         </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
+        <li class="blog-item" data-category="Tamil" lang="ta" data-date="2025-06-01">
             <a class="blog-title" href="blog-post.html?file=posts/post15.md&title=Make%20Your%20Own%20GPT">
                 டிரான்ஸ்பார்மர்: மென்பொருள் உலகை மாற்றிய நரவலை
             </a>
+            <div class="blog-date"><i class="far fa-calendar-alt"></i> June 1, 2025</div>
             <div class="blog-description">டிரான்ஸ்பார்மர்: GPT மற்றும் BERT போன்ற AI மாடல்களின் அடித்தளம்</div>
             <div class="blog-meta">
                 <span class="blog-category tamil">தமிழ்</span>
@@ -548,20 +742,42 @@
                 <a href="blog-post.html?file=posts/post19.md&title=All%20About%20Foundation%20Models" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
             </div>
         </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post20.md&title=PyTorch%20An%20Introduction">
-                பைடார்ச் அறிமுகம்
+        <li class="blog-item" data-category="English" data-date="2025-03-10">
+            <a class="blog-title" href="blog-post.html?file=posts/post1.md&title=All%20about%20Neural%20Networks">
+                All about Neural Networks
             </a>
-            <div class="blog-description">"பைடார்ச் என்றால் என்ன?"</div>
+            <div class="blog-date"><i class="far fa-calendar-alt"></i> March 10, 2025</div>
+            <div class="blog-description">An introduction to Neural Networks.</div>
             <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post20.md&title=PyTorch%20An%20Introduction" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
+                <span class="blog-category english">English</span>
+                <a href="blog-post.html?file=posts/post1.md&title=All%20about%20Neural%20Networks" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
             </div>
         </li>
     </ul>
 </div>
 
                 </ul>
+                
+                <!-- Pagination Controls -->
+                <div class="pagination-container mt-4 d-flex justify-content-center" id="pagination-controls">
+                    <nav aria-label="Blog pagination">
+                        <ul class="pagination">
+                            <li class="page-item disabled" id="prev-page">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item" id="next-page">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
                 
                 <!-- No Results Message -->
                 <div id="no-results" class="no-results" style="display: none;">
@@ -612,32 +828,123 @@
                 }
             });
             
+            // Current page state
+            let currentPage = 1;
+            let postsPerPage = 12;
+            let filteredItems = [];
+            
             // Filter function
             function filterBlogs() {
                 const activeFilter = document.querySelector(".language-btn.active").dataset.filter;
                 const searchTerm = searchInput.value.toLowerCase();
                 let visibleCount = 0;
                 
+                // Reset filtered items
+                filteredItems = [];
+                
                 blogItems.forEach(item => {
                     const category = item.dataset.category;
                     const title = item.querySelector(".blog-title").textContent.toLowerCase();
                     const description = item.querySelector(".blog-description").textContent.toLowerCase();
+                    const date = item.querySelector(".blog-date") ? item.querySelector(".blog-date").textContent.toLowerCase() : "";
                     const matchesFilter = activeFilter === "all" || category === activeFilter;
-                    const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+                    const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm) || date.includes(searchTerm);
+                    
+                    // Hide all items first
+                    item.style.display = "none";
                     
                     if (matchesFilter && matchesSearch) {
-                        item.style.display = "";
+                        filteredItems.push(item);
                         visibleCount++;
+                    }
+                });
+                
+                // Update visible count
+                document.getElementById("visible-count").textContent = visibleCount;
+                document.getElementById("total-count").textContent = totalBlogs;
+                
+                // Show/hide no results message
+                if (visibleCount === 0) {
+                    noResults.style.display = "block";
+                    document.getElementById("pagination-controls").style.display = "none";
+                } else {
+                    noResults.style.display = "none";
+                    document.getElementById("pagination-controls").style.display = "flex";
+                    // Reset to first page when filter changes
+                    currentPage = 1;
+                    updatePagination();
+                }
+            }
+            
+            // Update pagination controls and display current page items
+            function updatePagination() {
+                // If showing all posts
+                if (postsPerPage === "all") {
+                    filteredItems.forEach(item => item.style.display = "");
+                    document.getElementById("pagination-controls").style.display = "none";
+                    return;
+                }
+                
+                // Calculate total pages
+                const totalPages = Math.ceil(filteredItems.length / postsPerPage);
+                
+                // Ensure current page is valid
+                if (currentPage > totalPages) {
+                    currentPage = totalPages || 1;
+                }
+                
+                // Show only items for current page
+                const startIndex = (currentPage - 1) * postsPerPage;
+                const endIndex = Math.min(startIndex + postsPerPage, filteredItems.length);
+                
+                filteredItems.forEach((item, index) => {
+                    if (index >= startIndex && index < endIndex) {
+                        item.style.display = "";
                     } else {
                         item.style.display = "none";
                     }
                 });
                 
-                // Show/hide no results message
-                if (visibleCount === 0) {
-                    noResults.style.display = "block";
+                // Update pagination controls
+                const paginationControls = document.getElementById("pagination-controls");
+                const paginationList = paginationControls.querySelector(".pagination");
+                
+                // Clear existing page numbers
+                while (paginationList.children.length > 2) {
+                    paginationList.removeChild(paginationList.children[1]);
+                }
+                
+                // Add page numbers
+                for (let i = totalPages; i >= 1; i--) {
+                    const pageItem = document.createElement("li");
+                    pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                    
+                    const pageLink = document.createElement("a");
+                    pageLink.className = "page-link";
+                    pageLink.href = "#";
+                    pageLink.textContent = i;
+                    pageLink.addEventListener("click", function(e) {
+                        e.preventDefault();
+                        currentPage = i;
+                        updatePagination();
+                    });
+                    
+                    pageItem.appendChild(pageLink);
+                    paginationList.insertBefore(pageItem, paginationList.children[1]);
+                }
+                
+                // Update prev/next buttons
+                const prevButton = document.getElementById("prev-page");
+                const nextButton = document.getElementById("next-page");
+                
+                prevButton.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+                nextButton.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+                
+                // Hide pagination if only one page
+                if (totalPages <= 1) {
+                    paginationControls.style.display = "none";
                 } else {
-                    noResults.style.display = "none";
+                    paginationControls.style.display = "flex";
                 }
             }
             
@@ -655,12 +962,93 @@
             
             searchInput.addEventListener("input", filterBlogs);
             
+            // Posts per page dropdown
+            document.getElementById("posts-per-page").addEventListener("change", function() {
+                postsPerPage = this.value === "all" ? "all" : parseInt(this.value);
+                updatePagination();
+            });
+            
+            // Previous page button
+            document.getElementById("prev-page").addEventListener("click", function(e) {
+                e.preventDefault();
+                if (currentPage > 1) {
+                    currentPage--;
+                    updatePagination();
+                }
+            });
+            
+            // Next page button
+            document.getElementById("next-page").addEventListener("click", function(e) {
+                e.preventDefault();
+                const totalPages = Math.ceil(filteredItems.length / postsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updatePagination();
+                }
+            });
+            
+            // Sort blog items by date (newest first)
+            blogItems.sort((a, b) => {
+                const dateA = a.dataset.date ? new Date(a.dataset.date) : new Date(0);
+                const dateB = b.dataset.date ? new Date(b.dataset.date) : new Date(0);
+                return dateB - dateA;
+            });
+            
+            // Create featured posts section
+            const featuredPostsContainer = document.getElementById("Recent Blogs");
+            featuredPostsContainer.innerHTML = "";
+            
+            // Get the 3 most recent posts for featuring
+            const featuredPosts = blogItems.slice(0, 3);
+            
+            // Create featured post elements
+            featuredPosts.forEach(post => {
+                const title = post.querySelector(".blog-title").textContent;
+                const titleHref = post.querySelector(".blog-title").getAttribute("href");
+                const description = post.querySelector(".blog-description").textContent;
+                const category = post.dataset.category;
+                const date = post.querySelector(".blog-date")?.textContent || "";
+                const lang = post.getAttribute("lang") || "";
+                
+                // Create featured post element
+                const featuredPost = document.createElement("div");
+                featuredPost.className = "featured-post";
+                featuredPost.dataset.category = category;
+                if (lang) featuredPost.setAttribute("lang", lang);
+                
+                // Create HTML structure for featured post
+                featuredPost.innerHTML = `
+                    <div class="featured-indicator">Featured</div>
+                    <div class="featured-post-img"></div>
+                    <div class="featured-post-content">
+                        <a class="featured-post-title" href="${titleHref}">${title}</a>
+                        <div class="featured-post-date">${date}</div>
+                        <div class="featured-post-description">${description}</div>
+                        <div class="featured-post-meta">
+                            <span class="blog-category ${category.toLowerCase()}">${category === "Tamil" ? "தமிழ்" : category}</span>
+                            <a href="${titleHref}" class="read-more">${lang === "ta" ? "மேலும் படிக்க" : "Read More"} <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                `;
+                
+                // Add to featured posts container
+                featuredPostsContainer.appendChild(featuredPost);
+            });
+            
+            // Clear and re-append sorted items to main blog list
+            const blogListElement = document.getElementById("blog-list");
+            blogListElement.innerHTML = "";
+            blogItems.forEach(item => blogListElement.appendChild(item));
+            
             // Add lang attribute to Tamil blog items for proper font rendering
             blogItems.forEach(item => {
                 if (item.dataset.category === "Tamil") {
                     item.setAttribute("lang", "ta");
                 }
             });
+            
+            // Initial pagination setup
+            filterBlogs();
         });
     </script>
 </body>

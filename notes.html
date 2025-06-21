@@ -145,25 +145,32 @@
         .note-list {
             list-style-type: none;
             padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
         
         .note-item {
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            padding: 25px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
             transition: var(--transition);
-            border-left: 4px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid var(--primary-color);
         }
         
         .note-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
         
         .note-item[lang="ta"] {
-            border-left-color: var(--accent-color);
+            border-top-color: var(--accent-color);
         }
         
         .note-title {
@@ -173,8 +180,9 @@
             text-decoration: none;
             font-weight: 700;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             transition: var(--transition);
+            line-height: 1.3;
         }
         
         .note-title:hover {
@@ -183,24 +191,30 @@
         
         .note-description {
             color: var(--light-text);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             font-style: normal;
+            flex-grow: 1;
         }
         
         .note-meta {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: 15px;
+            margin-top: auto;
+            padding-top: 15px;
             font-size: 0.9rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
         }
         
         .note-category {
             display: inline-block;
-            padding: 3px 10px;
+            padding: 5px 12px;
             border-radius: 20px;
             font-weight: 500;
             font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            margin-right: 5px;
+            margin-bottom: 5px;
         }
         
         .note-category.tamil {
@@ -280,6 +294,17 @@
             .category-btn {
                 margin-bottom: 10px;
             }
+            
+            .note-list {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .note-list {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -337,6 +362,18 @@
         <!-- Notes List -->
         <div class="row">
             <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>Showing <span id="visible-count">0</span> of <span id="total-count">0</span> notes</div>
+                    <div>
+                        <label for="notes-per-page" class="me-2">Notes per page:</label>
+                        <select id="notes-per-page" class="form-select form-select-sm d-inline-block w-auto">
+                            <option value="6">6</option>
+                            <option value="12" selected>12</option>
+                            <option value="24">24</option>
+                            <option value="all">All</option>
+                        </select>
+                    </div>
+                </div>
                 <ul id="note-list" class="note-list">
                     <li class="note-item" data-category="tamil" lang="ta">
                         <a class="note-title" href="note-post.html?file=notes/note1.md&title=Newton%20First%20law%20in%20tamil&category=Science&date=February%2012,%202025">
@@ -396,6 +433,27 @@
                     </li>
                 </ul>
                 
+                <!-- Pagination Controls -->
+                <div class="pagination-container mt-4 d-flex justify-content-center" id="pagination-controls">
+                    <nav aria-label="Notes pagination">
+                        <ul class="pagination">
+                            <li class="page-item disabled" id="prev-page">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item" id="next-page">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                
                 <!-- No Results Message -->
                 <div id="no-results" class="no-results" style="display: none;">
                     <i class="fas fa-search fa-3x mb-3"></i>
@@ -422,14 +480,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // Initialize variables
             const noteList = document.getElementById("note-list");
             const searchInput = document.getElementById("searchInput");
             const noResults = document.getElementById("no-results");
             const categoryButtons = document.querySelectorAll(".category-btn");
             const noteItems = Array.from(noteList.children);
+            const totalNotes = noteItems.length;
             
             // Initialize counters for categories
-            const totalNotes = noteItems.length;
             const tamilNotes = noteItems.filter(item => item.dataset.category.includes("tamil")).length;
             const englishNotes = noteItems.filter(item => item.dataset.category.includes("english")).length;
             const scienceNotes = noteItems.filter(item => item.dataset.category.includes("science")).length;
@@ -451,59 +510,193 @@
                 }
             });
             
+            // Current page state
+            let currentPage = 1;
+            let notesPerPage = 12;
+            let filteredItems = [];
+            
             // Filter function
             function filterNotes() {
-                const activeCategory = document.querySelector(".category-btn.active").dataset.category;
+                const activeCategories = document.querySelectorAll(".category-btn.active");
                 const searchTerm = searchInput.value.toLowerCase();
                 let visibleCount = 0;
+                
+                // Get all active categories
+                const activeFilters = Array.from(activeCategories).map(btn => btn.dataset.category);
+                
+                // Reset filtered items
+                filteredItems = [];
                 
                 noteItems.forEach(item => {
                     const categories = item.dataset.category.split(" ");
                     const title = item.querySelector(".note-title").textContent.toLowerCase();
                     const description = item.querySelector(".note-description").textContent.toLowerCase();
-                    const matchesCategory = activeCategory === "all" || categories.includes(activeCategory);
+                    
+                    // Check if note matches any active category
+                    const matchesCategory = activeFilters.includes("all") || 
+                                          categories.some(cat => activeFilters.includes(cat));
+                    
+                    // Check if note matches search term
                     const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
                     
+                    // Hide all items first
+                    item.style.display = "none";
+                    
                     if (matchesCategory && matchesSearch) {
-                        item.style.display = "";
+                        filteredItems.push(item);
                         visibleCount++;
+                    }
+                });
+                
+                // Update visible count
+                document.getElementById("visible-count").textContent = visibleCount;
+                document.getElementById("total-count").textContent = totalNotes;
+                
+                // Show/hide no results message
+                if (visibleCount === 0) {
+                    noResults.style.display = "block";
+                    document.getElementById("pagination-controls").style.display = "none";
+                } else {
+                    noResults.style.display = "none";
+                    document.getElementById("pagination-controls").style.display = "flex";
+                    // Reset to first page when filter changes
+                    currentPage = 1;
+                    updatePagination();
+                }
+            }
+            
+            // Update pagination controls and display current page items
+            function updatePagination() {
+                // If showing all notes
+                if (notesPerPage === "all") {
+                    filteredItems.forEach(item => item.style.display = "");
+                    document.getElementById("pagination-controls").style.display = "none";
+                    return;
+                }
+                
+                // Calculate total pages
+                const totalPages = Math.ceil(filteredItems.length / notesPerPage);
+                
+                // Ensure current page is valid
+                if (currentPage > totalPages) {
+                    currentPage = totalPages || 1;
+                }
+                
+                // Show only items for current page
+                const startIndex = (currentPage - 1) * notesPerPage;
+                const endIndex = Math.min(startIndex + notesPerPage, filteredItems.length);
+                
+                filteredItems.forEach((item, index) => {
+                    if (index >= startIndex && index < endIndex) {
+                        item.style.display = "";
                     } else {
                         item.style.display = "none";
                     }
                 });
                 
-                // Show/hide no results message
-                if (visibleCount === 0) {
-                    noResults.style.display = "block";
+                // Update pagination controls
+                const paginationControls = document.getElementById("pagination-controls");
+                const paginationList = paginationControls.querySelector(".pagination");
+                
+                // Clear existing page numbers
+                while (paginationList.children.length > 2) {
+                    paginationList.removeChild(paginationList.children[1]);
+                }
+                
+                // Add page numbers
+                for (let i = totalPages; i >= 1; i--) {
+                    const pageItem = document.createElement("li");
+                    pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                    
+                    const pageLink = document.createElement("a");
+                    pageLink.className = "page-link";
+                    pageLink.href = "#";
+                    pageLink.textContent = i;
+                    pageLink.addEventListener("click", function(e) {
+                        e.preventDefault();
+                        currentPage = i;
+                        updatePagination();
+                    });
+                    
+                    pageItem.appendChild(pageLink);
+                    paginationList.insertBefore(pageItem, paginationList.children[1]);
+                }
+                
+                // Update prev/next buttons
+                const prevButton = document.getElementById("prev-page");
+                const nextButton = document.getElementById("next-page");
+                
+                prevButton.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+                nextButton.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+                
+                // Hide pagination if only one page
+                if (totalPages <= 1) {
+                    paginationControls.style.display = "none";
                 } else {
-                    noResults.style.display = "none";
+                    paginationControls.style.display = "flex";
                 }
             }
             
             // Event listeners
             categoryButtons.forEach(btn => {
                 btn.addEventListener("click", function() {
-                    // Remove active class from all buttons
-                    categoryButtons.forEach(b => b.classList.remove("active"));
-                    // Add active class to clicked button
-                    this.classList.add("active");
-                    // Filter notes
+                    if (this.dataset.category === "all") {
+                        // If "All Notes" is clicked, deactivate all other buttons
+                        categoryButtons.forEach(b => {
+                            if (b.dataset.category !== "all") {
+                                b.classList.remove("active");
+                            } else {
+                                b.classList.add("active");
+                            }
+                        });
+                    } else {
+                        // If a specific category is clicked
+                        // First, deactivate the "All Notes" button
+                        document.querySelector('.category-btn[data-category="all"]').classList.remove("active");
+                        
+                        // Toggle the clicked button
+                        this.classList.toggle("active");
+                        
+                        // If no specific categories are selected, reactivate "All Notes"
+                        if (!document.querySelector('.category-btn.active')) {
+                            document.querySelector('.category-btn[data-category="all"]').classList.add("active");
+                        }
+                    }
+                    
+                    // Filter notes based on selected categories
                     filterNotes();
                 });
             });
             
             searchInput.addEventListener("input", filterNotes);
             
-            // Sort notes by date (newest first)
-            noteItems.sort((a, b) => {
-                const dateA = a.querySelector(".note-date").textContent;
-                const dateB = b.querySelector(".note-date").textContent;
-                return new Date(dateB) - new Date(dateA);
+            // Notes per page dropdown
+            document.getElementById("notes-per-page").addEventListener("change", function() {
+                notesPerPage = this.value === "all" ? "all" : parseInt(this.value);
+                updatePagination();
             });
             
-            // Clear and re-append sorted items
-            noteList.innerHTML = "";
-            noteItems.forEach(item => noteList.appendChild(item));
+            // Previous page button
+            document.getElementById("prev-page").addEventListener("click", function(e) {
+                e.preventDefault();
+                if (currentPage > 1) {
+                    currentPage--;
+                    updatePagination();
+                }
+            });
+            
+            // Next page button
+            document.getElementById("next-page").addEventListener("click", function(e) {
+                e.preventDefault();
+                const totalPages = Math.ceil(filteredItems.length / notesPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updatePagination();
+                }
+            });
+            
+            // Initial pagination setup
+            filterNotes();
         });
     </script>
 </body>
