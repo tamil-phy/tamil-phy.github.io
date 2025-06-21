@@ -2701,7 +2701,7 @@ plt.show( )
 
 **Output:**
 
-![sine_cosine](/Users/tamilarasan/learning/NumPy_Book_Tamil/images/sine_cosine_wave.png)
+![sine_cosine](/Users/tamil.arasan/Desktop/personal/tamil-phy.github.io/images/sine_cosine_wave.png)
 
 - **plt.subplot(2, 1, 1)** என்பது 2 rows மற்றும் 1 column கொண்ட subplot layout-ஐ முதலில் sine wave-க்கு set செய்கிறது.
 - **plt.subplot(2, 1, 2)** என்பது இரண்டாவது subplot-ஐ cosine wave-ஐ plot செய்ய set செய்கிறது.

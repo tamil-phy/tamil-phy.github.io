@@ -10,17 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&family=Hind+Madurai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <!-- jsPDF for PDF export -->
-    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <script>
-        // Verify libraries are loaded
-        window.addEventListener('load', function() {
-            console.log('Checking PDF libraries on page load:');
-            console.log('jsPDF available:', typeof window.jspdf !== 'undefined');
-            console.log('html2canvas available:', typeof window.html2canvas !== 'undefined');
-        });
-    </script>
+
     <!-- Load MathJax first, then configure it -->    
     <script>
         window.MathJax = {
@@ -63,25 +53,75 @@
             --dark-text: #212529;
             --light-text: #6c757d;
             --transition: all 0.3s ease;
+            --bg-color: #ffffff;
+            --card-bg: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+        
+        /* Dark mode variables */
+        [data-theme="dark"] {
+            --primary-color: #4d94ff;
+            --secondary-color: #9966ff;
+            --accent-color: #ff3385;
+            --light-bg: #2a2d3a;
+            --dark-text: #e9ecef;
+            --light-text: #adb5bd;
+            --bg-color: #1a1d24;
+            --card-bg: #2a2d3a;
+            --border-color: #444;
         }
         
         body {
             font-family: 'Poppins', sans-serif;
             line-height: 1.8;
             color: var(--dark-text);
-            background-color: #ffffff;
+            background-color: var(--bg-color);
+            /* Improved base font size for better readability */
+            font-size: 18px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
         h1, h2, h3, h4, h5 {
             font-family: 'Playfair Display', serif;
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-top: 2rem;
+            margin-bottom: 1.2rem;
+            line-height: 1.3;
+            color: #333;
+        }
+        
+        /* Improved heading hierarchy */
+        .book-content h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .book-content h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .book-content h3 {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .book-content h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
         }
         
         .navbar {
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             padding: 15px 0;
-            background-color: white !important;
+            background-color: var(--bg-color) !important;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        [data-theme="dark"] .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
         
         .navbar-brand {
@@ -119,6 +159,11 @@
             border-radius: 0 0 50px 50px;
             margin-bottom: 40px;
             text-align: center;
+            transition: background 0.3s ease;
+        }
+        
+        [data-theme="dark"] .book-header {
+            background: linear-gradient(135deg, #2a2d3a 0%, #1a1d24 100%);
         }
         
         .book-title {
@@ -132,25 +177,179 @@
         }
         
         .toc {
-            background-color: #f8f9fa;
+            background-color: var(--card-bg);
             border-radius: 10px;
             padding: 20px 30px;
             margin: 20px 0 30px;
             border-left: 5px solid var(--primary-color);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         
-        .toc-sidebar {
+        /* Sidebar TOC */
+        .sidebar-toc-container {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 320px; /* Increased width for better text display */
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            z-index: 1000;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            scrollbar-width: thin;
+        }
+        
+        /* Specific styling for the sidebar TOC content */
+        .sidebar-toc-content {
+            padding-right: 10px; /* Add padding to prevent text touching the right edge */
+            width: 100%; /* Ensure full width */
+        }
+        
+        /* Improve nested items display */
+        .sidebar-toc-content ol ol {
+            margin-top: 8px;
+            padding-left: 15px; /* Reduce padding for nested items */
+        }
+        
+        /* Improve list items in sidebar TOC */
+        .sidebar-toc-content li {
+            width: 100%; /* Ensure full width */
+            padding-right: 5px;
+            box-sizing: border-box;
+            /* Truncate very long text with ellipsis if needed */
+            overflow-wrap: break-word;
+        }
+        
+        /* Special handling for code-like text in TOC */
+        .sidebar-toc-content a[href*="numpy"],
+        .sidebar-toc-content a[href*="scipy"],
+        .sidebar-toc-content a[href*="pandas"],
+        .sidebar-toc-content a[href*="matplotlib"],
+        .sidebar-toc-content a:has(code) {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            letter-spacing: -0.02em; /* Slightly tighter letter spacing for code */
+            line-height: 1.3;
+            /* Add subtle styling to distinguish code */
+            background-color: rgba(0, 0, 0, 0.03);
+            border-radius: 3px;
+            padding: 2px 4px;
+        }
+        
+        [data-theme="dark"] .sidebar-toc-content a[href*="numpy"],
+        [data-theme="dark"] .sidebar-toc-content a[href*="scipy"],
+        [data-theme="dark"] .sidebar-toc-content a[href*="pandas"],
+        [data-theme="dark"] .sidebar-toc-content a[href*="matplotlib"],
+        [data-theme="dark"] .sidebar-toc-content a:has(code) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Handle very long function names by adding soft hyphens */
+        .sidebar-toc-content a {
+            hyphens: auto;
+        }
+        
+        /* Adjust main content margin when sidebar is open */
+        .content-container.sidebar-open {
+            margin-left: 320px; /* Match the sidebar width */
+        }
+        
+        .sidebar-toc-container.show {
+            transform: translateX(0);
+        }
+        
+        .sidebar-toc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--card-bg);
             position: sticky;
-            top: 100px;
+            top: 0;
+            z-index: 5;
+            margin: -20px -20px 20px -20px; /* Compensate for parent padding */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: background-color 0.3s ease;
+        }
+        
+        [data-theme="dark"] .sidebar-toc-header {
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .sidebar-toc-header h3 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+        
+        .close-toc-btn {
+            background: none;
+            border: none;
+            color: var(--light-text);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 5px;
+            transition: color 0.2s ease;
+        }
+        
+        .close-toc-btn:hover {
+            color: var(--primary-color);
+        }
+        
+        .toc-toggle-btn {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 999;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+        
+        .toc-toggle-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* Adjust main content when sidebar is open */
+        .content-container {
+            transition: margin-left 0.3s ease;
+        }
+        
+        .content-container.sidebar-open {
+            margin-left: 300px;
+        }
+        
+        /* Original TOC sidebar styles (modified) */
+        .toc-sidebar {
             max-height: calc(100vh - 150px);
             overflow-y: auto;
-            background-color: #f8f9fa;
+            background-color: var(--card-bg);
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 30px;
             border-left: 5px solid var(--primary-color);
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             scrollbar-width: thin;
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        [data-theme="dark"] .toc-sidebar,
+        [data-theme="dark"] .sidebar-toc-container {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         
         .toc-sidebar::-webkit-scrollbar {
@@ -168,16 +367,21 @@
             color: var(--primary-color);
         }
         
-        .toc ul, .toc-sidebar ul {
+        .toc ul, .toc-sidebar ul, .sidebar-toc-content ul, .sidebar-toc-content ol {
             padding-left: 20px;
             margin-bottom: 10px;
             list-style-type: none;
         }
         
-        .toc li, .toc-sidebar li {
+        .toc li, .toc-sidebar li, .sidebar-toc-content li {
             margin-bottom: 8px;
             line-height: 1.4;
             position: relative;
+            /* Ensure proper wrapping for long text */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            /* Prevent text from overflowing */
+            max-width: 100%;
         }
         
         .toc li::before, .toc-sidebar li::before {
@@ -196,12 +400,21 @@
             font-weight: 600;
         }
         
-        .toc a, .toc-sidebar a {
+        .toc a, .toc-sidebar a, .sidebar-toc-content a {
             color: var(--dark-text);
             text-decoration: none;
             transition: color 0.2s ease;
             display: block;
             padding: 3px 0;
+            /* Improve text wrapping for links */
+            white-space: normal;
+            word-break: break-word;
+            /* Add a bit of padding for better readability */
+            padding-right: 5px;
+            /* Force text to fit within container */
+            max-width: 100%;
+            box-sizing: border-box;
+            font-size: 0.95em; /* Slightly smaller font size for better fitting */
         }
         
         .toc a:hover, .toc-sidebar a:hover {
@@ -286,6 +499,23 @@
             margin-top: 30px;
             font-size: 1.1rem;
             line-height: 1.8;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+            /* Add better paragraph spacing */
+            letter-spacing: 0.01em;
+        }
+        
+        /* Improve paragraph spacing */
+        .book-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Add subtle text highlighting for important concepts */
+        .book-content strong {
+            color: var(--primary-color);
+            font-weight: 600;
         }
         
         /* Tamil text styling */
@@ -305,15 +535,39 @@
         
         /* Code block styling */
         pre, code {
-            background-color: #f8f9fa;
-            border-radius: 4px;
+            background-color: var(--card-bg);
+            border-radius: 6px;
             padding: 0.2em 0.4em;
-            font-family: monospace;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #d63384; /* Subtle color for inline code */
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        [data-theme="dark"] pre, [data-theme="dark"] code {
+            color: #ff79b0; /* Lighter color for inline code in dark mode */
         }
         
         pre {
-            padding: 1em;
+            padding: 1.2em;
+            margin: 1.5rem 0;
             overflow-x: auto;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background-color: var(--card-bg);
+            line-height: 1.5;
+        }
+        
+        [data-theme="dark"] pre {
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: #333; /* Reset color for code blocks */
+            font-size: 0.95em;
+            border-radius: 0;
         }
         
         /* Audio player styling */
@@ -334,8 +588,26 @@
             max-width: 100%;
             height: auto;
             border-radius: 8px;
-            margin: 1.5rem 0;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin: 2rem auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Image hover effect */
+        .book-content img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        /* Image caption styling */
+        .book-content img + em {
+            display: block;
+            text-align: center;
+            font-size: 0.9em;
+            color: var(--light-text);
+            margin-top: -1rem;
+            margin-bottom: 2rem;
         }
         
         /* Table styling */
@@ -357,10 +629,44 @@
         /* Blockquote styling */
         blockquote {
             border-left: 4px solid var(--primary-color);
-            padding-left: 1rem;
-            margin-left: 0;
-            color: var(--light-text);
+            padding: 1.2rem 1.5rem;
+            margin: 2rem 0;
+            background-color: rgba(58, 134, 255, 0.05);
+            border-radius: 0 8px 8px 0;
+            color: #555;
             font-style: italic;
+            position: relative;
+        }
+        
+        blockquote::before {
+            content: '\201C'; /* Opening quote mark */
+            font-size: 4em;
+            font-family: 'Georgia', serif;
+            color: rgba(58, 134, 255, 0.2);
+            position: absolute;
+            left: 10px;
+            top: -20px;
+        }
+        
+        blockquote p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* Reading progress indicator */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 1000;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: var(--primary-color);
+            width: 0%;
         }
         
         /* Footer styling */
@@ -388,6 +694,29 @@
     </style>
 </head>
 <body>
+    <!-- Reading Progress Indicator -->
+    <div class="progress-container">
+        <div class="progress-bar" id="reading-progress"></div>
+    </div>
+    
+    <!-- Sidebar TOC -->
+    <div class="sidebar-toc-container" id="sidebar-toc">
+        <div class="sidebar-toc-header">
+            <h3>Table of Contents</h3>
+            <button class="close-toc-btn" id="close-toc-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="sidebar-toc-content" id="sidebar-toc-content">
+            <!-- TOC will be generated here -->
+        </div>
+    </div>
+    
+    <!-- TOC Toggle Button -->
+    <button class="toc-toggle-btn" id="toc-toggle-btn" title="Toggle Table of Contents">
+        <i class="fas fa-list"></i>
+    </button>
+    
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <a class="navbar-brand" href="index.html">Tamil Arasan</a>
@@ -411,6 +740,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="papers.html">Papers</a>
                     </li>
+                    <li class="nav-item">
+                        <button id="theme-toggle" class="btn btn-sm btn-outline-secondary ms-2" title="Toggle Dark Mode">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -431,13 +765,10 @@
         <!-- Rendered Markdown Content -->
         <div id="markdown-content" class="book-content"></div>
         
-        <!-- Share buttons and Export options -->
+        <!-- Share buttons -->
         <div class="share-buttons mt-5 mb-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5>Share this book review</h5>
-                <button id="export-pdf" class="btn btn-outline-success" onclick="exportToPDF()">
-                    <i class="fas fa-file-pdf me-1"></i> Export as PDF
-                </button>
             </div>
             <div class="d-flex gap-2">
                 <a href="#" class="btn btn-sm btn-outline-primary" onclick="shareOnTwitter()"><i class="fab fa-twitter me-1"></i> Twitter</a>
@@ -503,132 +834,204 @@
         window.shareOnLinkedIn = shareOnLinkedIn;
         window.shareOnFacebook = shareOnFacebook;
         
-        // PDF Export functionality
-        function exportToPDF() {
-            console.log('Export to PDF function called');
-            try {
-                // Check if jsPDF is available
-                console.log('Checking for jsPDF library...');
-                console.log('window.jspdf:', window.jspdf);
-                console.log('window.html2canvas:', window.html2canvas);
-                
-                if (typeof window.jspdf === 'undefined' || typeof window.html2canvas === 'undefined') {
-                    console.error('PDF libraries not loaded correctly');
-                    alert('PDF generation libraries not loaded. Please try again later.');
-                    return;
-                }
-                console.log('PDF libraries are available');
-                
-                // Show loading indicator
-                const loadingIndicator = document.createElement('div');
-                loadingIndicator.className = 'position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75';
-                loadingIndicator.style.zIndex = '9999';
-                loadingIndicator.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><span class="ms-3">Generating PDF...</span>';
-                document.body.appendChild(loadingIndicator);
-                
-                // Get content to export
-                const contentElement = document.getElementById('markdown-content');
-                const bookTitle = document.getElementById('book-title').textContent;
-                
-                // Set up PDF document with jsPDF
-                if (!window.jspdf) {
-                    console.error('jsPDF not found in window object');
-                    alert('PDF library not available. Please try again later.');
-                    document.body.removeChild(loadingIndicator);
-                    return;
-                }
-                
-                const { jsPDF } = window.jspdf;
-                
-                // Create a clone of the content to modify for PDF
-                const contentClone = contentElement.cloneNode(true);
-                
-                // Remove any elements we don't want in the PDF
-                const tocElements = contentClone.querySelectorAll('.toc');
-                tocElements.forEach(toc => {
-                    const tocTitle = document.createElement('h2');
-                    tocTitle.textContent = 'Table of Contents';
-                    toc.parentNode.insertBefore(tocTitle, toc);
-                });
-                
-                // Create temporary container for PDF generation
-                const pdfContainer = document.createElement('div');
-                pdfContainer.className = 'pdf-container';
-                pdfContainer.style.width = '800px';
-                pdfContainer.style.padding = '40px';
-                pdfContainer.style.backgroundColor = 'white';
-                pdfContainer.style.position = 'absolute';
-                pdfContainer.style.left = '-9999px';
-                pdfContainer.style.top = '-9999px';
-                
-                // Add header with title
-                const header = document.createElement('div');
-                header.innerHTML = `
-                    <div style="text-align: center; margin-bottom: 30px;">
-                        <h1 style="font-size: 24px; color: #333;">${bookTitle}</h1>
-                        <p style="color: #666;">Generated from Tamil Arasan's Website | ${new Date().toLocaleDateString()}</p>
-                    </div>
-                `;
-                pdfContainer.appendChild(header);
-                
-                // Add content
-                pdfContainer.appendChild(contentClone);
-                
-                // Add footer
-                const footer = document.createElement('div');
-                footer.innerHTML = `
-                    <div style="margin-top: 30px; text-align: center; font-size: 12px; color: #666; border-top: 1px solid #ddd; padding-top: 15px;">
-                        <p>© ${new Date().getFullYear()} Tamil Arasan Bakthavatchalam. All Rights Reserved.</p>
-                        <p>Generated from <a href="${window.location.href}">Tamil Arasan's Website</a></p>
-                    </div>
-                `;
-                pdfContainer.appendChild(footer);
-                
-                // Add to document temporarily
-                document.body.appendChild(pdfContainer);
-                
-                // Use html2canvas to render the content
-                html2canvas(pdfContainer, {
-                    scale: 1,
-                    useCORS: true,
-                    logging: false
-                }).then(canvas => {
-                    // Remove temporary container
-                    document.body.removeChild(pdfContainer);
-                    
-                    // Calculate dimensions
-                    const imgWidth = 210; // A4 width in mm
-                    const pageHeight = 297; // A4 height in mm
-                    const imgHeight = canvas.height * imgWidth / canvas.width;
-                    const heightLeft = imgHeight;
-                    
-                    // Create PDF
-                    const pdf = new jsPDF('p', 'mm', 'a4');
-                    const imgData = canvas.toDataURL('image/png');
-                    
-                    // Add image to PDF
-                    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-                    
-                    // Save the PDF
-                    pdf.save(`${bookTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`);
-                    
-                    // Remove loading indicator
-                    document.body.removeChild(loadingIndicator);
-                }).catch(error => {
-                    console.error('Error generating PDF:', error);
-                    alert('Error generating PDF. Please try again.');
-                    document.body.removeChild(loadingIndicator);
-                });
-            } catch (error) {
-                console.error('Error in PDF export function:', error);
-                alert('An error occurred while generating the PDF. Please try again.');
+
+        
+        // Reading progress indicator functionality
+        function updateReadingProgress() {
+            const contentElement = document.getElementById('markdown-content');
+            if (!contentElement) return;
+            
+            const windowHeight = window.innerHeight;
+            const docHeight = contentElement.offsetHeight;
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const scrollPercent = (scrollTop / (docHeight - windowHeight)) * 100;
+            
+            // Ensure the progress doesn't exceed 100%
+            const progress = Math.min(scrollPercent, 100);
+            document.getElementById('reading-progress').style.width = progress + '%';
+        }
+        
+        // Dark mode functionality
+        function toggleDarkMode() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update the icon
+            const themeIcon = document.querySelector('#theme-toggle i');
+            if (newTheme === 'dark') {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
             }
         }
         
-        // Make PDF export function globally available
-        window.exportToPDF = exportToPDF;
+        // Initialize theme based on user preference or system preference
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                if (savedTheme === 'dark') {
+                    document.querySelector('#theme-toggle i').classList.replace('fa-moon', 'fa-sun');
+                }
+            } else if (prefersDark) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.querySelector('#theme-toggle i').classList.replace('fa-moon', 'fa-sun');
+            }
+        }
+        
+        // Add scroll event listener for reading progress
+        window.addEventListener('scroll', updateReadingProgress);
+        window.addEventListener('resize', updateReadingProgress);
+        
+        // Sidebar TOC functionality
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar-toc');
+            const contentContainer = document.querySelector('.container');
+            
+            sidebar.classList.toggle('show');
+            contentContainer.classList.toggle('sidebar-open');
+            
+            // Save state to localStorage
+            const isSidebarOpen = sidebar.classList.contains('show');
+            localStorage.setItem('sidebarOpen', isSidebarOpen ? 'true' : 'false');
+        }
+        
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar-toc');
+            const contentContainer = document.querySelector('.container');
+            
+            sidebar.classList.remove('show');
+            contentContainer.classList.remove('sidebar-open');
+            
+            // Save state to localStorage
+            localStorage.setItem('sidebarOpen', 'false');
+        }
+        
+        // Generate sidebar TOC content
+        function generateSidebarTOC() {
+            console.log('Generating sidebar TOC');
+            // Get the TOC content from the main TOC generation function
+            const tocContent = document.getElementById('sidebar-toc-content');
+            if (!tocContent) {
+                console.error('Sidebar TOC content element not found');
+                return;
+            }
+            
+            // Clear any existing content
+            tocContent.innerHTML = '';
+            
+            // Clone the TOC list from the main content if it exists
+            const mainTOC = document.querySelector('.toc .toc-list');
+            if (mainTOC) {
+                console.log('Found main TOC, cloning for sidebar');
+                const clonedTOC = mainTOC.cloneNode(true);
+                tocContent.appendChild(clonedTOC);
+                
+                // Add event listeners to TOC links for smooth scrolling
+                const tocLinks = tocContent.querySelectorAll('a');
+                tocLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('data-target') || this.getAttribute('href').substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        
+                        if (targetElement) {
+                            // Smooth scroll to target
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                            
+                            // Close sidebar on mobile
+                            if (window.innerWidth < 768) {
+                                setTimeout(closeSidebar, 300);
+                            }
+                        } else {
+                            console.error('Target element not found:', targetId);
+                        }
+                    });
+                });
+            } else {
+                console.warn('Main TOC not found, generating from headings');
+                
+                // If no main TOC exists, create one from headings
+                const contentElement = document.getElementById('markdown-content');
+                if (contentElement) {
+                    const headings = contentElement.querySelectorAll('h1, h2, h3, h4, h5, h6');
+                    if (headings.length > 0) {
+                        const newTOC = document.createElement('ol');
+                        newTOC.className = 'toc-list';
+                        
+                        headings.forEach(heading => {
+                            const level = parseInt(heading.tagName.substring(1));
+                            const text = heading.textContent;
+                            const id = heading.id || `heading-${Math.random().toString(36).substring(2, 10)}`;
+                            
+                            if (!heading.id) {
+                                heading.id = id;
+                            }
+                            
+                            const listItem = document.createElement('li');
+                            const link = document.createElement('a');
+                            link.href = `#${id}`;
+                            link.textContent = text;
+                            link.setAttribute('data-level', level);
+                            
+                            // Add click event for smooth scrolling
+                            link.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                heading.scrollIntoView({ behavior: 'smooth' });
+                                
+                                // Close sidebar on mobile
+                                if (window.innerWidth < 768) {
+                                    setTimeout(closeSidebar, 300);
+                                }
+                            });
+                            
+                            listItem.appendChild(link);
+                            newTOC.appendChild(listItem);
+                        });
+                        
+                        tocContent.appendChild(newTOC);
+                    }
+                }
+            }
+        }
         
         document.addEventListener("DOMContentLoaded", function() {
+            // Initialize reading progress
+            updateReadingProgress();
+            
+            // Initialize theme
+            initializeTheme();
+            
+            // Initialize sidebar TOC
+            const tocToggleBtn = document.getElementById('toc-toggle-btn');
+            const closeTocBtn = document.getElementById('close-toc-btn');
+            
+            if (tocToggleBtn) {
+                tocToggleBtn.addEventListener('click', toggleSidebar);
+            }
+            
+            if (closeTocBtn) {
+                closeTocBtn.addEventListener('click', closeSidebar);
+            }
+            
+            // Check if sidebar was open previously
+            const sidebarOpen = localStorage.getItem('sidebarOpen') === 'true';
+            if (sidebarOpen) {
+                document.getElementById('sidebar-toc').classList.add('show');
+                document.querySelector('.container').classList.add('sidebar-open');
+            }
+            
+            // Add event listener for theme toggle
+            document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
             // Get query parameters for file and title
             const urlParams = new URLSearchParams(window.location.search);
             const file = urlParams.get('file'); // Markdown file path
@@ -926,19 +1329,31 @@
                                 
                                 // Wait a bit longer to ensure DOM is fully ready
                                 setTimeout(() => {
-                                    console.log('Attempting to typeset math...');
+                                    // Process MathJax content
                                     MathJax.typesetPromise([content]).then(() => {
-                                        console.log('MathJax rendering complete');
-                                    }).catch(err => {
-                                        console.error('MathJax error:', err);
+                                        console.log('MathJax typesetting completed');
+                                        
+                                        // Populate the sidebar TOC after content is loaded and processed
+                                        setTimeout(() => {
+                                            generateSidebarTOC();
+                                            console.log('Sidebar TOC populated after content load');
+                                        }, 500);
+                                    }).catch(e => {
+                                        console.error('MathJax typesetting error:', e);
+                                        
                                         // Try one more time with a longer delay
                                         setTimeout(() => {
-                                            MathJax.typesetPromise([content]).catch(e => {
+                                            MathJax.typesetPromise([content]).then(() => {
+                                                // Still populate the sidebar TOC even if first MathJax attempt failed
+                                                generateSidebarTOC();
+                                            }).catch(e => {
                                                 console.error('Final MathJax attempt failed:', e);
+                                                // Still try to populate the sidebar TOC
+                                                generateSidebarTOC();
                                             });
-                                        }, 500);
+                                        }, 800);
                                     });
-                                }, 200);
+                                }, 300);
                             } catch (mathJaxError) {
                                 console.error('Error initializing MathJax:', mathJaxError);
                             }
