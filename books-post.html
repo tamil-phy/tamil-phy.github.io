@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Review | Tamil Arasan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&family=Hind+Madurai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- jsPDF for PDF export -->
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        // Verify libraries are loaded
+        window.addEventListener('load', function() {
+            console.log('Checking PDF libraries on page load:');
+            console.log('jsPDF available:', typeof window.jspdf !== 'undefined');
+            console.log('html2canvas available:', typeof window.html2canvas !== 'undefined');
+        });
+    </script>
+    <!-- Load MathJax first, then configure it -->    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                tags: "ams",
+                macros: {
+                    "\\R": "\\mathbb{R}",
+                    "\\N": "\\mathbb{N}",
+                    "\\Z": "\\mathbb{Z}",
+                    "\\C": "\\mathbb{C}"
+                }
+            },
+            options: {
+                skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"],
+                processHtmlClass: "math"
+            },
+            startup: {
+                pageReady: function() {
+                    console.log('MathJax is ready');
+                    return MathJax.startup.defaultPageReady();
+                }
+            },
+            chtml: {
+                scale: 1.1,
+                fontURL: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #8338ec;
+            --accent-color: #ff006e;
+            --light-bg: #f8f9fa;
+            --dark-text: #212529;
+            --light-text: #6c757d;
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.8;
+            color: var(--dark-text);
+            background-color: #ffffff;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            background-color: white !important;
+        }
+        
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            position: relative;
+            margin: 0 10px;
+            transition: var(--transition);
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        .book-header {
+            padding: 50px 0 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 0 0 50px 50px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .book-title {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        /* Table of Contents Styles */
+        .toc-container {
+            position: relative;
+        }
+        
+        .toc {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px 30px;
+            margin: 20px 0 30px;
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        .toc-sidebar {
+            position: sticky;
+            top: 100px;
+            max-height: calc(100vh - 150px);
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--primary-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            scrollbar-width: thin;
+        }
+        
+        .toc-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .toc-sidebar::-webkit-scrollbar-thumb {
+            background-color: var(--light-text);
+            border-radius: 3px;
+        }
+        
+        .toc h2, .toc-sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .toc ul, .toc-sidebar ul {
+            padding-left: 20px;
+            margin-bottom: 10px;
+            list-style-type: none;
+        }
+        
+        .toc li, .toc-sidebar li {
+            margin-bottom: 8px;
+            line-height: 1.4;
+            position: relative;
+        }
+        
+        .toc li::before, .toc-sidebar li::before {
+            content: "";
+            position: absolute;
+            left: -15px;
+            top: 10px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+        }
+        
+        .toc-sidebar li.active > a {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .toc a, .toc-sidebar a {
+            color: var(--dark-text);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            display: block;
+            padding: 3px 0;
+        }
+        
+        .toc a:hover, .toc-sidebar a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Numbered TOC styles */
+        .toc-list {
+            counter-reset: toc-item;
+            padding-left: 0;
+            margin-bottom: 0;
+            list-style-type: none; /* Remove default bullets */
+        }
+        
+        .toc-sublist {
+            padding-left: 30px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            list-style-type: none; /* Remove default bullets */
+        }
+        
+        .toc li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+            position: relative;
+        }
+        
+        .toc a {
+            color: var(--dark-text);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            display: block;
+            padding: 3px 0;
+            font-weight: 500;
+        }
+        
+        .toc a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Highlight active TOC item */
+        .toc a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        /* Tamil language specific styles */
+        .toc a[lang="ta"] {
+            font-family: 'Hind Madurai', sans-serif;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 1000;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .book-content {
+            margin-top: 30px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        /* Tamil text styling */
+        [lang="ta"] {
+            font-family: 'Hind Madurai', sans-serif;
+            line-height: 1.8;
+        }
+        
+        /* Math styling */
+        .math-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        /* Code block styling */
+        pre, code {
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            padding: 0.2em 0.4em;
+            font-family: monospace;
+        }
+        
+        pre {
+            padding: 1em;
+            overflow-x: auto;
+        }
+        
+        /* Audio player styling */
+        #audio-player {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        #audio-player audio {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* Image styling */
+        .book-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* Table styling */
+        table {
+            width: 100%;
+            margin: 1.5rem 0;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+        }
+        
+        /* Blockquote styling */
+        blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1rem;
+            margin-left: 0;
+            color: var(--light-text);
+            font-style: italic;
+        }
+        
+        /* Footer styling */
+        footer {
+            background-color: var(--light-bg);
+            padding: 30px 0;
+            margin-top: 80px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .footer-text {
+            color: var(--light-text);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .book-header {
+                padding: 30px 0 20px;
+            }
+            
+            .book-content {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Tamil Arasan</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blog.html">Blogs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="notes.html">Notes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="books.html">Books</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="papers.html">Papers</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Book Header Section -->
+    <section class="book-header">
+        <div class="container">
+            <h1 id="book-title" class="book-title">Book Review</h1>
+            <div id="language-indicator"></div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Audio player container -->
+        <div id="audio-player" class="mb-4"></div>
+
+        <!-- Rendered Markdown Content -->
+        <div id="markdown-content" class="book-content"></div>
+        
+        <!-- Share buttons and Export options -->
+        <div class="share-buttons mt-5 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5>Share this book review</h5>
+                <button id="export-pdf" class="btn btn-outline-success" onclick="exportToPDF()">
+                    <i class="fas fa-file-pdf me-1"></i> Export as PDF
+                </button>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="#" class="btn btn-sm btn-outline-primary" onclick="shareOnTwitter()"><i class="fab fa-twitter me-1"></i> Twitter</a>
+                <a href="#" class="btn btn-sm btn-outline-primary" onclick="shareOnLinkedIn()"><i class="fab fa-linkedin-in me-1"></i> LinkedIn</a>
+                <a href="#" class="btn btn-sm btn-outline-primary" onclick="shareOnFacebook()"><i class="fab fa-facebook-f me-1"></i> Facebook</a>
+            </div>
+        </div>
+        
+        <!-- Disqus comments -->
+        <div id="disqus_thread"></div>
+        <script>
+          var disqus_config = function () {
+            this.page.url = window.location.href;
+            this.page.identifier = new URLSearchParams(window.location.search).get('file') || window.location.pathname;
+            this.page.title = document.getElementById('book-title').textContent;
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            s.src = 'https://tamil-phy-github-io.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="footer-text mb-0">© 2025 Tamil Arasan Bakthavatchalam. All Rights Reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="footer-text mb-0">Physicist • AI Engineer • Writer</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Social sharing functions
+        function shareOnTwitter() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(document.getElementById('book-title').textContent);
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`, '_blank');
+        }
+        
+        function shareOnLinkedIn() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+        }
+        
+        function shareOnFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+        }
+        
+        // Make sharing functions globally available
+        window.shareOnTwitter = shareOnTwitter;
+        window.shareOnLinkedIn = shareOnLinkedIn;
+        window.shareOnFacebook = shareOnFacebook;
+        
+        // PDF Export functionality
+        function exportToPDF() {
+            console.log('Export to PDF function called');
+            try {
+                // Check if jsPDF is available
+                console.log('Checking for jsPDF library...');
+                console.log('window.jspdf:', window.jspdf);
+                console.log('window.html2canvas:', window.html2canvas);
+                
+                if (typeof window.jspdf === 'undefined' || typeof window.html2canvas === 'undefined') {
+                    console.error('PDF libraries not loaded correctly');
+                    alert('PDF generation libraries not loaded. Please try again later.');
+                    return;
+                }
+                console.log('PDF libraries are available');
+                
+                // Show loading indicator
+                const loadingIndicator = document.createElement('div');
+                loadingIndicator.className = 'position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75';
+                loadingIndicator.style.zIndex = '9999';
+                loadingIndicator.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><span class="ms-3">Generating PDF...</span>';
+                document.body.appendChild(loadingIndicator);
+                
+                // Get content to export
+                const contentElement = document.getElementById('markdown-content');
+                const bookTitle = document.getElementById('book-title').textContent;
+                
+                // Set up PDF document with jsPDF
+                if (!window.jspdf) {
+                    console.error('jsPDF not found in window object');
+                    alert('PDF library not available. Please try again later.');
+                    document.body.removeChild(loadingIndicator);
+                    return;
+                }
+                
+                const { jsPDF } = window.jspdf;
+                
+                // Create a clone of the content to modify for PDF
+                const contentClone = contentElement.cloneNode(true);
+                
+                // Remove any elements we don't want in the PDF
+                const tocElements = contentClone.querySelectorAll('.toc');
+                tocElements.forEach(toc => {
+                    const tocTitle = document.createElement('h2');
+                    tocTitle.textContent = 'Table of Contents';
+                    toc.parentNode.insertBefore(tocTitle, toc);
+                });
+                
+                // Create temporary container for PDF generation
+                const pdfContainer = document.createElement('div');
+                pdfContainer.className = 'pdf-container';
+                pdfContainer.style.width = '800px';
+                pdfContainer.style.padding = '40px';
+                pdfContainer.style.backgroundColor = 'white';
+                pdfContainer.style.position = 'absolute';
+                pdfContainer.style.left = '-9999px';
+                pdfContainer.style.top = '-9999px';
+                
+                // Add header with title
+                const header = document.createElement('div');
+                header.innerHTML = `
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <h1 style="font-size: 24px; color: #333;">${bookTitle}</h1>
+                        <p style="color: #666;">Generated from Tamil Arasan's Website | ${new Date().toLocaleDateString()}</p>
+                    </div>
+                `;
+                pdfContainer.appendChild(header);
+                
+                // Add content
+                pdfContainer.appendChild(contentClone);
+                
+                // Add footer
+                const footer = document.createElement('div');
+                footer.innerHTML = `
+                    <div style="margin-top: 30px; text-align: center; font-size: 12px; color: #666; border-top: 1px solid #ddd; padding-top: 15px;">
+                        <p>© ${new Date().getFullYear()} Tamil Arasan Bakthavatchalam. All Rights Reserved.</p>
+                        <p>Generated from <a href="${window.location.href}">Tamil Arasan's Website</a></p>
+                    </div>
+                `;
+                pdfContainer.appendChild(footer);
+                
+                // Add to document temporarily
+                document.body.appendChild(pdfContainer);
+                
+                // Use html2canvas to render the content
+                html2canvas(pdfContainer, {
+                    scale: 1,
+                    useCORS: true,
+                    logging: false
+                }).then(canvas => {
+                    // Remove temporary container
+                    document.body.removeChild(pdfContainer);
+                    
+                    // Calculate dimensions
+                    const imgWidth = 210; // A4 width in mm
+                    const pageHeight = 297; // A4 height in mm
+                    const imgHeight = canvas.height * imgWidth / canvas.width;
+                    const heightLeft = imgHeight;
+                    
+                    // Create PDF
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    // Add image to PDF
+                    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                    
+                    // Save the PDF
+                    pdf.save(`${bookTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`);
+                    
+                    // Remove loading indicator
+                    document.body.removeChild(loadingIndicator);
+                }).catch(error => {
+                    console.error('Error generating PDF:', error);
+                    alert('Error generating PDF. Please try again.');
+                    document.body.removeChild(loadingIndicator);
+                });
+            } catch (error) {
+                console.error('Error in PDF export function:', error);
+                alert('An error occurred while generating the PDF. Please try again.');
+            }
+        }
+        
+        // Make PDF export function globally available
+        window.exportToPDF = exportToPDF;
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get query parameters for file and title
+            const urlParams = new URLSearchParams(window.location.search);
+            const file = urlParams.get('file'); // Markdown file path
+            const title = urlParams.get('title'); // book post title
+            const content = document.getElementById('markdown-content');
+            const bookTitle = document.getElementById('book-title');
+            const languageIndicator = document.getElementById('language-indicator');
+            
+            // Set the book title if provided
+            if (title) {
+                document.title = title + " | Tamil Arasan's Books";
+                bookTitle.textContent = decodeURIComponent(title);
+            }
+            
+            // Detect language from title or file path
+            function detectLanguage() {
+                // Check if title contains Tamil characters
+                const tamilRegex = /[\u0B80-\u0BFF]/;
+                const titleText = bookTitle.textContent;
+                
+                if (tamilRegex.test(titleText)) {
+                    return 'ta'; // Tamil language code
+                } else if (file && file.includes('Tamil')) {
+                    return 'ta';
+                } else {
+                    return 'en'; // Default to English
+                }
+            }
+            
+            const detectedLang = detectLanguage();
+            
+            // Set language indicator
+            if (detectedLang === 'ta') {
+                languageIndicator.innerHTML = '<span class="badge bg-primary">தமிழ் | Tamil</span>';
+            } else {
+                languageIndicator.innerHTML = '<span class="badge bg-secondary">English</span>';
+            }
+
+            // Audio player via mapping.json
+            if (file) {
+                const baseName = file.match(/\/([^\/]+)\.md$/)?.[1];
+                if (baseName) {
+                    fetch('audio-mapping.json')
+                      .then(res => res.json())
+                      .then(mapping => {
+                        const audioUrl = mapping[baseName];
+                        if (audioUrl) {
+                            document.getElementById('audio-player').innerHTML = `
+                              <div class="card">
+                                <div class="card-body">
+                                  <h5 class="card-title"><i class="fas fa-headphones me-2"></i>Audio Version</h5>
+                                  <audio controls class="w-100">
+                                    <source src="${audioUrl}" type="audio/wav">
+                                    Your browser does not support audio playback.
+                                  </audio>
+                                </div>
+                              </div>`;
+                        }
+                      })
+                      .catch(console.error);
+                }
+            }
+
+            // Fetch and render the Markdown file
+            if (file) {
+                fetch(file)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.text();
+                    })
+                    .then(text => {
+                        // Configure marked for better code and math handling
+                        marked.setOptions({
+                            highlight: function(code, lang) {
+                                return code;
+                            },
+                            breaks: true,
+                            gfm: true
+                        });
+                        
+                        // Process the content with simple configuration
+                        marked.setOptions({
+                            breaks: true,
+                            gfm: true
+                        });
+                        
+                        // Function to generate table of contents
+                        // Function to generate table of contents with proper ID mapping
+                        function generateTableOfContents(markdown) {
+                            // Store heading IDs to ensure consistency
+                            const headingMap = [];
+                            
+                            // First identify code blocks to exclude them from heading detection
+                            const codeBlockRegex = /```([\s\S]*?)```/g;
+                            const codeBlocks = [];
+                            let codeMatch;
+                            
+                            while ((codeMatch = codeBlockRegex.exec(markdown)) !== null) {
+                                codeBlocks.push({
+                                    start: codeMatch.index,
+                                    end: codeMatch.index + codeMatch[0].length
+                                });
+                            }
+                            
+                            // Function to check if a position is inside a code block
+                            function isInCodeBlock(position) {
+                                return codeBlocks.some(block => 
+                                    position >= block.start && position <= block.end
+                                );
+                            }
+                            
+                            // First pass: collect all headings and generate consistent IDs
+                            const headingRegex = /^(#{1,6})\s+(.+?)$/gm;
+                            let match;
+                            
+                            while ((match = headingRegex.exec(markdown)) !== null) {
+                                try {
+                                    // Skip headings inside code blocks
+                                    if (isInCodeBlock(match.index)) {
+                                        console.log('Skipping heading in code block:', match[0]);
+                                        continue;
+                                    }
+                                    
+                                    const level = match[1].length;
+                                    const text = match[2].trim();
+                                    
+                                    // Skip empty headings
+                                    if (!text) continue;
+                                    
+                                    // Skip lines that look like Python comments
+                                    if (text.startsWith('#')) continue;
+                                    
+                                    // Generate a consistent ID that will match what marked.js generates
+                                    const id = text.toLowerCase()
+                                        .replace(/[^\w\s-]/g, '') // Remove special characters except spaces and hyphens
+                                        .replace(/\s+/g, '-') // Replace spaces with hyphens
+                                        .replace(/--+/g, '-') // Replace multiple hyphens with single hyphen
+                                        .replace(/^-+|-+$/g, ''); // Remove leading and trailing hyphens
+                                    
+                                    // Only add headings with valid IDs
+                                    if (id) {
+                                        headingMap.push({ level, text, id });
+                                        console.log('Added heading:', level, text, id);
+                                    }
+                                } catch (error) {
+                                    console.error('Error processing heading:', error);
+                                }
+                            }
+                            
+                            // Second pass: generate TOC HTML with proper nesting but WITHOUT custom numbering
+                            // We'll let the browser handle the numbering with CSS
+                            let toc = '<div class="toc"><h2>Table of Contents</h2><ol class="toc-list">';
+                            
+                            // Track the current nesting level
+                            let prevLevel = 1; // Start at level 1 (h1)
+                            let currentList = []; // Track the current list structure
+                            
+                            headingMap.forEach(heading => {
+                                const level = heading.level;
+                                
+                                // Handle list nesting
+                                if (level > prevLevel) {
+                                    // Going deeper - create nested list
+                                    for (let i = prevLevel; i < level; i++) {
+                                        toc += '\n<ol class="toc-sublist">';
+                                        currentList.push('ol');
+                                    }
+                                } else if (level < prevLevel) {
+                                    // Going back up - close nested lists
+                                    for (let i = 0; i < prevLevel - level; i++) {
+                                        toc += '\n</ol>';
+                                        currentList.pop();
+                                    }
+                                }
+                                
+                                // Add the TOC entry with proper ID reference - NO manual numbering
+                                // Use textContent to avoid rendering HTML in the TOC
+                                const safeText = heading.text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                                toc += `\n<li><a href="#${heading.id}" data-target="${heading.id}">${safeText}</a></li>`;
+                                
+                                prevLevel = level;
+                            });
+                            
+                            // Close any remaining lists
+                            for (let i = 0; i < currentList.length; i++) {
+                                toc += '\n</ol>';
+                            }
+                            
+                            // Close the main list
+                            toc += '\n</ol>';
+                            
+                            toc += '\n</div>';
+                            console.log('Generated TOC with IDs:', headingMap.map(h => h.id));
+                            return { toc, headingMap };
+                        }
+                        
+                        // Check if TOC is requested in the markdown
+                        const tocPlaceholders = ['[TOC]', '[toc]'];
+                        let processedContent = '';
+                        
+                        if (tocPlaceholders.some(placeholder => text.includes(placeholder))) {
+                            // Generate TOC with heading map
+                            const tocData = generateTableOfContents(text);
+                            
+                            // Replace TOC placeholder with generated TOC
+                            let modifiedText = text;
+                            tocPlaceholders.forEach(placeholder => {
+                                modifiedText = modifiedText.replace(placeholder, tocData.toc);
+                            });
+                            
+                            // Parse the content
+                            processedContent = marked.parse(modifiedText);
+                            
+                            // Add debugging information
+                            console.log('TOC generated and content parsed');
+                            
+                            // Add IDs to all headings for better navigation
+                            setTimeout(() => {
+                                const contentElement = document.getElementById('markdown-content');
+                                if (contentElement) {
+                                    // First ensure all headings have proper IDs that match the TOC
+                                    const headings = contentElement.querySelectorAll('h1, h2, h3, h4, h5, h6');
+                                    const headingTexts = Array.from(headings).map(h => h.textContent.trim());
+                                    console.log('Found headings in content:', headingTexts);
+                                    
+                                    // Map headings to their IDs from the TOC
+                                    tocData.headingMap.forEach(mapping => {
+                                        // Find the heading with matching text
+                                        const matchingHeadings = Array.from(headings).filter(
+                                            h => h.textContent.trim() === mapping.text
+                                        );
+                                        
+                                        // Set the ID to match the TOC link
+                                        matchingHeadings.forEach(heading => {
+                                            heading.id = mapping.id;
+                                            console.log(`Set ID '${mapping.id}' for heading '${mapping.text}'`);
+                                        });
+                                    });
+                                    
+                                    // Add smooth scrolling to TOC links
+                                    const tocLinks = document.querySelectorAll('.toc a');
+                                    tocLinks.forEach(link => {
+                                        link.addEventListener('click', function(e) {
+                                            e.preventDefault();
+                                            const targetId = this.getAttribute('data-target');
+                                            console.log('Clicked TOC link with target ID:', targetId);
+                                            
+                                            const targetElement = document.getElementById(targetId);
+                                            if (targetElement) {
+                                                console.log('Found target element:', targetElement);
+                                                window.scrollTo({
+                                                    top: targetElement.offsetTop - 80,
+                                                    behavior: 'smooth'
+                                                });
+                                            } else {
+                                                console.error('Target element not found for ID:', targetId);
+                                            }
+                                        });
+                                    });
+                                }
+                            }, 500); // Increased timeout to ensure content is fully rendered
+                        } else {
+                            // Process content normally
+                            processedContent = marked.parse(text);
+                        }
+                        
+                        // Add language attribute to paragraphs with Tamil text
+                        if (detectedLang === 'ta') {
+                            content.setAttribute('lang', 'ta');
+                        }
+                        
+                        // Process math blocks for better styling
+                        processedContent = processedContent.replace(
+                            /<p>\s*\$\$(.*?)\$\$\s*<\/p>/gs, 
+                            '<div class="math-container">$$$$1$$</div>'
+                        );
+                        
+                        // Mark paragraphs containing math with a class
+                        processedContent = processedContent.replace(
+                            /<p>([^<]*\$[^<]*\$[^<]*)<\/p>/g,
+                            '<p class="math">$1</p>'
+                        );
+                        
+                        content.innerHTML = processedContent;
+                        
+                        // Force MathJax to typeset the content
+                        if (typeof MathJax !== 'undefined') {
+                            try {
+                                // Clear any previous typesetting
+                                if (MathJax.typesetClear) {
+                                    MathJax.typesetClear([content]);
+                                }
+                                
+                                // Wait a bit longer to ensure DOM is fully ready
+                                setTimeout(() => {
+                                    console.log('Attempting to typeset math...');
+                                    MathJax.typesetPromise([content]).then(() => {
+                                        console.log('MathJax rendering complete');
+                                    }).catch(err => {
+                                        console.error('MathJax error:', err);
+                                        // Try one more time with a longer delay
+                                        setTimeout(() => {
+                                            MathJax.typesetPromise([content]).catch(e => {
+                                                console.error('Final MathJax attempt failed:', e);
+                                            });
+                                        }, 500);
+                                    });
+                                }, 200);
+                            } catch (mathJaxError) {
+                                console.error('Error initializing MathJax:', mathJaxError);
+                            }
+                        } else {
+                            console.error('MathJax is not defined');
+                        }
+                        
+                        // Add target="_blank" to external links
+                        document.querySelectorAll('#markdown-content a').forEach(link => {
+                            if (link.hostname !== window.location.hostname) {
+                                link.setAttribute('target', '_blank');
+                                link.setAttribute('rel', 'noopener noreferrer');
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error loading markdown:', error);
+                        content.innerHTML = '<div class="alert alert-danger"><p>Unable to load the book content. Please try again later.</p><p>Error: ' + error.message + '</p></div>';
+                    });
+            } else {
+                content.innerHTML = '<div class="alert alert-warning">No book post specified.</div>';
+            }
+        });
+        
+        // Social sharing functions
+        function shareOnTwitter() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(document.getElementById('book-title').textContent);
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`, '_blank');
+        }
+        
+        function shareOnLinkedIn() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+        }
+        
+        function shareOnFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+        }
+        
+        // Make sharing functions globally available
+        window.shareOnTwitter = shareOnTwitter;
+        window.shareOnLinkedIn = shareOnLinkedIn;
+        window.shareOnFacebook = shareOnFacebook;
+    </script>
+</body>
+</html>

@@ -148,6 +148,9 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
+            min-height: 200px; /* Ensure minimum height */
+            visibility: visible !important; /* Force visibility */
+            opacity: 1 !important; /* Ensure opacity */
         }
         
         .note-item {
@@ -156,12 +159,14 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             padding: 25px;
             height: 100%;
-            display: flex;
+            display: flex !important; /* Force display */
             flex-direction: column;
             transition: var(--transition);
             position: relative;
             overflow: hidden;
             border-top: 5px solid var(--primary-color);
+            visibility: visible !important; /* Force visibility */
+            opacity: 1 !important; /* Ensure opacity */
         }
         
         .note-item:hover {
@@ -326,6 +331,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="notes.html">Notes</a>
                     </li>
+                    <li class="nav-item" style="display: block !important; visibility: visible !important;">
+                        <a class="nav-link" href="books.html" style="display: block !important; visibility: visible !important;">Books</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="papers.html">Papers</a>
                     </li>
@@ -374,7 +382,7 @@
                         </select>
                     </div>
                 </div>
-                <ul id="note-list" class="note-list">
+                <ul id="note-list" class="note-list" style="display: grid; visibility: visible; opacity: 1;">
                     <li class="note-item" data-category="tamil" lang="ta">
                         <a class="note-title" href="note-post.html?file=notes/note1.md&title=Newton%20First%20law%20in%20tamil&category=Science&date=February%2012,%202025">
                             அறிவியல் அறிவோம் வா - நியூட்டன் முதல் விதி
@@ -479,6 +487,39 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Ensure Books tab is properly displayed
+        document.addEventListener("DOMContentLoaded", function() {
+            // Check if Books tab exists
+            const navbarNav = document.getElementById("navbarNav");
+            const navItems = navbarNav.querySelectorAll(".nav-item");
+            
+            // Find Notes tab position
+            let notesIndex = -1;
+            for (let i = 0; i < navItems.length; i++) {
+                if (navItems[i].querySelector(".nav-link").getAttribute("href") === "notes.html") {
+                    notesIndex = i;
+                    break;
+                }
+            }
+            
+            // Check if Books tab exists after Notes tab
+            if (notesIndex !== -1 && notesIndex + 1 < navItems.length) {
+                const nextItem = navItems[notesIndex + 1];
+                const nextLink = nextItem.querySelector(".nav-link");
+                
+                if (!nextLink || nextLink.getAttribute("href") !== "books.html") {
+                    // Books tab is missing or in wrong position, insert it
+                    const booksItem = document.createElement("li");
+                    booksItem.className = "nav-item";
+                    booksItem.innerHTML = '<a class="nav-link" href="books.html">Books</a>';
+                    
+                    // Insert after Notes tab
+                    navItems[notesIndex].insertAdjacentElement("afterend", booksItem);
+                    console.log("Books tab added dynamically");
+                }
+            }
+        });
+        
         document.addEventListener("DOMContentLoaded", function () {
             // Initialize variables
             const noteList = document.getElementById("note-list");
@@ -487,6 +528,17 @@
             const categoryButtons = document.querySelectorAll(".category-btn");
             const noteItems = Array.from(noteList.children);
             const totalNotes = noteItems.length;
+            
+            console.log("Notes initialization started");
+            console.log("Total notes found:", totalNotes);
+            console.log("Note list element:", noteList);
+            
+            // Make sure notes are visible by default
+            noteItems.forEach(item => {
+                item.style.display = "flex";
+                item.style.visibility = "visible";
+                item.style.opacity = "1";
+            });
             
             // Initialize counters for categories
             const tamilNotes = noteItems.filter(item => item.dataset.category.includes("tamil")).length;
@@ -517,6 +569,7 @@
             
             // Filter function
             function filterNotes() {
+                console.log("Filtering notes...");
                 const activeCategories = document.querySelectorAll(".category-btn.active");
                 const searchTerm = searchInput.value.toLowerCase();
                 let visibleCount = 0;
@@ -551,6 +604,9 @@
                 // Update visible count
                 document.getElementById("visible-count").textContent = visibleCount;
                 document.getElementById("total-count").textContent = totalNotes;
+                
+                console.log("Filtered items:", filteredItems.length);
+                console.log("Visible count:", visibleCount);
                 
                 // Show/hide no results message
                 if (visibleCount === 0) {
@@ -696,6 +752,23 @@
             });
             
             // Initial pagination setup
+            console.log("Starting initial pagination setup");
+            
+            // Make sure all notes are visible initially
+            noteItems.forEach(item => {
+                item.style.display = "flex";
+                item.style.visibility = "visible";
+                item.style.opacity = "1";
+            });
+            
+            // Update counts
+            document.getElementById("visible-count").textContent = totalNotes;
+            document.getElementById("total-count").textContent = totalNotes;
+            
+            // Initialize filtered items with all items
+            filteredItems = [...noteItems];
+            
+            // Then apply filtering
             filterNotes();
         });
     </script>

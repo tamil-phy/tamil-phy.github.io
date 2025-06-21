@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blogs | Tamil Arasan</title>
+    <title>Books | Tamil Arasan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,7 +71,7 @@
             width: 100%;
         }
         
-        .blog-header {
+        .book-header {
             padding: 50px 0 30px;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             border-radius: 0 0 50px 50px;
@@ -79,12 +79,12 @@
             text-align: center;
         }
         
-        .blog-header h1 {
+        .book-header h1 {
             color: var(--primary-color);
             margin-bottom: 15px;
         }
         
-        .blog-header p {
+        .book-header p {
             font-size: 1.2rem;
             max-width: 800px;
             margin: 0 auto;
@@ -266,7 +266,7 @@
             z-index: 2;
         }
         
-        .blog-list {
+        .book-list {
             list-style-type: none;
             padding: 0;
             display: grid;
@@ -280,7 +280,7 @@
             }
         }
         
-        .blog-item {
+        .book-item {
             background-color: white;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
@@ -294,20 +294,20 @@
             border-top: 5px solid transparent;
         }
         
-        .blog-item:hover {
+        .book-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
         
-        .blog-item[data-category="Tamil"] {
+        .book-item[data-category="Tamil"] {
             border-top-color: var(--accent-color);
         }
         
-        .blog-item[data-category="English"] {
+        .book-item[data-category="English"] {
             border-top-color: var(--primary-color);
         }
         
-        .blog-title {
+        .book-title {
             font-family: 'Playfair Display', serif;
             font-size: 1.4rem;
             color: var(--dark-text);
@@ -319,18 +319,18 @@
             line-height: 1.3;
         }
         
-        .blog-title:hover {
+        .book-title:hover {
             color: var(--primary-color);
         }
         
-        .blog-description {
+        .book-description {
             color: var(--light-text);
             margin-bottom: 20px;
             font-style: normal;
             flex-grow: 1;
         }
         
-        .blog-meta {
+        .book-meta {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -340,7 +340,7 @@
             border-top: 1px solid rgba(0,0,0,0.05);
         }
         
-        .blog-date {
+        .book-date {
             color: var(--light-text);
             font-size: 0.85rem;
             display: flex;
@@ -348,12 +348,12 @@
             margin-bottom: 10px;
         }
         
-        .blog-date i {
+        .book-date i {
             margin-right: 5px;
             opacity: 0.7;
         }
         
-        .blog-category {
+        .book-category {
             display: inline-block;
             padding: 5px 12px;
             border-radius: 20px;
@@ -362,17 +362,17 @@
             letter-spacing: 0.5px;
         }
         
-        .blog-category.tamil {
+        .book-category.tamil {
             background-color: rgba(255, 0, 110, 0.1);
             color: var(--accent-color);
         }
         
-        .blog-category.english {
+        .book-category.english {
             background-color: rgba(58, 134, 255, 0.1);
             color: var(--primary-color);
         }
         
-        .blog-date {
+        .book-date {
             color: var(--light-text);
         }
         
@@ -420,7 +420,7 @@
         }
         
         @media (max-width: 768px) {
-            .blog-header {
+            .book-header {
                 padding: 30px 0;
             }
             
@@ -428,14 +428,14 @@
                 margin-bottom: 10px;
             }
             
-            .blog-list {
+            .book-list {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
                 gap: 15px;
             }
         }
         
         @media (max-width: 576px) {
-            .blog-list {
+            .book-list {
                 grid-template-columns: 1fr;
             }
         }
@@ -454,13 +454,13 @@
                         <a class="nav-link" href="index.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="blog.html">Blogs</a>
+                        <a class="nav-link" href="blog.html">Blogs</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="notes.html">Notes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="books.html">Books</a>
+                        <a class="nav-link active" href="books.html">Books</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="papers.html">Papers</a>
@@ -470,49 +470,51 @@
         </div>
     </nav>
 
-    <!-- Blog Header Section -->
-    <section class="blog-header">
+    <!-- Books Header Section -->
+    <section class="book-header">
         <div class="container">
-            <h1>My Blog</h1>
-            <p>Exploring the intersections of Physics, AI, and Language</p>
+            <h1>My Books</h1>
+            <p>A collection of books I've read, reviewed, and recommend across various genres</p>
         </div>
     </section>
 
     <div class="container">
         <!-- Filters and Search -->
         <div class="filter-container">
-            <h3 class="filter-title">Filter Articles</h3>
+            <h3 class="filter-title">Filter Books</h3>
             <div class="d-flex flex-wrap">
-                <button class="btn language-btn active" data-filter="all">All Articles</button>
-                <button class="btn language-btn" data-filter="Tamil">தமிழ் | Tamil</button>
-                <button class="btn language-btn" data-filter="English">English</button>
+                <button class="btn language-btn active" data-category="all">All Books</button>
+                <button class="btn language-btn" data-category="Tamil">தமிழ் | Tamil</button>
+                <button class="btn language-btn" data-category="English">English</button>
+                <!-- <button class="btn language-btn" data-category="Fiction">Fiction</button>
+                <button class="btn language-btn" data-category="NonFiction">Non-Fiction</button>
+                <button class="btn language-btn" data-category="Science">Science</button> -->
             </div>
             <div class="search-container">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" class="form-control" placeholder="Search articles...">
+                <input type="text" id="searchInput" class="form-control" placeholder="Search books...">
             </div>
         </div>
 
-        <!-- Featured Posts Section -->
+        <!-- Featured Books Section -->
         <div class="featured-posts-section">
             <div class="featured-posts-heading">
-                <h3>Featured Posts</h3>
-                <span class="featured-badge">New</span>
+                <h3>Featured</h3>
+                <span class="featured-badge">Top Picks</span>
             </div>
-            <div class="featured-posts-container" id="featured-posts">
-                <!-- Featured posts will be dynamically inserted here -->
+            <div id="featured-posts-container" class="featured-posts-container">
+                <!-- Featured books will be dynamically added here -->
             </div>
         </div>
         
-        <!-- Blog List -->
+        <!-- Main Book List -->
         <div class="row">
             <div class="col-12">
-                <h3 class="mb-4">All Posts</h3>
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>Showing <span id="visible-count">0</span> of <span id="total-count">0</span> posts</div>
+                    <div>Showing <span id="visible-count">0</span> of <span id="total-count">0</span> books</div>
                     <div>
-                        <label for="posts-per-page" class="me-2">Posts per page:</label>
-                        <select id="posts-per-page" class="form-select form-select-sm d-inline-block w-auto">
+                        <label for="books-per-page" class="me-2">Books per page:</label>
+                        <select id="books-per-page" class="form-select form-select-sm d-inline-block w-auto">
                             <option value="6">6</option>
                             <option value="12" selected>12</option>
                             <option value="24">24</option>
@@ -520,264 +522,17 @@
                         </select>
                     </div>
                 </div>
-                <ul id="blog-list" class="blog-list">
-        <li class="blog-item" data-category="Tamil" lang="ta" data-date="2025-06-21">
-            <a class="blog-title" href="blog-post.html?file=posts/post22.md&title=Automatic%20Differentiation">
-                ஆட்டோமேடிக் டிஃபரன்ஷியேஷன்
-            </a>
-            <div class="blog-date"><i class="far fa-calendar-alt"></i> June 21, 2025</div>
-            <div class="blog-description">"ஆட்டோமேடிக் டிஃபரன்ஷியேஷன் என்றால் என்ன?"</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post22.md&title=Automatic%20Differentiation" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>             
-        <li class="blog-item" data-category="Tamil" lang="ta" data-date="2025-06-20">
-            <a class="blog-title" href="blog-post.html?file=posts/post21.md&title=Compuational%20Graph">
-                கம்ப்யூடேஷனல் கிராப்ஸ்
-            </a>
-            <div class="blog-date"><i class="far fa-calendar-alt"></i> June 20, 2025</div>
-            <div class="blog-description">"கம்ப்யூடேஷனல் கிராப்ஸ் என்றால் என்ன?"</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post21.md&title=Compuational%20Graph" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>            
-        <li class="blog-item" data-category="Tamil" lang="ta" data-date="2025-06-15">
-            <a class="blog-title" href="blog-post.html?file=posts/post20.md&title=PyTorch%20An%20Introduction">
-                பைடார்ச் அறிமுகம்
-            </a>
-            <div class="blog-date"><i class="far fa-calendar-alt"></i> June 15, 2025</div>
-            <div class="blog-description">"பைடார்ச் என்றால் என்ன?"</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post20.md&title=PyTorch%20An%20Introduction" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="English">
-            <a class="blog-title" href="blog-post.html?file=posts/post2.md&title=Symbolic%20Differentiation">
-                Symbolic Differentiation
-            </a>
-            <div class="blog-description">Learn the basics of symbolic differentiation.</div>
-            <div class="blog-meta">
-                <span class="blog-category english">English</span>
-                <a href="blog-post.html?file=posts/post2.md&title=Symbolic%20Differentiation" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="English">
-            <a class="blog-title" href="blog-post.html?file=posts/post3.md&title=Numerical%20Methods%20using%20Python">
-                Numerical Methods using Python
-            </a>
-            <div class="blog-description">Numerical methods implemented in Python.</div>
-            <div class="blog-meta">
-                <span class="blog-category english">English</span>
-                <a href="blog-post.html?file=posts/post3.md&title=Numerical%20Methods%20using%20Python" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="English">
-            <a class="blog-title" href="blog-post.html?file=posts/post4.md&title=Backward%20Propagation">
-                Backward Propagation
-            </a>
-            <div class="blog-description">My Understanding of Backward Propagation.</div>
-            <div class="blog-meta">
-                <span class="blog-category english">English</span>
-                <a href="blog-post.html?file=posts/post4.md&title=Backward%20Propagation" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="English" data-date="2025-04-20">
-            <a class="blog-title" href="blog-post.html?file=posts/post5.md&title=Stochastic%20Gradient%20Descent">
-                Stochastic Gradient Descent (SGD)
-            </a>
-            <div class="blog-date"><i class="far fa-calendar-alt"></i> April 20, 2025</div>
-            <div class="blog-description">My Understanding of Stochastic Gradient Descent</div>
-            <div class="blog-meta">
-                <span class="blog-category english">English</span>
-                <a href="blog-post.html?file=posts/post5.md&title=Stochastic%20Gradient%20Descent" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post.md&title=NumPy%20in%20tamil">
+                <ul id="book-list" class="book-list">
+        <li class="book-item" data-category="Tamil" lang="ta">
+            <a class="book-title" href="books-post.html?file=books/numpy.md&title=NumPy%20in%20tamil">
                 NumPy – அறிமுகம்
             </a>
-            <div class="blog-description">LLMs: மனித மொழியை இயந்திரங்களின் புரிதலுக்கு எளியதாக்கும் தொழில்நுட்பம்!</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post.md&title=NumPy%20in%20tamil" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
+            <div class="book-description">LLMs: மனித மொழியை இயந்திரங்களின் புரிதலுக்கு எளியதாக்கும் தொழில்நுட்பம்!</div>
+            <div class="book-meta">
+                <span class="book-category tamil">தமிழ்</span>
+                <a href="books-post.html?file=books/numpy.md&title=NumPy%20in%20tamil" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
             </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post6.md&title=Artificial%20Intelligence%20History%20in%20tamil">
-                செய்யறிவின் வரலாறு
-            </a>
-            <div class="blog-description">AI எப்போது ஆரம்பித்தது? அதன் முன்னோடிகள் யார்? முன்னேற்றங்களை எந்த நுண்ணறிவு கோட்பாடுகள் வழிநடத்தின? மற்றும் எந்த இடங்களில் சிக்கல்கள் ஏற்பட்டன?</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post6.md&title=Artificial%20Intelligence%20History%20in%20tamil" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post7.md&title=Artificial%20Intelligence%20Introduction%20in%20tamil">
-                செய்யறிவு என்றால் என்ன?
-            </a>
-            <div class="blog-description">"செய்யறிவு: தொழில்நுட்பத்தின் புதிய எல்லை!</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post7.md&title=Artificial%20Intelligence%20Introduction%20in%20tamil" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post8.md&title=Large%20Language%20Model%20Introduction%20in%20tamil">
-                இயல் மொழி தெளிதல் - Natural Language Processing (NLP)
-            </a>
-            <div class="blog-description">இயல் மொழி தெளிதல் (NLP): மனித மொழியை இயந்திரங்கள் புரிந்துகொள்ளும் கலை!</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post8.md&title=Large%20Language%20Model%20Introduction%20in%20tamil" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post8_2.md&title=Large%20Language%20Model%20Introduction%20in%20tamil">
-                இயல் மொழி தெளிதல் பாகம் 2: எளிய சாட்பாட்(Chatbot) உருவாக்குதல் 
-            </a>
-            <div class="blog-description">Python-ஐப் பயன்படுத்தி ஒரு எளிய சாட்பாட்டை உருவாக்குவோம்!</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post8_2.md&title=Large%20Language%20Model%20Introduction%20in%20tamil" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post9.md&title=Large%20Language%20Model%20Introduction%20in%20tamil">
-                Large Language Models (LLMs) என்றால் என்ன?
-            </a>
-            <div class="blog-description">LLMs: மொழியை இயந்திரங்களின் புரிதலுக்கு எளியதாக்கும் அறிவியல் முன்னேற்றம்!</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post9.md&title=Large%20Language%20Model%20Introduction%20in%20tamil" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta" data-date="2025-05-15">
-            <a class="blog-title" href="blog-post.html?file=posts/post10.md&title=Large%20Language%20Model%20How%20Do%20They%20Work%20in%20tamil">
-                LLM-களின் கட்டமைப்பு மற்றும் செயல்பாடு
-            </a>
-            <div class="blog-date"><i class="far fa-calendar-alt"></i> May 15, 2025</div>
-            <div class="blog-description">LLM-கள் எப்படி வேலை செய்கின்றன?</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post10.md&title=Large%20Language%20Model%20How%20Do%20They%20Work%20in%20tamil" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post11_1.md&title=Bag%20Of%20Words%20in%20tamil">
-                Bag Of Words – அறிமுகம்
-            </a>
-            <div class="blog-description">தமிழில் Bag Of Words</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post11_1.md&title=Bag%20Of%20Words%20in%20tamil" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post12.md&title=Embeddings%20in%20tamil">
-                Embeddings – அறிமுகம்
-            </a>
-            <div class="blog-description">Embeddings: வார்த்தைகளை எண்களாக(வெக்டர்களாக) மாற்றும் செய்யறிவின் மந்திரம்!</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post12.md&title=Embeddings%20in%20tamil" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post13.md&title=Word2Vec%20in%20tamil">
-                Word2Vec – அறிமுகம்
-            </a>
-            <div class="blog-description">Word2Vec: வார்த்தைகளுக்கு இடையே உள்ள உறவை AI எப்படி கற்றுக்கொள்கிறது?</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post13.md&title=Word2Vec%20in%20tamil" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post13_1.md&title=Seq2Seq">
-                சொல்லுக்குச் சொல் மொழிபெயர்ப்பு: Seq2Seq-ன் மாய உலகம்
-            </a>
-            <div class="blog-description">எப்படி ஒரு மொழியை இன்னொரு மொழியாக மாற்றுகிறோம் என்பதை Seq2Seq தொழில்நுட்பம் விளக்கும் ஒரு சுவாரஸ்யமான பயணம்!</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post13_1.md&title=Seq2Seq" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post14.md&title=Encoder%20and%20Decoder">
-                என்கோடர் & டிகோடர்: ஒரு அறிமுகம்
-            </a>
-            <div class="blog-description">என்கோடர் & டிகோடர்: இயல் மொழி தெளிதலின் இரு தூண்கள்</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post14.md&title=Encoder%20and%20Decoder" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta" data-date="2025-06-01">
-            <a class="blog-title" href="blog-post.html?file=posts/post15.md&title=Make%20Your%20Own%20GPT">
-                டிரான்ஸ்பார்மர்: மென்பொருள் உலகை மாற்றிய நரவலை
-            </a>
-            <div class="blog-date"><i class="far fa-calendar-alt"></i> June 1, 2025</div>
-            <div class="blog-description">டிரான்ஸ்பார்மர்: GPT மற்றும் BERT போன்ற AI மாடல்களின் அடித்தளம்</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post15.md&title=Make%20Your%20Own%20GPT" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post16.md&title=Make%20Your%20Own%20GPT">
-                தமிழ் GPT: சங்கத்தமிழ் பாடல்களை உருவாக்கும் ஒரு AI கவிஞர்
-            </a>
-            <div class="blog-description">தமிழ்GPT – சங்கத் தமிழின் சிறப்பை வார்த்தைகளால் உயிர்ப்பிக்கும் AI கவிஞன்!</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post16.md&title=Make%20Your%20Own%20GPT" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post17.md&title=Make%20Your%20Own%20Assistant">
-                OpenAI மூலம் உருவாக்கப்பட்ட தமிழ் AI உதவியாளர்
-            </a>
-            <div class="blog-description">"OpenAI மற்றும் Streamlit ஐப் பயன்படுத்தி தமிழ் AI உதவியாளர் உருவாக்கலாம் வாங்க!"</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post17.md&title=Make%20Your%20Own%20Assistant" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post18.md&title=All%20About%20Foundation%20Models">
-                கடைக்கால் மாதிரிகள்!
-            </a>
-            <div class="blog-description">"கடைக்கால் மாதிரிகள்: AI உலகின் அடித்தளம்!"</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post18.md&title=All%20About%20Foundation%20Models" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="Tamil" lang="ta">
-            <a class="blog-title" href="blog-post.html?file=posts/post19.md&title=All%20About%20Foundation%20Models">
-                பகுதி 1: டிரான்ஸ்ஃபார்மர் எப்படி வேலை செய்கிறது?
-            </a>
-            <div class="blog-description">"டிரான்ஸ்ஃபார்மர் எப்படி வேலை செய்கிறது? ஒரு எளிய விளக்கம்!"</div>
-            <div class="blog-meta">
-                <span class="blog-category tamil">தமிழ்</span>
-                <a href="blog-post.html?file=posts/post19.md&title=All%20About%20Foundation%20Models" class="read-more">மேலும் படிக்க <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
-        <li class="blog-item" data-category="English" data-date="2025-03-10">
-            <a class="blog-title" href="blog-post.html?file=posts/post1.md&title=All%20about%20Neural%20Networks">
-                All about Neural Networks
-            </a>
-            <div class="blog-date"><i class="far fa-calendar-alt"></i> March 10, 2025</div>
-            <div class="blog-description">An introduction to Neural Networks.</div>
-            <div class="blog-meta">
-                <span class="blog-category english">English</span>
-                <a href="blog-post.html?file=posts/post1.md&title=All%20about%20Neural%20Networks" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </li>
+        </li>       
     </ul>
 </div>
 
@@ -785,7 +540,7 @@
                 
                 <!-- Pagination Controls -->
                 <div class="pagination-container mt-4 d-flex justify-content-center" id="pagination-controls">
-                    <nav aria-label="Blog pagination">
+                    <nav aria-label="book pagination">
                         <ul class="pagination">
                             <li class="page-item disabled" id="prev-page">
                                 <a class="page-link" href="#" aria-label="Previous">
@@ -830,26 +585,26 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const blogList = document.getElementById("blog-list");
+            const bookList = document.getElementById("book-list");
             const searchInput = document.getElementById("searchInput");
             const noResults = document.getElementById("no-results");
             const languageButtons = document.querySelectorAll(".language-btn");
-            const blogItems = Array.from(blogList.children);
+            const bookItems = Array.from(bookList.children);
             
             // Initialize counters for categories
-            const totalBlogs = blogItems.length;
-            const tamilBlogs = blogItems.filter(item => item.dataset.category === "Tamil").length;
-            const englishBlogs = blogItems.filter(item => item.dataset.category === "English").length;
+            const totalbooks = bookItems.length;
+            const tamilbooks = bookItems.filter(item => item.dataset.category === "Tamil").length;
+            const englishbooks = bookItems.filter(item => item.dataset.category === "English").length;
             
             // Update button text with counts
             languageButtons.forEach(btn => {
                 const filter = btn.dataset.filter;
                 if (filter === "all") {
-                    btn.innerHTML = `All Articles <span class="badge bg-secondary ms-1">${totalBlogs}</span>`;
+                    btn.innerHTML = `All Articles <span class="badge bg-secondary ms-1">${totalbooks}</span>`;
                 } else if (filter === "Tamil") {
-                    btn.innerHTML = `தமிழ் | Tamil <span class="badge bg-secondary ms-1">${tamilBlogs}</span>`;
+                    btn.innerHTML = `தமிழ் | Tamil <span class="badge bg-secondary ms-1">${tamilbooks}</span>`;
                 } else if (filter === "English") {
-                    btn.innerHTML = `English <span class="badge bg-secondary ms-1">${englishBlogs}</span>`;
+                    btn.innerHTML = `English <span class="badge bg-secondary ms-1">${englishbooks}</span>`;
                 }
             });
             
@@ -859,7 +614,7 @@
             let filteredItems = [];
             
             // Filter function
-            function filterBlogs() {
+            function filterbooks() {
                 const activeFilter = document.querySelector(".language-btn.active").dataset.filter;
                 const searchTerm = searchInput.value.toLowerCase();
                 let visibleCount = 0;
@@ -867,11 +622,11 @@
                 // Reset filtered items
                 filteredItems = [];
                 
-                blogItems.forEach(item => {
+                bookItems.forEach(item => {
                     const category = item.dataset.category;
-                    const title = item.querySelector(".blog-title").textContent.toLowerCase();
-                    const description = item.querySelector(".blog-description").textContent.toLowerCase();
-                    const date = item.querySelector(".blog-date") ? item.querySelector(".blog-date").textContent.toLowerCase() : "";
+                    const title = item.querySelector(".book-title").textContent.toLowerCase();
+                    const description = item.querySelector(".book-description").textContent.toLowerCase();
+                    const date = item.querySelector(".book-date") ? item.querySelector(".book-date").textContent.toLowerCase() : "";
                     const matchesFilter = activeFilter === "all" || category === activeFilter;
                     const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm) || date.includes(searchTerm);
                     
@@ -886,7 +641,7 @@
                 
                 // Update visible count
                 document.getElementById("visible-count").textContent = visibleCount;
-                document.getElementById("total-count").textContent = totalBlogs;
+                document.getElementById("total-count").textContent = totalbooks;
                 
                 // Show/hide no results message
                 if (visibleCount === 0) {
@@ -980,12 +735,12 @@
                     languageButtons.forEach(b => b.classList.remove("active"));
                     // Add active class to clicked button
                     this.classList.add("active");
-                    // Filter blogs
-                    filterBlogs();
+                    // Filter books
+                    filterbooks();
                 });
             });
             
-            searchInput.addEventListener("input", filterBlogs);
+            searchInput.addEventListener("input", filterbooks);
             
             // Posts per page dropdown
             document.getElementById("posts-per-page").addEventListener("change", function() {
@@ -1012,8 +767,8 @@
                 }
             });
             
-            // Sort blog items by date (newest first)
-            blogItems.sort((a, b) => {
+            // Sort book items by date (newest first)
+            bookItems.sort((a, b) => {
                 const dateA = a.dataset.date ? new Date(a.dataset.date) : new Date(0);
                 const dateB = b.dataset.date ? new Date(b.dataset.date) : new Date(0);
                 return dateB - dateA;
@@ -1024,15 +779,15 @@
             featuredPostsContainer.innerHTML = "";
             
             // Get the 3 most recent posts for featuring
-            const featuredPosts = blogItems.slice(0, 3);
+            const featuredPosts = bookItems.slice(0, 3);
             
             // Create featured post elements
             featuredPosts.forEach(post => {
-                const title = post.querySelector(".blog-title").textContent;
-                const titleHref = post.querySelector(".blog-title").getAttribute("href");
-                const description = post.querySelector(".blog-description").textContent;
+                const title = post.querySelector(".book-title").textContent;
+                const titleHref = post.querySelector(".book-title").getAttribute("href");
+                const description = post.querySelector(".book-description").textContent;
                 const category = post.dataset.category;
-                const date = post.querySelector(".blog-date")?.textContent || "";
+                const date = post.querySelector(".book-date")?.textContent || "";
                 const lang = post.getAttribute("lang") || "";
                 
                 // Create featured post element
@@ -1050,7 +805,7 @@
                         <div class="featured-post-date">${date}</div>
                         <div class="featured-post-description">${description}</div>
                         <div class="featured-post-meta">
-                            <span class="blog-category ${category.toLowerCase()}">${category === "Tamil" ? "தமிழ்" : category}</span>
+                            <span class="book-category ${category.toLowerCase()}">${category === "Tamil" ? "தமிழ்" : category}</span>
                             <a href="${titleHref}" class="read-more">${lang === "ta" ? "மேலும் படிக்க" : "Read More"} <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -1060,20 +815,20 @@
                 featuredPostsContainer.appendChild(featuredPost);
             });
             
-            // Clear and re-append sorted items to main blog list
-            const blogListElement = document.getElementById("blog-list");
-            blogListElement.innerHTML = "";
-            blogItems.forEach(item => blogListElement.appendChild(item));
+            // Clear and re-append sorted items to main book list
+            const bookListElement = document.getElementById("book-list");
+            bookListElement.innerHTML = "";
+            bookItems.forEach(item => bookListElement.appendChild(item));
             
-            // Add lang attribute to Tamil blog items for proper font rendering
-            blogItems.forEach(item => {
+            // Add lang attribute to Tamil book items for proper font rendering
+            bookItems.forEach(item => {
                 if (item.dataset.category === "Tamil") {
                     item.setAttribute("lang", "ta");
                 }
             });
             
             // Initial pagination setup
-            filterBlogs();
+            filterbooks();
         });
     </script>
 </body>

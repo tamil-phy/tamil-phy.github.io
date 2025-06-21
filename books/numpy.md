@@ -1,6 +1,6 @@
-[toc]
+[TOC]
 
-# NumPy – அறிமுகம் மற்றும் வரலாறு
+#### NumPy – அறிமுகம் மற்றும் வரலாறு
 
 NumPy என்பது Python-இல் **scientific computing** (கணினிசார் அறிவியல்) செய்ய பயன்படும் மிக முக்கியமான open-source library ஆகும். இது "Numerical Python" என்பதன் சுருக்கமாகும். Python மொழியின் மைய library-களில் ஒன்று ஆக NumPy இருக்கிறது. இதன் மூலம் நம்மால் எளிதில் multi-dimensional arrays-ஐ கையாள முடிகிறது. இது Python-ஐ கணினி அறிவியல் மற்றும் அறிவியல் கணக்கீடுகளுக்கான ஒரு மிகச்சிறந்த கருவியாக மாற்றியது.
 
@@ -52,9 +52,9 @@ NumPy-யின் N-dimensional arrays-ஐப் பயன்படுத்த
 
 <div style="page-break-after: always;"></div>
 
-### 1. NUMPY − ARRAY ATTRIBUTES   
+#### 1. NUMPY − ARRAY ATTRIBUTES   
 
-#### 1.1. ndarray.shape
+##### 1.1. ndarray.shape
 
 **shape** attribute என்பது NumPy array-இன் அமைப்பை (structure) குறிக்கிறது. இது array-இல் எத்தனை rows மற்றும் columns உள்ளன என்பதை சொல்கிறது. 
 
@@ -81,7 +81,7 @@ Shape of array: (2, 3)
 
 இதன் மூலம், **shape** attribute ஒரு Numpy array-இன் கட்டமைப்பை (structure) முழுமையாக குறிக்க உதவுகிறது.
 
-#### 1.2. ndarray.ndim 
+##### 1.2. ndarray.ndim 
 
 **ndim** என்பது array-இன் பரிமாணங்களின் எண்ணிக்கையை (number of dimensions) குறிக்கிறது. NumPy array-களின் பரிமாணங்களை புரிந்து கொள்ள இது மிகவும் முக்கியமான attribute ஆகும்.
 
@@ -108,7 +108,7 @@ Number of dimensions: 2
 
 இதன் மூலம், **ndim** attribute ஒரு Numpy array-இன் பரிமாணங்களின் எண்ணிக்கையை முழுமையாக அறிய உதவுகிறது.
 
-#### 1.3. numpy.itemsize 
+##### 1.3. numpy.itemsize 
 
 **itemsize** attribute ஒரு element-ஐ represent செய்ய memory-யில் எத்தனை bytes எடுக்கின்றது என்பதை அளிக்கிறது. இது, NumPy array-ல் உள்ள ஒவ்வொரு element-க்கும் memory allocation-ஐ எவ்வளவு எடுக்கும் என்பதை அறிய உதவுகிறது.
 
@@ -133,7 +133,7 @@ Item size of array: 8 bytes
 
 இதன் மூலம், **itemsize** attribute ஒரு Numpy array-இல் உள்ள ஒவ்வொரு element-இன் memory அளவை சரியாக அளக்க உதவுகிறது.
 
-#### 1.4. numpy.flags 
+##### 1.4. numpy.flags 
 
 **flags** attribute என்பது NumPy array-இன் memory layout-ஐ குறிக்கிறது. இது array-இன் உள்ளமைப்புகள் (properties) மற்றும் memory-இன் அடிப்படையில் array எவ்வாறு அமைக்கப்பட்டுள்ளது என்பதை விளக்குகிறது.
 
@@ -173,11 +173,11 @@ Flags of the array:
 
 <div style="page-break-after: always;"></div>
 
-### 2. NUMPY − ARRAY CREATION ROUTINES    
+#### 2. NUMPY − ARRAY CREATION ROUTINES    
 
 NumPy-ல் array-களை உருவாக்க பல்வேறு methods உள்ளன, அவற்றைப் பயன்படுத்தி data handling மற்றும் computation process-களை எளிதாக்கலாம். இப்போது, சில பொதுவாகப் பயன்படுத்தப்படும் array creation functions பற்றி விரிவாகப் பார்ப்போம்.
 
-#### 2.1. numpy.empty
+##### 2.1. numpy.empty
 
 **numpy.empty( )** function ஒரு initialization values இல்லாத array-ஐ உருவாக்க பயன்படுகிறது. இதனால், array-இல் உள்ள values ஏதாவது முன்பே memory-யில் இருந்த random values ஆக இருக்கும். இதனால், memory-யில் உள்ள values reset செய்யப்படாமல், அந்த values array-இல் வரலாம்.
 
@@ -207,7 +207,7 @@ Empty array:
 
 இந்த function **speed optimization** தேவைப்படும் போது மிகவும் பயனுள்ளதாக இருக்கும், ஏனெனில் இது memory allocation மட்டும் செய்து, values-ஐ initialize செய்யாது.
 
-#### 2.2. numpy.zeros
+##### 2.2. numpy.zeros
 
 **zeros( )** function-ஐ பயன்படுத்தி, எல்லா elements-உம் 0 values கொண்ட ஒரு array-ஐ உருவாக்கலாம். இந்த function, array-இன் structure-ஐ (shape) user-defined shape-ஆக அமைத்து, அந்த shape-ஐ கொண்டு அனைத்து இடங்களிலும் 0 values-ஐ கொண்டு ஒரு array-ஐ return செய்யும்.
 
@@ -228,17 +228,13 @@ Zeros array:
  [0. 0.]]
 ```
 
-
-
 - இங்கு **np.zeros( )** function-ஐ பயன்படுத்தி, 2 rows மற்றும் 2 columns கொண்ட ஒரு array உருவாக்கப்பட்டுள்ளது. இந்த array-இன் எல்லா elements-ம் 0 values கொண்டவை.
 
 - **numpy.zeros( )** function memory-யை allocate செய்து, எல்லா elements-க்கும் 0 values கொடுக்கும்.
 - இது, array-ஐ முழுமையாக 0 values கொண்டு initialize செய்ய விரும்பும் போது பயன்படும்.
 - **zeros( )** function data initialization தேவையுள்ள போது மிகவும் பயனுள்ளதாக இருக்கும், ஏனெனில் இது memory-யை efficient-ஆக நிரப்பி array-ஐ உருவாக்குகிறது.
 
-
-
-#### 2.3. numpy.ones
+##### 2.3. numpy.ones
 
 **ones( )** function-ஐ பயன்படுத்தி, எல்லா elements-உம் 1 values கொண்ட ஒரு array-ஐ உருவாக்கலாம். இந்த function, array-இன் structure-ஐ (shape) user-defined shape-ஆக அமைத்து, அந்த shape-ஐ கொண்டு அனைத்து இடங்களிலும் 1 values-ஐ கொண்டு ஒரு array-ஐ return செய்யும்.
 
@@ -267,11 +263,11 @@ Ones array:
 
 <div style="page-break-after: always;"></div>
 
-### 3. NUMPY − ARRAY FROM EXISTING DATA
+#### 3. NUMPY − ARRAY FROM EXISTING DATA
 
 Numpy-ல் array-களை உருவாக்குவதற்கான முக்கியமான வழிகளில் ஒன்றாக **Existing data**-விலிருந்து array-ஐ உருவாக்குவது அமைகிறது. இது Python-ல் ஏற்கனவே இருக்கும் data structures, போன்றவை (lists, buffers, iterables) கொண்டு நமக்கு தேவையான array-களை எளிதாக உருவாக்க உதவுகிறது. இதனால் data-ஐ NumPy-யின் powerful array operations-இல் பயன்படுத்த முடியும்.
 
-#### 3.1. numpy.asarray
+##### 3.1. numpy.asarray
 
 **asarray( )** function-ஐ பயன்படுத்தி, ஒரு existing data-ஐ NumPy array-ஆக மாற்றலாம். இதன் முக்கிய பயனாக, இதனால் original data-ஐ clone செய்து, array-ஆக மாற்றுவதில் பயன்படுத்தப்படும் memory space குறைவாக இருக்கும்.
 
@@ -294,7 +290,7 @@ Array from list: [1 2 3 4 5]
 
 இந்த Code-இல், ஒரு Python list **list_data**-ஐ **asarray( )** function-ஐ பயன்படுத்தி NumPy array-ஆக மாற்றுகிறோம். இதன் மூலம், original data type retain ஆகிறது (சேமித்து),  list_data array-ஆக மாற்றப்படுகிறது, மேலும் நம்மால் memory usage-யை திறமையாக கையாள முடிகிறது.
 
-#### 3.2. numpy.frombuffer
+##### 3.2. numpy.frombuffer
 
 **frombuffer( )** method-ஐ பயன்படுத்தி, buffer-ல் உள்ள data-ஐ NumPy array-ஆக மாற்ற முடியும். buffer-ல் உள்ள binary data-ஐ NumPy array-இல் மாற்றுவதன் மூலம், அதனுடன் அடுத்தடுத்த data manipulations மேற்கொள்ள உதவுகிறது.
 
@@ -314,7 +310,7 @@ Array from buffer: [b'H' b'e' b'l' b'l' b'o' b' ' b'W' b'o' b'r' b'l' b'd']
 
 இங்கு, **buffer** என்ற binary data-ஐ **frombuffer( )** method மூலம் NumPy array-ஆக மாற்றுகிறோம். இதனால், byte data அலகு அலகாக array-இல் element-களாகக் கிடைக்கிறது. இதுபோன்ற conversions binary data parsing மற்றும் manipulation-ஐ எளிதாக்கும்.
 
-#### 3.3. numpy.fromiter
+##### 3.3. numpy.fromiter
 
 **fromiter( )** function-ஐ பயன்படுத்தி, iterable object-களை NumPy array-ஆக மாற்ற முடியும். இது memory-efficient-ஆகவும், high-performance data conversion-ஐ உருவாக்கவும் உதவுகிறது. **fromiter( )** iterable values-ஐ array-ஆக dynamic-ஆக மாற்றுவதற்கான ஒரு method ஆகும். Iterables-ல் இருந்து continuous data stream-ஐ NumPy array-ஆக உருவாக்குவதன் மூலம், sequence-களை நேரடியாக array-களாக மாற்ற முடியும். 
 
@@ -358,11 +354,11 @@ Array from iterable: [ 0  1  4  9 16]
 
 <div style="page-break-after: always;"></div>
 
-### 4. NUMPY − ARRAY FROM NUMERICAL RANGES
+#### 4. NUMPY − ARRAY FROM NUMERICAL RANGES
 
 NumPy-யில் **எண்கள் அடிப்படையிலான array** களை உருவாக்க பல functions உள்ளன. இந்த functions array values-ஐ ஏறுவரிசையில் அல்லது குறிப்பிட்ட அளவுகளில் உருவாக்குவதற்கான எளிமையான வழிகளை வழங்குகின்றன. இதனால் sequences மற்றும் ranges கொண்ட array-களை உருவாக்க முடிகிறது.
 
-#### 4.1. numpy.arange
+##### 4.1. numpy.arange
 
 **arange( )** function-ஐ பயன்படுத்தி, start value-இல் இருந்து stop value வரை, குறிப்பிட்ட step values-ஐ அடிப்படையாகக் கொண்டு array-ஐ உருவாக்கலாம். இந்த function, Python-ல் உள்ள **range( )** function போலவே செயல்படும், ஆனால் NumPy array-களாக values-ஐ return செய்யும்.
 
@@ -383,7 +379,7 @@ Array using arange: [1 3 5 7 9]
 
 இங்கு, **arange( )** function **start value** 1-இல் இருந்து **stop value** 10 வரை, **step** value 2-ஐ அடிப்படையாகக் கொண்டு array values-ஐ உருவாக்குகிறது. இதனால், 1, 3, 5, 7, 9 போன்ற values கொண்ட array உருவாக்கப்படுகிறது.
 
-#### 4.2. numpy.linspace
+##### 4.2. numpy.linspace
 
 **linspace( )** function-ஐ பயன்படுத்தி, start value மற்றும் stop value-க்கு இடையில், even spacing values கொண்ட array-ஐ உருவாக்கலாம். இங்கு values எத்தனை elements-ஆக பிரிக்கப்படும் என்பதை user define செய்ய முடியும்.
 
@@ -402,7 +398,7 @@ Array using linspace: [0.   0.25 0.5  0.75 1.  ]
 
 இங்கு, **linspace( )** function **start** value 0-இல் இருந்து **stop** value 1 வரை, மொத்தம் 5 elements-ஆக values-ஐ even spacing-ஆக பிரிக்கிறது. இதனால், 0, 0.25, 0.5, 0.75, 1.0 போன்ற values கொண்ட array உருவாக்கப்படுகிறது.
 
-#### 4.3. numpy.logspace
+##### 4.3. numpy.logspace
 
 **logspace( )** function logarithmic spacing கொண்ட array values-ஐ உருவாக்கும். இது logarithmic scale-ல் base powers-இன் values-ஐ கொண்டு array-ஐ return செய்யும்.
 
@@ -433,7 +429,7 @@ Array using logspace: [  10.          31.6227766  100.         316.22776602 1000
 
 <div style="page-break-after: always;"></div>
 
-### 5. NUMPY − INDEXING & SLICING
+#### 5. NUMPY − INDEXING & SLICING
 
 NumPy array-களில் **indexing** மற்றும் **slicing** methods மிக முக்கியமானவை, ஏனெனில் இவையால் array-களின் தனிப்பட்ட elements-ஐ அணுகுவதோடு, array-களின் ஒரு பகுதியை எளிதாக பிரிக்கவும் முடிகிறது. இவை data extraction மற்றும் manipulation-ஐ மிக எளிதாக்குகின்றன.
 
@@ -462,11 +458,11 @@ Sliced array: [20 30 40]
 
 <div style="page-break-after: always;"></div>
 
-### 6. NUMPY − ADVANCED INDEXING
+#### 6. NUMPY − ADVANCED INDEXING
 
 NumPy-இல் **advanced indexing** முலம் array values-ஐ எளிதாக அணுகவும், update செய்யவும் அனுமதிக்கின்றன. இவை data selection மற்றும் manipulation-ஐ மேலும் திறமையாக செயல்படுத்த உதவுகின்றன.
 
-#### 6.1. Integer Indexing
+##### 6.1. Integer Indexing
 
 Integer indexing-ன் மூலம் array-யின் குறிப்பிட்ட இடங்களில் உள்ள elements-ஐ எளிதாக பெறலாம். இதன் மூலம், multi-dimensional array-களில் அதிக specific data points-ஐ எளிதாக அணுக முடியும்.
 
@@ -487,7 +483,7 @@ Element at position (2, 1): 6
 
 இந்தCode-இல், **arr[2, 1]** என்பது array-இன் மூன்றாவது row-இல் உள்ள இரண்டாவது element-ஐ காட்டுகிறது, அதாவது value **6**.
 
-#### 6.2. Boolean Array Indexing
+##### 6.2. Boolean Array Indexing
 
 Boolean array indexing-ன் மூலம், condition அடிப்படையில் array values-ஐ எளிதாக filter செய்ய முடியும். இது data analysis மற்றும் condition-based filtering-ஐ மிக எளிதாக்கும்.
 
@@ -509,11 +505,11 @@ Filtered array with condition: [30 40 50]
 
 <div style="page-break-after: always;"></div>
 
-### 7. NUMPY − BROADCASTING
+#### 7. NUMPY − BROADCASTING
 
 NumPy-யில் **broadcasting** என்பது shape-கள் வேறுபட்ட array-களை arithmetic operations-ல் பயன்படுத்த ஒரு நுட்பமாகும். இது data-ஐ duplicate செய்யாமல், memory-efficient-ஆக operations-ஐ நேரடியாக செய்ய உதவுகிறது. Broadcasting-ஐ பயன்படுத்தி arrays-இல் arithmetic operations செய்யும்போது, NumPy data-ஐ தானாகவே மிக எளிதாகப் பொருந்தும் விதமாக மாற்றுகிறது.
 
-#### Broadcasting என்றால் என்ன?
+##### Broadcasting என்றால் என்ன?
 
 Broadcasting என்பது NumPy-யின் திறனாக, இரண்டு array-களின் shape-கள் பொருந்தாதபோதும், arithmetic operations-ஐ செய்து முடிக்க data-ஐ தானாக விரிவாக்கி ஆக்க முறையாகும். NumPy-யின் broadcasting விதிகள் array-களை ஒன்று சேர்க்கவும், குறைந்த memory-யில் calculations செய்யவும் உதவுகின்றன.
 
@@ -563,11 +559,11 @@ Broadcasting மூலம், NumPy பயனர் data-ஐ duplicate செய
 
 <div style="page-break-after: always;"></div>
 
-### 8. NUMPY − ITERATING OVER ARRAY
+#### 8. NUMPY − ITERATING OVER ARRAY
 
 NumPy array-களை **iterate** செய்வது Python list-களை iterate செய்வதைப் போலவே எளிதானது. NumPy array-களில் iteration செய்யும் நுட்பங்கள் அதிக துல்லியமாகவும் வேகமாகவும் செயல்படுவதற்காக வடிவமைக்கப்பட்டுள்ளன. இதன் மூலம், multi-dimensional array-களில் iteration செய்யும்போது memory efficiency மற்றும் execution speed அதிகரிக்கின்றன.
 
-#### 8.1. Iteration Order
+##### 8.1. Iteration Order
 
 NumPy array-களை iterate செய்வதில் **row-major** அல்லது **column-major** order-ல் iteration செய்ய முடியும். 
 
@@ -605,7 +601,7 @@ Element: 6
 **Row-major order** என்பதனால் rows-ஐ முன்னுரிமை கொடுத்து iterate செய்யப்படுகிறது, அதாவது முழு row-ஐ முன்னதாக process செய்யும்.
 **flat** attribute-ஐ பயன்படுத்தி, multi-dimensional array-ஐ ஒரு single-dimensional array போல iterate செய்ய முடியும்.
 
-#### 8.2. Modifying Array Values
+##### 8.2. Modifying Array Values
 
 Iteration-ஐ பயன்படுத்தி array values-ஐ நேரடியாக மாற்றவும் (update) முடியும். இதனால், array-இன் original values-ஐ iteration முறையில் update செய்வது எளிதாகும்.
 
@@ -648,7 +644,7 @@ Modified array:
 
 NumPy-யில் iteration methods-ஐ பயன்படுத்தி array values-ஐ access மற்றும் update செய்வது நமக்கு மிக வேகமாகவும் திறமையாகவும் data handling செய்ய உதவுகிறது. இதனால், data manipulation, analysis மற்றும் computation போன்ற செயல்பாடுகள் மிக எளிமையாகும்.
 
-#### 8.3. External Loop
+##### 8.3. External Loop
 
 **External Loop** iteration நுட்பம் array values-ஐ மேம்படுத்தி மற்றும் memory-efficient-ஆக iterate செய்ய உதவுகிறது. **external_loop** flag-ஐ பயன்படுத்தி, iteration செய்யும்போது data-ஐ ஒரு continuous block-ஆக iterate செய்ய முடியும், இதனால் execution speed அதிகரிக்கிறது.
 
@@ -676,7 +672,7 @@ External loop iteration: [ 6 12]
 
 External loop iteration-ஐ column-wise data handling-க்கு பயன்படுத்தும்போது, இது calculations மற்றும் data processing-ஐ வேகமாகவும் memory-efficient-ஆகவும் செய்கிறது.
 
-#### 8.4. Broadcasting Iteration
+##### 8.4. Broadcasting Iteration
 
 Broadcasting iteration மூலம் shape வேறுபட்ட array values-ஐ ஒரே நேரத்தில் iterate செய்ய உதவுகிறது. இது NumPy-யின் broadcasting principle-ஐ பயன்படுத்தி, operations-ஐ சிறப்பாக நிறைவேற்றுகிறது.
 
@@ -712,11 +708,11 @@ x: 3, y: 3
 
 <div style="page-break-after: always;"></div>
 
-### 9. NUMPY – ARRAY MANIPULATION
+#### 9. NUMPY – ARRAY MANIPULATION
 
 NumPy, array-களை மாற்றவும் அதனை மாற்றி அமைக்கவும் பல்வேறு வழிகள் உண்டு. அதாவது இவை array-களின் structure-ஐ மாற்றுவதில், flatten செய்வதில், மற்றும் iterator-களை பயன்படுத்துவதில் மிகவும் பயனுள்ளதாக இருக்கும்.
 
-#### 9.1. numpy.reshape
+##### 9.1. numpy.reshape
 
 **reshape( )** function-ஐ பயன்படுத்தி, NumPy array-இன் shape-ஐ மாற்றலாம். இதனால், array-இல் உள்ள elements-ஐ மறு அமைப்பு செய்து, data structure-ஐ எளிதாக மாற்ற முடியும்.
 
@@ -745,7 +741,7 @@ Reshaped array:
 
 **குறிப்பு**: Reshape operation செய்யும் போது, புதிய shape-க்கு elements கிட்டத்தட்ட இருந்தால் மட்டுமே அது செயல்படும்.
 
-#### 9.2. numpy.ndarray.flat
+##### 9.2. numpy.ndarray.flat
 
 **flat** attribute-ஐ பயன்படுத்தி, array-இன் elements-ஐ ஒரு iterator-ஆக பெறலாம். இதன் மூலம், multi-dimensional array-ஐ ஒரு iterator-ஆக flatten செய்து iterate செய்ய முடியும்.
 
@@ -771,7 +767,7 @@ Flat element: 6
 - **flat** attribute-ஐ பயன்படுத்தி, multi-dimensional array-இல் உள்ள elements-ஐ ஒரு continuous sequence-ஆக iterator-ஆக iterate செய்கிறோம்.
 - இது memory-efficient-ஆக array-ஐ handle செய்ய உதவுகிறது, மற்றும் எளிதாக elements-ஐ access செய்ய அனுமதிக்கிறது.
 
-#### 9.3. numpy.ndarray.flatten
+##### 9.3. numpy.ndarray.flatten
 
 **flatten( )** method-ஐ பயன்படுத்தி, multi-dimensional array-ஐ ஒரு single-dimensional array-ஆக மாற்றலாம். இது array-இல் உள்ள அனைத்து elements-ஐ ஒரு single line-ல் வைத்து return செய்யும்.
 
@@ -793,7 +789,7 @@ Flattened array: [1 2 3 4 5 6]
 - Flatten operation array-ஐ reshape செய்யாமல், ஒரு continuous structure-ஆக return செய்யும்.
 - **flatten( )**: Multi-dimensional array-ஐ single-dimensional array-ஆக மாற்றும், இது ஒரு new flattened copy-ஐ return செய்யும்.
 
-#### 9.4. numpy.ravel
+##### 9.4. numpy.ravel
 
 **ravel( )** method-ஐ பயன்படுத்தி, multi-dimensional array-ஐ flattened array-ஆக மாற்றலாம். இது **flatten( )** போலவே செயல்படும், ஆனால் பெரும்பாலான சூழல்களில் original memory-யை share செய்ய memory-efficient ஆக செயல்படுகிறது.
 
@@ -817,7 +813,7 @@ Raveled array: [1 2 3 4 5 6]
 - **ravel( )** method multi-dimensional array-ஐ flattened array-ஆக மாற்றி return செய்கிறது.
 - இது memory-யை சிக்கனமாக பயன்படுத்தி, wherever possible, original data-ஐ share செய்வதால் memory allocation குறைவாக இருக்கும்.
 
-#### 9.5. numpy.transpose
+##### 9.5. numpy.transpose
 
 **transpose( )** function-ஐ பயன்படுத்தி, array-இன் axes-ஐ மாற்றி அமைக்க முடியும். இது row-களை column-களாகவும் column-களை row-களாகவும் மாற்றுவதற்கான method ஆகும்.
 
@@ -842,7 +838,7 @@ Transposed array:
 - **transpose( )** function array-இன் structure-ஐ மாற்றி row-களை column-களாகவும் column-களை row-களாகவும் மாற்றுகிறது.
 - இது data analysis மற்றும் matrix operations-இல் அதிகமாக பயன்படும்.
 
-#### 9.6. numpy.ndarray.T
+##### 9.5.1. numpy.ndarray.T
 
 **T** attribute transpose operation-ஐ எளிதாக செய்ய alternate முறையாக பயன்படுகிறது. இது **transpose( )** function-ஐ போன்றே செயல்படும், ஆனால் syntax சிறிது சுருக்கமாக இருக்கும்.
 
@@ -865,7 +861,7 @@ Transposed array using T:
 - **T** attribute-ஐ பயன்படுத்தி array-இன் transpose-ஐ செய்யலாம், இது code-ஐ சுருக்கமாகவும் வாசிக்க எளிதாகவும் அமைக்கும்.
 - **T** attribute transpose-ஐ எளிதாகவும் வேகமாகவும் செயல்படுத்த உதவுகிறது.
 
-#### 9.6. numpy.swapaxes
+##### 9.6. numpy.swapaxes
 
 **swapaxes( )** function-ஐ பயன்படுத்தி array-இல் உள்ள axes-ஐ மாற்றி அமைக்க முடியும். இதனால் multi-dimensional array-இல் axes-ஐ மாற்றி data structure-ஐ மாற்றலாம்.
 
@@ -892,7 +888,7 @@ Swapped axes array:
 - **swapaxes( )** function-ஐ பயன்படுத்தி, array-இல் 0 மற்றும் 1 axes-ஐ மாற்றியுள்ளோம்.
 - இது data-ஐ transpose செய்யும் ஒரு alternate method ஆகும், ஆனால் குறிப்பிட்ட axes-ஐ user-defined இடத்தில் மாற்றிக் கொள்ளலாம்.
 
-#### 9.7. numpy.rollaxis
+##### 9.7. numpy.rollaxis
 
 **rollaxis( )** method-ஐ பயன்படுத்தி, multi-dimensional array-இல் உள்ள axes-ஐ ஒரு குறிப்பிட்ட இடத்திற்கு மாற்றி அமைக்க முடியும். இது axes-ஐ flexibly reorder செய்ய உதவுகிறது.
 
@@ -918,7 +914,7 @@ Rolled axes array:
 
   **குறிப்பு**: **swapaxes( )** மற்றும் **rollaxis( )**: Array-இல் உள்ள axes-ஐ மாற்றி data structure-ஐ reconfigure செய்ய பயன்படுகின்றன.
 
-#### 9.8. numpy.broadcast
+##### 9.8. numpy.broadcast
 
 **broadcast( )** function broadcasting operation எப்படி செயல்படுகிறது என்பதை காட்ட உதவுகிறது. இது shape-ல் பொருந்தாத array values-ஐ, NumPy broadcasting principle-ஐ பயன்படுத்தி இணைக்கும்.
 
@@ -948,7 +944,7 @@ Broadcasted elements: x = 3, y = 3
 
 - **broadcast( )** function-ஐ பயன்படுத்தி shape-ல் வேறுபட்ட arrays-ஐ iterate செய்து, broadcasting operation எவ்வாறு செயல்படுகிறது என்பதை பார்க்க முடிகிறது.
 
-#### 9.9. numpy.broadcast_to
+##### 9.9. numpy.broadcast_to
 
 **broadcast_to( )** function-ஐ பயன்படுத்தி, ஒரு array-யை ஒரு குறிப்பிட்ட shape-க்கு broadcast செய்யலாம். இது data-ஐ duplicate செய்யாமல், memory-efficient-ஆக operations செய்ய உதவுகிறது.
 
@@ -975,7 +971,7 @@ Broadcasted array:
 
 **குறிப்பு**: **broadcast( )** மற்றும் **broadcast_to( )**: Broadcasting principle-ஐ பயன்படுத்தி arrays-இல் operations செய்ய memory-efficient-ஆகவும் computationally fast-ஆகவும் மாற்றுகின்றன.
 
-#### 9.10. numpy.expand_dims
+##### 9.10. numpy.expand_dims
 
 **expand_dims( )** function-ஐ பயன்படுத்தி array-இல் ஒரு புதிய axis-ஐ சேர்த்து, அதன் dimensionality-ஐ அதிகரிக்க முடியும். இது array-ஐ reshape செய்து, அதனை higher-dimensional array-ஆக மாற்ற உதவுகிறது.
 
@@ -1001,7 +997,7 @@ Expanded array:
 - **axis=0** என்பதை குறிப்பிடுவதன் மூலம், original 1D array `[1, 2, 3]` ஒரு 2D array-ஆக (`[[1, 2, 3]]`) மாற்றப்படுகிறது.
 - இது data-ஐ reshape செய்ய, multi-dimensional data handling-ஐ எளிதாக்க உதவுகிறது.
 
-#### 9.12. numpy.squeeze
+##### 9.11. numpy.squeeze
 
 **squeeze( )** function-ஐ பயன்படுத்தி array-இல் உள்ள unwanted singleton dimensions-ஐ (அதாவது length 1 கொண்ட dimensions) அகற்றலாம். இது array-ஐ compact-ஆக மாற்றி அதன் shape-ஐ குறைக்க உதவுகிறது.
 
@@ -1024,7 +1020,7 @@ Squeezed array: [1 2 3]
 - எங்கள் உதாரணத்தில், 3D array `[ [[1, 2, 3]] ]` ஒரு 1D array `[1, 2, 3]`-ஆக மாற்றப்படுகிறது.
 - இது unwanted dimensions-ஐ அகற்றுவதால் memory usage மற்றும் data processing எளிதாகும்.
 
-#### 9.13. numpy.concatenate
+##### 9.12. numpy.concatenate
 
 **concatenate( )** function-ஐ பயன்படுத்தி இரண்டு அல்லது அதற்கும் அதிகமான array-களை ஒரு இணைந்த array-ஆக உருவாக்கலாம். இது arrays-ஐ sequentially இணைத்து, single array-ஆக return செய்கிறது.
 
@@ -1048,7 +1044,7 @@ Concatenated array: [1 2 3 4 5 6]
 - உதாரணத்தில், **array1** மற்றும் **array2** இணைக்கப்பட்டு, **[1, 2, 3, 4, 5, 6]** என்ற array-ஆகவும் உருவாக்கப்பட்டது.
 - இது data merging மற்றும் continuous sequences-ஐ உருவாக்க உதவுகிறது.
 
-#### 9.14. numpy.stack
+##### 9.13. numpy.stack
 
 **stack( )** function-ஐ பயன்படுத்தி arrays-ஐ ஒரு புதிய axis-இல் stack செய்ய முடியும். இது arrays-ஐ vertically அல்லது horizontally stack செய்து, multi-dimensional structure-ஆக மாற்ற உதவுகிறது.
 
@@ -1075,7 +1071,7 @@ Stacked array:
 - **axis=1** என்ற option-ஐ பயன்படுத்தியதால், **array1** மற்றும் **array2** values horizontal-ஆக stack ஆகின்றன.
 - இது data representation-ஐ மாற்றுவதிலும், matrix operations செய்யவும் பயன்படும்.
 
-#### 9.15. numpy.hstack and numpy.vstack
+##### 9.14. numpy.hstack and numpy.vstack
 
 **hstack( )** மற்றும் **vstack( )** functions-ஐ பயன்படுத்தி arrays-ஐ horizontal மற்றும் vertical-ஆக stack செய்ய முடியும். 
 
@@ -1129,7 +1125,7 @@ Vertically stacked array:
 - **vstack( )** function arrays-ஐ vertical-ஆக stack செய்கிறது, அதாவது arrays-ஐ row-wise align செய்து multi-dimensional array ஆக return செய்கிறது.
 - இது data handling மற்றும் matrix operations-ஐ சிறப்பாக செய்ய உதவுகிறது.
 
-#### 9.16. numpy.split
+##### 9.15. numpy.split
 
 **split( )** function-ஐ பயன்படுத்தி, ஒரு array-ஐ பல துண்டுகளாக பிரிக்கலாம். இது array-ஐ user-defined number of sub-arrays ஆக களவாக பிரிக்க உதவுகிறது.
 
@@ -1151,7 +1147,7 @@ Split arrays: [array([1, 2]), array([3, 4]), array([5, 6])]
 - **split( )** function array-ஐ user-defined size-க்கு sub-arrays ஆகப் பிரிக்கிறது.
 - இந்த உதாரணத்தில், **array** ஐ மூன்று sub-arrays ஆக பிரிக்கப்பட்டு, ஒவ்வொரு array-க்கும் 2 elements ஆக return செய்கிறது.
 
-#### 9.17. numpy.hsplit and numpy.vsplit
+##### 9.16. numpy.hsplit and numpy.vsplit
 
 **hsplit( )** மற்றும் **vsplit( )** functions-ஐ horizontal மற்றும் vertical-ஆக arrays-ஐ பிரிக்க முடியும். 
 
@@ -1201,7 +1197,7 @@ Vertically split arrays: [array([[1, 2, 3]]), array([[4, 5, 6]])]
 - **vsplit( )** function arrays-ஐ vertical-ஆக row-wise பிரிக்க உதவுகிறது.
 - இது multi-dimensional arrays-ஐ row-wise sub-arrays ஆக பிரிக்க உதவுகிறது.
 
-#### 9.18. numpy.resize
+##### 9.17. numpy.resize
 
 **resize( )** function array-ஐ ஒரு புதிய shape-க்கு மாற்றி அமைக்க உதவுகிறது. இது array-ஐ நினைவில் (memory) நிரப்பியபடி அல்லது பின்னர் அளவுடன் conform செய்து மாற்றிக்கொள்ள முடியும்.
 
@@ -1227,7 +1223,7 @@ Resized array:
 
 இந்த methods எல்லாம் NumPy array-களை விரிவாக manipulate செய்து, memory-efficient-ஆக data handling மற்றும் reshaping செய்ய உதவுகின்றன.
 
-#### 9.19. numpy.append
+##### 9.18. numpy.append
 
 **append( )** function-ஐ பயன்படுத்தி, existing array-இன் முடிவில் values-ஐ சேர்க்க முடியும். இது original array-ஐ மாற்றாது; இதற்கு பதிலாக, புதிய array-ஐ return செய்யும், அதில் original values மற்றும் புதிய values இணைக்கப்படும்.
 
@@ -1255,7 +1251,7 @@ Appended array: [1 2 3 4 5 6]
 - இது frequently array-இல் new data add செய்யும்போது மிகவும் பயனுள்ளதாக இருக்கும்.
 
 
-#### 9.20. numpy.insert
+##### 9.19. numpy.insert
 
 **insert( )** function-ஐ பயன்படுத்தி, array-இல் ஒரு குறிப்பிட்ட இடத்தில் values-ஐ insert செய்ய முடியும். இந்த method-ல், நீங்கள் எந்த இடத்தில் values-ஐ சேர்க்க வேண்டும் என்பதையும், எந்த values-ஐ சேர்க்க வேண்டும் என்பதையும் குறிப்பிடலாம்.
 
@@ -1282,7 +1278,7 @@ Inserted array: [1 7 8 2 3]
 
   **குறிப்பு**: எந்த இடத்தில் values சேர்க்க வேண்டும் என்பதையும், அந்த values-ஐ குறிப்பிட்ட இடத்தில் insert செய்வதை நிர்ணயிக்கலாம்.
 
-#### 9.21. numpy.delete
+##### 9.20. numpy.delete
 
 **delete( )** function-ஐ பயன்படுத்தி, array-இல் unwanted values-ஐ அல்லது indices-ஐ அகற்றலாம். இது original array-ஐ modify செய்யாது; இது unwanted values-ஐ அகற்றி, புதிய array-ஐ return செய்கிறது.
 
@@ -1307,7 +1303,7 @@ Deleted array: [1 3 5]
 
   **குறிப்பு**: Original array-ஐ மாற்றாது, புதிய array-ஐ return செய்து unwanted data-ஐ clean செய்கிறது.
 
-#### 9.22. numpy.unique
+##### 9.21. numpy.unique
 
 **unique( )** function-ஐ பயன்படுத்தி, array-இல் உள்ள repeating elements-ஐ அகற்றி, unique values-ஐ மட்டும் return செய்யலாம். இது data analysis மற்றும் data cleaning செயல்பாடுகளில் மிகவும் பயனுள்ளது.
 
@@ -1333,11 +1329,11 @@ Unique values: [1 2 3 4 5]
 
 <div style="page-break-after: always;"></div>
 
-### 10. NUMPY – BINARY OPERATORS
+#### 10. NUMPY – BINARY OPERATORS
 
 NumPy-யில் **binary operators** பயன்படுத்தி bitwise operations செய்யலாம். Bitwise operations binary (இரும) data-களில் வேலை செய்யும், அதாவது bit-அளவிலான data-ஐ நேரடியாக மாற்றும். இவை data manipulation மற்றும் bit-level operations-ஐ எளிதாக்கும்.
 
-#### 10.1. numpy.bitwise_and
+##### 10.1. numpy.bitwise_and
 
 **bitwise_and** operator இரண்டு arrays-இன் bitwise AND operation-ஐ return செய்கிறது. இது ஒவ்வொரு bit-இல் உள்ள values-ஐ எடுத்து AND operation செய்கிறது, அதாவது, இரண்டு bit-களும் 1 என்றால் மட்டுமே முடிவு 1 ஆக இருக்கும்.
 
@@ -1365,7 +1361,7 @@ Bitwise AND: [8]
 
 **bitwise_and** operation AND logic பயன்படுத்தி இரண்டு arrays-இன் corresponding bit-களை compare செய்து, முடிவுகளை return செய்கிறது.
 
-#### 10.2. numpy.bitwise_or
+##### 10.2. numpy.bitwise_or
 
 **bitwise_or** operator இரண்டு arrays-இன் bitwise OR operation-ஐ return செய்கிறது. இது OR operation-ஐ ஒவ்வொரு bit-ஐ வைத்து செய்கிறது, அதாவது, bit-களில் எதாவது ஒரு value 1 என்றால், முடிவாக 1 return ஆகும்.
 
@@ -1391,7 +1387,7 @@ Bitwise OR: [14]
 
 **bitwise_or** operation OR logic-ஐ பயன்படுத்தி bit-level-ல் values-ஐ compare செய்து, final result-ஐ return செய்கிறது.
 
-#### 10.3. numpy.invert( )
+##### 10.3. numpy.invert( )
 
 **invert( )** function-ஐ பயன்படுத்தி array-இல் உள்ள ஒவ்வொரு bit-ஐ எதிர்மறையாக மாற்றலாம். இதன் பொருள், bit 1 இருந்தால் 0 ஆகவும், 0 இருந்தால் 1 ஆகவும் மாற்றம் செய்யும்.
 
@@ -1415,7 +1411,7 @@ Bitwise NOT: [243]
 
 **invert( )** operation bit-level inversion-ஐ எளிதாக செய்து, data-ஐ logically toggle செய்ய உதவுகிறது.
 
-#### 10.4. numpy.left_shift
+##### 10.4. numpy.left_shift
 
 **left_shift** operator-ஐ பயன்படுத்தி array-இன் bits-ஐ இடது பக்கம் (left side) நகர்த்தலாம். இது bit values-ஐ shift செய்து, அதற்கு வலது பக்கம் புதிய 0s சேர்க்கும்.
 
@@ -1439,7 +1435,7 @@ Left Shift: [8]
 
 **left_shift** operation bit-level-ல் values-ஐ இடது பக்கம் நகர்த்தி, binary representation-ஐ மாற்ற உதவுகிறது.
 
-#### 10.5. numpy.right_shift
+##### 10.5. numpy.right_shift
 
 **right_shift** operator-ஐ பயன்படுத்தி array-இன் bits-ஐ வலது பக்கம் (right side) நகர்த்தலாம். இது bit values-ஐ shift செய்து, அதற்கு இடது பக்கம் 0s சேர்க்கும்.
 
@@ -1467,7 +1463,7 @@ Right Shift: [2]
 
 <div style="page-break-after: always;"></div>
 
-### 11. NUMPY − STRING FUNCTIONS
+#### 11. NUMPY − STRING FUNCTIONS
 
 NumPy-யில் **string functions** array-களில் உள்ள string values-ஐ manipulate செய்ய உதவுகின்றன. NumPy-யின் string functions-ஐ பயன்படுத்தி, strings-ஐ uppercase, lowercase, join, replace போன்ற operations செய்யலாம். இது data processing-ஐ எளிதாக்குவதுடன், string manipulation-ஐ memory-efficient-ஆகவும் செய்கிறது.
 
@@ -1552,11 +1548,11 @@ Uppercase Strings: ['HELLO' 'WORLD']
 
 <div style="page-break-after: always;"></div>
 
-### 12. NUMPY − MATHEMATICAL FUNCTIONS
+#### 12. NUMPY − MATHEMATICAL FUNCTIONS
 
 NumPy-ல் பல்வேறு **mathematical functions** உள்ளன, இது arrays-இல் உள்ள values-ஐ நேரடியாக கணக்கிடவும், analyze செய்யவும் உதவுகிறது. இதன் மூலம் complex mathematical operations-ஐ எளிதாகவும் memory-efficient-ஆகவும் செயல்படுத்த முடியும்.
 
-#### 12.1. Trigonometric Functions
+##### 12.1. Trigonometric Functions
 
 Numpy-ல் **trigonometric functions** மூலம் sin, cos, tan போன்ற values-ஐ angles-ஐ அடிப்படையாகக் கொண்டு கணக்கிட முடியும். இவை scientific calculations, signal processing மற்றும் data analysis-ல் பயன்படும்.
 
@@ -1605,7 +1601,7 @@ Sine Values: [0.000000e+00 1.000000e+00 1.224647e-16]
 
    **Output:** `Tangent Values: [0.000000e+00 1.633124e+16 -1.224647e-16]`
 
-#### 12.2. Functions for Rounding
+##### 12.2. Functions for Rounding
 
 NumPy-ல் rounding operations-ஐ செய்ய, **round, floor, ceil** போன்ற functions உள்ளன. இவை decimal values-ஐ nearest integers-ஆக rounding, flooring, மற்றும் ceiling செய்து return செய்யும்.
 
@@ -1655,7 +1651,7 @@ Rounded Values: [1. 2. 4.]
 
    **Output:** `Ceil Values: [2. 3. 4.]`
 
-#### 12.3. Exponential and Logarithmic Functions
+##### 12.3. Exponential and Logarithmic Functions
 
 NumPy-ல் exponential மற்றும் logarithmic operations-ஐ செய்யவும் functions உள்ளது. இது data growth மற்றும் scale-down analysis-ஐ scientific context-ல் பயன்படும்.
 
@@ -1699,11 +1695,11 @@ Logarithmic Values: [0. 1. 2.]
 
 <div style="page-break-after: always;"></div>
 
-### 13. NUMPY − ARITHMETIC OPERATIONS
+#### 13. NUMPY − ARITHMETIC OPERATIONS
 
 NumPy-யில் **arithmetic operations** மிக எளிமையானவை, மற்றும் array-களின் values-ஐ நேரடியாக மாற்றி கொண்டுவர முடியும். இதனால், data analysis மற்றும் scientific calculations-ஐ வேகமாகவும் திறமையாகவும் செய்ய முடிகிறது. 
 
-#### 13.1. numpy.reciprocal( )
+##### 13.1. numpy.reciprocal( )
 
 **reciprocal( )** function-ஐ பயன்படுத்தி, array-இல் உள்ள values-ஐ reciprocal values-ஆக மாற்றலாம். Reciprocal என்பது 1/x என்ற சார்பாக இயங்கும், அதாவது, 1 ஐ given value-ஆல் பகுத்தல்.
 
@@ -1730,7 +1726,7 @@ Reciprocal values: [1 0 0]
 
 **Note:** Integer array-இல் reciprocal values truncate செய்யப்பட்டு 0 ஆக இருக்கும், fractional values துல்லியமாகத் தர வேண்டுமானால், float array-ஐ பயன்படுத்துவது நல்லது.
 
-#### 13.2. numpy.power( )
+##### 13.2. numpy.power( )
 
 **power( )** function-ஐ பயன்படுத்தி, array-இல் உள்ள values-ஐ exponentiation செய்யலாம். இது base value-ஐ exponent power-க்கு அடிக்கலாம்.
 
@@ -1755,7 +1751,7 @@ Power values: [ 4 27 16]
 - Power calculation = [$2^2$, $3^3$, $4^2$] = [4, 27, 16]
 - **np.power( )** function base array-இன் ஒவ்வொரு value-க்கும் exponent array-ஐ use செய்து exponentiation செய்கிறது.
 
-#### 13.3. numpy.mod( )
+##### 13.3. numpy.mod( )
 
 **mod( )** function-ஐ பயன்படுத்தி, array-இல் modulus operation செய்யலாம். இது division operation செய்து, division லிருந்து மீதி values-ஐ return செய்யும்.
 
@@ -1810,11 +1806,11 @@ Modulus values: [1 0 2]
 
 <div style="page-break-after: always;"></div>
 
-### 14. NUMPY − STATISTICAL FUNCTIONS
+#### 14. NUMPY − STATISTICAL FUNCTIONS
 
 NumPy-யில் பல **statistical functions** உள்ளன, இது data-யை எளிதாக புள்ளிவிவரமாக பரிசோதிக்க உதவுகிறது. இந்த statistical functions data analysis மற்றும் decision-making செயல்பாடுகளை துல்லியமாகவும் memory-efficient-ஆகவும் செய்ய உதவுகின்றன.
 
-#### 14.1. numpy.amin( ) and numpy.amax( )
+##### 14.1. numpy.amin( ) and numpy.amax( )
 
 **amin( )** மற்றும் **amax( )** functions-ஐ பயன்படுத்தி array-இல் உள்ள குறைந்த மற்றும் அதிகமான values-ஐ கண்டறியலாம். இது data-யின் minimum மற்றும் maximum values-ஐ எளிதாக return செய்கிறது.
 
@@ -1842,7 +1838,7 @@ Maximum value: 50
 - **np.amax( )** function array-இல் உள்ள அதிகமான value-ஐ return செய்கிறது.
 - இந்த functions data-யின் extreme values-ஐ கண்டறிய data validation மற்றும் data quality analysis-க்கு பயனுள்ளது.
 
-#### 14.2. numpy.ptp( )
+##### 14.2. numpy.ptp( )
 
 **ptp( )** function-ஐ பயன்படுத்தி array-இன் maximum மற்றும் minimum values-இன் range-ஐ காணலாம். இது peak-to-peak range-ஐ எளிதாக return செய்கிறது.
 
@@ -1863,7 +1859,7 @@ Range (ptp): 40
 - **ptp( )** function array-இல் உள்ள maximum value மற்றும் minimum value இடையிலான difference-ஐ return செய்கிறது.
 - இந்த range values data-யின் spread-ஐ அளவிடும் metric ஆகும், இது data variability-ஐ அறிய உதவும்.
 
-#### 14.3. numpy.percentile( )
+##### 14.3. numpy.percentile( )
 
 **percentile( )** function-ஐ array-இல் உள்ள values-இன் percentile-ஐ கண்டறிய பயன்படுத்தலாம். Percentile என்பது data-இல் உள்ள values-ஐ ஒரு குறிப்பிட்ட அளவிற்கு மேல் அல்லது கீழ் உள்ளவர்களாகப் பகுக்க உதவும்.
 
@@ -1885,7 +1881,7 @@ print("50th Percentile:", percentile_value)
 - 50th percentile என்பது median value ஆகும், இது data distribution-ஐ அறிய மிகவும் முக்கியமானது.
 - Percentile calculations data-யின் distribution-ஐ அறிந்து data analysis-ல் useful insights அளிக்கிறது.
 
-#### 14.4. numpy.median( )
+##### 14.4. numpy.median( )
 
 **median( )** function array-இல் values-ஐ arrange செய்த பிறகு, அதில் உள்ள center value-ஐ return செய்கிறது. Median என்பது values-ஐ ascending order-ல் வரிசைப்படுத்திய பிறகு உள்ள நடுநிலையான value ஆகும்.
 
@@ -1909,7 +1905,7 @@ Median value: 30.0
 - **median( )** function array-இல் உள்ள values-ஐ arrange செய்து, center value-ஐ return செய்கிறது.
 - Median calculation data-இன் central tendency-ஐ அளவிட மிகவும் பயனுள்ளது, ஏனெனில் இது extreme values-ஐ (outliers) ignore செய்கிறது.
 
-#### 14.5. numpy.mean( )
+##### 14.5. numpy.mean( )
 
 **mean( )** function array-இல் values-இன் arithmetic mean (average) value-ஐ return செய்கிறது. Mean என்பது data-இல் உள்ள values-ஐ sum செய்து, அந்த sum-ஐ values-இன் எண்ணிக்கையால் பகுத்தல்.
 
@@ -1930,7 +1926,7 @@ Mean value: 30.0
 - **mean( )** function array-இல் values-ஐ average-ஆக return செய்கிறது.
 - Mean calculation data distribution-ஐ அறிய முக்கியமானது, இது values-ஐ central tendency-ல் புரிந்து கொள்ள உதவுகிறது.
 
-#### 14.6. numpy.average( )
+##### 14.6. numpy.average( )
 
 **average( )** function array-இல் values-ஐ weighted average-ஆக return செய்கிறது. Weighted average-ல் values-க்கு கொடுக்கப்படும் importance (weight) அடிப்படையில் calculations செய்யப்படுகிறது.
 
@@ -1952,7 +1948,7 @@ Weighted average: 40.0
 - **average( )** function values-இல் weights கொடுத்த பிறகு weighted average-ஐ return செய்கிறது.
 - Weighted average data importance-ஐ அடிப்படையாக கொண்டு average value-ஐ return செய்யும், இது decision-making process-ல் மிக முக்கியம்.
 
-#### 14.7. Standard Deviation
+##### 14.7. Standard Deviation
 
 **std( )** function array-இல் values-ஐ standard deviation-ஆக return செய்கிறது. Standard deviation என்பது values-ஐ mean-இன் சுற்றிலும் எவ்வளவு scatter ஆக இருக்கின்றன என்பதை அளவிடும்.
 
@@ -1973,7 +1969,7 @@ Standard Deviation: 14.142135623730951
 - **std( )** function array-இல் values-ஐ standard deviation-ஆக return செய்கிறது.
 - Standard deviation values-ஐ mean-இன் சுற்றிலும் எவ்வளவு வித்தியாசமாக உள்ளன என்பதை காட்டும், இது data variability-ஐ அறிய உதவுகிறது.
 
-#### 14.8. Variance
+##### 14.8. Variance
 
 **var( )** function array-இல் values-ஐ variance-ஆக return செய்கிறது. Variance என்பது values-ஐ mean-இன் சுற்றிலும் deviation-ஐ square செய்து return செய்கிறது.
 
@@ -1998,11 +1994,11 @@ Variance: 200.0
 
 <div style="page-break-after: always;"></div>
 
-### 15. NUMPY − SORT, SEARCH & COUNTING FUNCTIONS
+#### 15. NUMPY − SORT, SEARCH & COUNTING FUNCTIONS
 
 NumPy-யில் **sort, search மற்றும் counting** functions-ஐ பயன்படுத்தி array-களின் values-ஐ வரிசைப்படுத்தவும், தேடவும் மற்றும் எண்ணிக்கையிடவும் முடியும். இவை data analysis மற்றும் data manipulation-ஐ எளிமையாக்க உதவுகின்றன.
 
-#### 15.1. numpy.sort( )
+##### 15.1. numpy.sort( )
 
 **sort( )** function-ஐ பயன்படுத்தி array-இல் values-ஐ ascending order-ல் வரிசைப்படுத்தலாம். இது data-ஐ reorganize செய்ய memory-efficient-ஆகவும் computationally fast-ஆகவும் செய்கிறது.
 
@@ -2026,7 +2022,7 @@ Sorted array: [1 2 5 8 9]
 - **np.sort( )** function array-இல் values-ஐ ascending order-ல் வரிசைப்படுத்துகிறது.
 - இது data-ஐ orderly format-ஆக மாற்றி, analysis-க்கு எளிதாகிறது.
 
-#### 15.2. numpy.argsort( )
+##### 15.2. numpy.argsort( )
 
 **argsort( )** function-ஐ பயன்படுத்தி, array-இல் values-ஐ வரிசைப்படுத்த indices-ஐ return செய்கிறது. இது values-ஐ original order-ல் எவ்வாறு வரிசைப்படுத்த வேண்டுமென காட்டும்.
 
@@ -2047,7 +2043,7 @@ Indices of sorted array: [3 1 0 2 4]
 - **np.argsort( )** function-ஐ பயன்படுத்தி sorted order-ல் values எங்கே இருக்கின்றன என்பதன் indices-ஐ return செய்கிறது.
 - இது data-ஐ arrange செய்யாதே, values-ஐ reference அடிப்படையில் access செய்ய உதவுகிறது.
 
-#### 15.3. numpy.lexsort( )
+##### 15.3. numpy.lexsort( )
 
 **lexsort( )** function ஒரு அல்லது அதற்கும் அதிகமான keys-ஐ அடிப்படையாக வைத்து data-ஐ வரிசைப்படுத்தும். இது multi-dimensional data-ஐ இரண்டு அல்லது அதற்கு மேற்பட்ட criteria அடிப்படையில் organize செய்ய உதவுகிறது.
 
@@ -2070,7 +2066,7 @@ Sorted indices based on names and prices: [1 2 0]
 - **np.lexsort( )** function-ஐ இரண்டு keys (names, prices) அடிப்படையில் data-ஐ arrange செய்ய பயன்படுத்தியுள்ளோம்.
 - இது data-ஐ multi-level sorting-ஆக reorder செய்ய உதவுகிறது, இதன் மூலம் complex data-ஐ organize செய்யலாம்.
 
-#### 15.4. numpy.argmax( ) and numpy.argmin( )
+##### 15.4. numpy.argmax( ) and numpy.argmin( )
 
 **argmax( )** மற்றும் **argmin( )** functions array-இல் உள்ள மிகப் பெரிய மற்றும் சிறிய values-இருக்கும் indices-ஐ return செய்கின்றன. இது array-இல் உள்ள extreme values-ஐ எளிதாக கண்டறிய உதவுகிறது.
 
@@ -2095,7 +2091,7 @@ Index of minimum value: 3
 - **np.argmin( )** function minimum value-ஐ கொண்ட index-ஐ return செய்கிறது.
 - இது data-ஐ identify செய்து, peak values-ஐ track செய்ய உதவுகிறது.
 
-#### 15.5. numpy.nonzero( )
+##### 15.5. numpy.nonzero( )
 
 **nonzero( )** function array-இல் 0 அல்லாத values-இருக்கும் இடங்களை return செய்கிறது. இது sparse data-ஐ handle செய்யும் போது மிகவும் பயனுள்ளது.
 
@@ -2116,7 +2112,7 @@ Indices of non-zero elements: (array([0, 1, 2, 3, 4]),)
 - **np.nonzero( )** function array-இல் 0 values இல்லாத இடங்களை return செய்கிறது.
 - இது data-ஐ filter செய்து, sparse data structures-ஐ அறிய memory-efficient-ஆகப் பயன்படுத்தப்படுகிறது.
 
-#### 15.6. numpy.where( )
+##### 15.6. numpy.where( )
 
 **where( )** function ஒரு condition அடிப்படையில் array-இல் values-இருக்கும் இடங்களை return செய்கிறது. இது conditional logic-ஐ பயன்படுத்தி data-ஐ filter செய்ய உதவுகிறது.
 
@@ -2137,7 +2133,7 @@ Indices where values > 4: (array([0, 2, 4]),)
 - **np.where( )** function-ஐ condition (values > 4) அடிப்படையில் values-இருக்கும் இடங்களை return செய்கிறது.
 - இது boolean indexing-ஐ பயன்படுத்தி data-ஐ filter செய்ய எளிதாக்குகிறது.
 
-#### 15.7. numpy.extract( )
+##### 15.7. numpy.extract( )
 
 **extract( )** function-ஐ condition அடிப்படையில் array-இல் values-ஐ return செய்ய பயன்படுத்தலாம். இது data-இல் குறிப்பிட்ட condition satisfy செய்யும் values-ஐ எளிதாக பெற உதவுகிறது.
 
@@ -2162,7 +2158,7 @@ Extracted values greater than 4: [5 8 9]
 
 <div style="page-break-after: always;"></div>
 
-### 16. NUMPY − BYTE SWAPPING
+#### 16. NUMPY − BYTE SWAPPING
 
 NumPy-யில் **byteswap( )** function-ஐ பயன்படுத்தி array-இல் உள்ள values-ஐ byte-order மாற்றம் செய்ய முடியும். Byte swapping என்பது data representation-ஐ big-endian மற்றும் little-endian format-களுக்கு இடையே மாற்றுவது ஆகும். இது cross-platform data compatibility மற்றும் binary data handling-க்கு உதவுகிறது.
 
@@ -2220,11 +2216,11 @@ Byte swapped array: [  256     1 38530]
 
 <div style="page-break-after: always;"></div>
 
-### 17. NUMPY − COPIES & VIEWS
+#### 17. NUMPY − COPIES & VIEWS
 
 NumPy-யில் data-ஐ manage செய்வதற்கான மூன்று முக்கியமான concepts உள்ளன: **No Copy, View அல்லது Shallow Copy, Deep Copy**. இவை memory-யை எவ்வாறு handle செய்ய வேண்டும், data-ஐ duplicate செய்ய வேண்டுமா என்பதனை புரிந்து கொள்ள உதவுகின்றன.
 
-#### 17.1. No Copy
+##### 17.1. No Copy
 
 ஒரு array-ஐ மற்றொரு variable-க்கு assign செய்தால், அது original data-ஐ reference செய்து கொண்டிருக்கும். இதற்கு copy உருவாகாது. இதன் பொருள், original array மற்றும் new variable ஒன்று data-ஐ share செய்கின்றன.
 
@@ -2251,7 +2247,7 @@ No Copy array: [10  2  3]
 - **No Copy**-இல், original array-ஐ new variable-க்கு assign செய்தால், அது original data-ஐ reference செய்கிறது.
 - **no_copy_array**-இல் மாற்றம் செய்யும் போது, **array**-யிலும் அதே மாற்றம் நிகழ்கிறது, ஏனெனில் இவை இரண்டுமே ஒரே memory location-ஐ reference செய்கின்றன.
 
-#### 17.2. View or Shallow Copy
+##### 17.2. View or Shallow Copy
 
 **view( )** method-ஐ பயன்படுத்தி ஒரு shallow copy உருவாக்கலாம். Shallow copy என்பது data-இல் உள்ள changes-ஐ reflect செய்யும், ஆனால் data structure மாற்றும்போது மாற்றம் இல்லாது இருக்கும்.
 
@@ -2275,7 +2271,7 @@ View array: [10 20  3]
 - **Shallow Copy**-இல், **view_array**-ஐ modify செய்தாலும், original array-யில் எந்த மாற்றமும் இல்லை, ஏனெனில் shallow copy data structure-ஐ share செய்கிறது.
 - இதற்காக memory usage குறைவாக இருக்கும், ஆனால் data values-ஐ மட்டுமே modify செய்யலாம்.
 
-#### 17.3. Deep Copy
+##### 17.3. Deep Copy
 
 **copy( )** method-ஐ பயன்படுத்தி ஒரு deep copy உருவாக்கலாம். Deep copy data-ஐ முழுமையாக independent-ஆக duplicate செய்கிறது. இதனால், original data-ஐ மாற்றினாலும், copy-ஐ எந்த விதமான பாதிப்பும் இருக்காது.
 
@@ -2309,11 +2305,11 @@ NumPy-யின் **copies & views** methods data manipulation-ஐ எளித
 
 <div style="page-break-after: always;"></div>
 
-### 18. NUMPY − MATRIX LIBRARY
+#### 18. NUMPY − MATRIX LIBRARY
 
 NumPy-யில் உள்ள **matrix library** என்பது matrix-களை உருவாக்கவும், நிர்வகிக்கவும் உதவும் functions-களை கொண்டுள்ளது. NumPy.matlib functions-ஐ பயன்படுத்தி, நீங்கள் matrix operations-ஐ memory-efficient-ஆகவும் computationally fast-ஆகவும் செயல்படுத்த முடியும். இது scientific computing மற்றும் linear algebra operations-ஐ எளிமையாக செய்கிறது.
 
-#### 18.1. matlib.empty( )
+##### 18.1. matlib.empty( )
 
 **matlib.empty( )** function-ஐ பயன்படுத்தி, uninitialized values கொண்ட ஒரு matrix-ஐ உருவாக்கலாம். Uninitialized matrix என்பது memory-யில் உள்ள பயனற்ற values-ஐ பயன்படுத்தி matrix-ஐ உருவாக்கும், இதனால் memory allocation மிக வேகமாக இருக்கும்.
 
@@ -2344,7 +2340,7 @@ Empty matrix:
 - **Performance Optimization**: Memory-யை வேகமாக allocate செய்ய வேண்டிய இடத்தில், ஆனால் values-ஐ பின்னர் initialize செய்யும் data structures-ல்.
 - **Data Allocation**: Data-ஐ அடிப்படையாக பயன்படுத்தாமல் placeholder ஆக memory-யில் data structure உருவாக்கும்போது.
 
-#### 18.2. numpy.matlib.zeros( )
+##### 18.2. numpy.matlib.zeros( )
 
 **matlib.zeros( )** function-ஐ பயன்படுத்தி, எல்லா elements-னும் zeros ஆக உள்ள ஒரு matrix-ஐ உருவாக்கலாம். இது scientific calculations மற்றும் numerical computations-ஐ நேரடியாக initialize செய்ய உதவும், ஏனெனில் zeros கொண்ட matrix-கள் இடம் பிடிக்கும் computation-ஐ எளிமையாக மாற்றுகின்றன.
 
@@ -2373,7 +2369,7 @@ Zeros matrix:
 - **Default Initialization**: Numerical operations-ஐ ஆரம்ப கட்டமாக zeros matrix-கள் கொண்ட data structure-ஐ பயன்படுத்தும்போது.
 - **Matrix Operations**: Linear algebra மற்றும் matrix multiplication போன்ற கணக்கீடுகளுக்கு ஆரம்ப கட்டத்தில் null values ஆக இருக்கும் data-ஐ initialize செய்ய வேண்டும்.
 
-#### 18.3. numpy.matlib.ones( )
+##### 18.3. numpy.matlib.ones( )
 
 **matlib.ones( )** function-ஐ பயன்படுத்தி, எல்லா elements-னும் ones ஆக உள்ள ஒரு matrix-ஐ உருவாக்கலாம். இது matrix-ஐ முழுமையாக ones values-ஆக initialize செய்வதற்காக memory-efficient-ஆக செயல்படுகிறது.
 
@@ -2403,7 +2399,7 @@ Ones matrix:
 - **Data Initialization**: Calculations-ஐ ஆரம்பிக்கும் முன் default values-ஆக ones கொண்ட data structures-ஐ initialize செய்ய.
 - **Matrix Operations**: Machine learning algorithms மற்றும் matrix algebra operations-ல் identity values-ஐ represent செய்ய.
 
-#### 18.4. numpy.matlib.eye( )
+##### 18.4. numpy.matlib.eye( )
 
 **matlib.eye( )** function-ஐ diagonal values-ல் ones மற்றும் மற்ற இடங்களில் zeros values கொண்ட ஒரு identity matrix-ஐ உருவாக்க பயன்படுத்தலாம். இது rectangular shape-உம் diagonal-ல் identity values-ஐ represent செய்யும்.
 
@@ -2432,7 +2428,7 @@ Eye matrix:
 - **Identity Matrix Creation**: Linear algebra மற்றும் matrix inversion operations-ல் identity matrix-ஐ உருவாக்க.
 - **Diagonal Operations**: Specific diagonal-ல் values-ஐ represent செய்து computations-ஐ எளிதாக்க.
 
-#### 18.5. numpy.matlib.identity( )
+##### 18.5. numpy.matlib.identity( )
 
 **matlib.identity( )** function square matrix-ஐ உருவாக்குவதற்காக diagonal-ல் மட்டும் ones values-ஐ கொண்டு பயன்படுத்தப்படுகிறது. இது square matrix-களில் diagonal values-ஐ identity values-ஆக represent செய்யும்.
 
@@ -2462,7 +2458,7 @@ Identity matrix:
 - **Square Matrix Operations**: Linear algebra operations மற்றும் machine learning algorithms-ல் identity matrix-ஐ represent செய்ய.
 - **Matrix Calculations**: Square matrix calculations-ஐ ஆரம்ப கட்டத்தில் identity values கொண்டு initialize செய்ய.
 
-#### 18.6. numpy.matlib.rand( )
+##### 18.6. numpy.matlib.rand( )
 
 **matlib.rand( )** function-ஐ பயன்படுத்தி, uniform distribution அடிப்படையில் random values கொண்ட ஒரு matrix-ஐ உருவாக்கலாம். இது scientific computing மற்றும் statistical analysis-ல் random data generation-ஐ memory-efficient-ஆக செய்ய உதவுகிறது.
 
@@ -2503,11 +2499,11 @@ NumPy-யின் matrix library functions-ஐ memory-efficient-ஆகவும
 
 <div style="page-break-after: always;"></div>
 
-### 19. NUMPY − LINEAR ALGEBRA
+#### 19. NUMPY − LINEAR ALGEBRA
 
 NumPy-யில் **linear algebra** operations-ஐ செய்ய பல முக்கியமான functions உள்ளன. இந்த functions matrix multiplication, inner products, determinants, மற்றும் linear equations-ஐ solve செய்ய memory-efficient மற்றும் computationally fast-ஆக செயல்படுகின்றன. 
 
-#### 19.1. numpy.dot( )
+##### 19.1. numpy.dot( )
 
 **dot( )** function-ஐ பயன்படுத்தி, இரண்டு arrays-இன் dot product-ஐ கணக்கிடலாம். Dot product என்பது linear algebra-இல் முக்கியமான operation ஆகும், இது vectors மற்றும் matrices-இன் multiplication-ஐ உள்ளடக்கியது.
 
@@ -2532,7 +2528,7 @@ Dot product: 11
 - **np.dot( )** function-ஐ பயன்படுத்தி arrays **a** மற்றும் **b**-இன் dot product-ஐ கணக்கிட்டோம்.
 - Dot product calculation: (1 * 3) + (2 * 4) = 3 + 8 = 11
 
-#### 19.2. numpy.vdot( )
+##### 19.2. numpy.vdot( )
 
 **vdot( )** function-ஐ flattened arrays-இன் dot product-ஐ கணக்கிட பயன்படுத்தலாம். Flattened arrays-இல், multi-dimensional arrays-ஐ single-dimensional-ஆக மாற்றி dot product operation செய்யும்.
 
@@ -2553,7 +2549,7 @@ Vdot product: 11
 - **np.vdot( )** function-ஐ flattened arrays-இல் dot product operation செய்ய memory-efficient-ஆக பயன்படுத்துகிறோம்.
 - Flattening ensures that the dot product operation works on single-dimensional data.
 
-#### 19.3. numpy.inner( )
+##### 19.3. numpy.inner( )
 
 **inner( )** function-ஐ பயன்படுத்தி, arrays-இன் inner product-ஐ கண்டறியலாம். Inner product என்பது vectors-இன் corresponding elements-ஐ multiply செய்து, அதன் summation-ஐ return செய்யும் operation ஆகும்.
 
@@ -2574,7 +2570,7 @@ Inner product: 11
 - **np.inner( )** function-ஐ inner product operation செய்ய vectors-ஐ பயன்படுத்தியுள்ளோம்.
 - Inner product calculation: (1 * 3) + (2 * 4) = 11, which is similar to dot product.
 
-#### 19.4. numpy.matmul( )
+##### 19.4. numpy.matmul( )
 
 **matmul( )** function-ஐ matrix multiplication செய்ய பயன்படுத்தலாம். Matrix multiplication என்பது two-dimensional arrays-இல் row-by-column multiplication operation ஆகும்.
 
@@ -2601,7 +2597,7 @@ Matrix product:
   - Row 1: (1 * 5) + (2 * 7) = 19
   - Row 2: (3 * 5) + (4 * 7) = 43
 
-#### 19.5. Determinant Calculation
+##### 19.5. Determinant Calculation
 
 Numpy-யின் **det( )** function-ஐ பயன்படுத்தி, square matrix-இன் determinant-ஐ கண்டறியலாம். Determinant என்பது linear algebra-இல் matrix-ஐ invertible ஆக மாற்றுவதற்கு பயன்படும் scalar value ஆகும்.
 
@@ -2622,7 +2618,7 @@ Determinant: -2.0000000000000004
 - np.linalg.det( )** function-ஐ பயன்படுத்தி square matrix-இன் determinant-ஐ கண்டறிந்தோம்.
 - Determinant-ஐ use செய்து matrix invertible property-ஐ validate செய்யலாம்.
 
-#### 19.6. numpy.linalg.solve( )
+##### 19.6. numpy.linalg.solve( )
 
 **solve( )** function-ஐ linear equations-இன் solution-ஐ கண்டறிய பயன்படுத்தலாம். இது linear equations-ஐ matrix representation-ல் convert செய்து, variables-ஐ கண்டறிகிறது.
 
@@ -2650,11 +2646,11 @@ Solutions: [2. 3.]
 
 <div style="page-break-after: always;"></div>
 
-### 20. NUMPY − MATPLOTLIB
+#### 20. NUMPY − MATPLOTLIB
 
 NumPy-யுடன் **Matplotlib**-ஐ இணைத்து data-ஐ visualizations செய்வது மிகவும் எளிதாகவும் பயனுள்ளதாகவும் இருக்கிறது. Matplotlib plotting library-ஐ பயன்படுத்தி graphs மற்றும் charts உருவாக்கலாம். இது data-ஐ graphical format-ஆக represent செய்து, trends மற்றும் patterns-ஐ எளிதாக புரிந்து கொள்ள உதவுகிறது.
 
-#### 20.1. Sine Wave Plot
+##### 20.1. Sine Wave Plot
 
 **Sine wave plot**-ஐ உருவாக்கி data-ஐ visualize செய்வது data trends-ஐ புரிந்துகொள்ள உதவுகிறது. Sine wave என்பது periodic function-ஐ graph-ஆக காட்டும் representation ஆகும்.
 
@@ -2683,7 +2679,7 @@ plt.show( )  # plot-ஐ காட்டுகிறது
 - **plt.plot( )**-ஐ பயன்படுத்தி sine wave-ஐ visualize செய்கிறது.
 - இது signal processing மற்றும் periodic functions-ஐ study செய்ய பயன்படுகிறது.
 
-#### 20.2. subplot( )
+##### 20.2. subplot( )
 
 **subplot( )** function-ஐ ஒரே figure-இல் பல plots-ஐ உருவாக்க பயன்படுத்தலாம். இது multiple graphs-ஐ ஒரே chart-ல் அணுக்கமாகக் காண்பிக்க உதவுகிறது.
 
@@ -2711,7 +2707,7 @@ plt.show( )
 - **plt.subplot(2, 1, 2)** என்பது இரண்டாவது subplot-ஐ cosine wave-ஐ plot செய்ய set செய்கிறது.
 - இது graphs-ஐ compare செய்வதற்கான சிறந்த முறையாகும், data trends-ஐ side-by-side analyze செய்ய உதவுகிறது.
 
-#### 20.3. bar( )
+##### 20.3. bar( )
 
 **bar( )** function-ஐ data-ஐ bar chart-ஆக plot செய்ய பயன்படுத்தலாம். Bar chart-கள் data-ஐ categories அடிப்படையில் compare செய்ய உதவுகின்றன.
 
@@ -2738,11 +2734,11 @@ plt.show( )
 
 <div style="page-break-after: always;"></div>
 
-### 21. NUMPY – HISTOGRAM USING MATPLOTLIB
+#### 21. NUMPY – HISTOGRAM USING MATPLOTLIB
 
 Numpy-யுடன் **Matplotlib**-ஐ histogram உருவாக்கி data distribution-ஐ காணலாம். Histogram என்பது data-இன் frequency distribution-ஐ காண்பிக்கும் visual representation ஆகும், இது data-இல் values எவ்வாறு spread ஆகவுள்ளது என்பதைக் காட்டுகிறது.
 
-#### 21.1. numpy.histogram( )
+##### 21.1. numpy.histogram( )
 
 **histogram( )** function-ஐ data distribution-ஐ கண்டறிய பயன்படுத்தலாம். இது data-ஐ bins எனப்படும் intervals-களாக பிரித்து, ஒவ்வொரு interval-ல் values எவ்வளவு உள்ளன என்பதைக் காட்டுகிறது.
 
@@ -2773,11 +2769,11 @@ plt.show( )  # Display the plot
 
 <div style="page-break-after: always;"></div>
 
-### 22. NUMPY − I/O WITH NUMPY
+#### 22. NUMPY − I/O WITH NUMPY
 
 NumPy-யில் data-ஐ save மற்றும் load செய்ய பல methods உள்ளன, இதனால் data-ஐ file format-ல் எளிதாக சேமிக்கவும், retrieve செய்யவும் முடியும். Data I/O operations scientific computing மற்றும் data analysis-ல் மிகவும் முக்கியமானவை.
 
-#### 22.1. numpy.save( )
+##### 22.1. numpy.save( )
 
 **save( )** function-ஐ பயன்படுத்தி, array-ஐ binary format-ல் (.npy) சேமிக்கலாம். இது data-ஐ compact-ஆகவும் memory-efficient-ஆகவும் சேமிக்க உதவுகிறது.
 
@@ -2800,7 +2796,7 @@ Array saved as 'my_array.npy' in the current directory.
 - **np.save( )** function-ஐ array-ஐ binary format-ல் சேமிக்க பயன்படுத்துகிறோம்.
 - இந்த method data-ஐ efficient-ஆக save செய்து, future usage-க்கு compact format-ல் வைத்திருக்கிறது.
 
-#### 22.2. numpy.savetxt( )
+##### 22.2. numpy.savetxt( )
 
 **savetxt( )** function-ஐ பயன்படுத்தி, array-ஐ text file format-ல் சேமிக்கலாம். Text format-ல் data-ஐ human-readable-ஆக save செய்ய இது பயன்படும்.
 

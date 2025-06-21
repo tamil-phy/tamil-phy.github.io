@@ -275,6 +275,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="notes.html">Notes</a>
                     </li>
+                    <li class="nav-item" style="display: block !important; visibility: visible !important;">
+                        <a class="nav-link" href="books.html" style="display: block !important; visibility: visible !important;">Books</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="papers.html">Papers</a>
                     </li>
@@ -320,6 +323,39 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Ensure Books tab is properly displayed
+        document.addEventListener("DOMContentLoaded", function() {
+            // Check if Books tab exists
+            const navbarNav = document.getElementById("navbarNav");
+            const navItems = navbarNav.querySelectorAll(".nav-item");
+            
+            // Find Notes tab position
+            let notesIndex = -1;
+            for (let i = 0; i < navItems.length; i++) {
+                if (navItems[i].querySelector(".nav-link").getAttribute("href") === "notes.html") {
+                    notesIndex = i;
+                    break;
+                }
+            }
+            
+            // Check if Books tab exists after Notes tab
+            if (notesIndex !== -1 && notesIndex + 1 < navItems.length) {
+                const nextItem = navItems[notesIndex + 1];
+                const nextLink = nextItem.querySelector(".nav-link");
+                
+                if (!nextLink || nextLink.getAttribute("href") !== "books.html") {
+                    // Books tab is missing or in wrong position, insert it
+                    const booksItem = document.createElement("li");
+                    booksItem.className = "nav-item";
+                    booksItem.innerHTML = '<a class="nav-link" href="books.html">Books</a>';
+                    
+                    // Insert after Notes tab
+                    navItems[notesIndex].insertAdjacentElement("afterend", booksItem);
+                    console.log("Books tab added dynamically");
+                }
+            }
+        });
+        
         document.addEventListener("DOMContentLoaded", function() {
             // Get query parameters for file and title
             const urlParams = new URLSearchParams(window.location.search);
