@@ -206,51 +206,12 @@
         /* Specific styling for the sidebar TOC content */
         .sidebar-toc-content {
             padding-right: 10px; /* Add padding to prevent text touching the right edge */
-            width: 100%; /* Ensure full width */
         }
         
         /* Improve nested items display */
         .sidebar-toc-content ol ol {
             margin-top: 8px;
             padding-left: 15px; /* Reduce padding for nested items */
-        }
-        
-        /* Improve list items in sidebar TOC */
-        .sidebar-toc-content li {
-            width: 100%; /* Ensure full width */
-            padding-right: 5px;
-            box-sizing: border-box;
-            /* Truncate very long text with ellipsis if needed */
-            overflow-wrap: break-word;
-        }
-        
-        /* Special handling for code-like text in TOC */
-        .sidebar-toc-content a[href*="numpy"],
-        .sidebar-toc-content a[href*="scipy"],
-        .sidebar-toc-content a[href*="pandas"],
-        .sidebar-toc-content a[href*="matplotlib"],
-        .sidebar-toc-content a:has(code) {
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            font-size: 0.9em;
-            letter-spacing: -0.02em; /* Slightly tighter letter spacing for code */
-            line-height: 1.3;
-            /* Add subtle styling to distinguish code */
-            background-color: rgba(0, 0, 0, 0.03);
-            border-radius: 3px;
-            padding: 2px 4px;
-        }
-        
-        [data-theme="dark"] .sidebar-toc-content a[href*="numpy"],
-        [data-theme="dark"] .sidebar-toc-content a[href*="scipy"],
-        [data-theme="dark"] .sidebar-toc-content a[href*="pandas"],
-        [data-theme="dark"] .sidebar-toc-content a[href*="matplotlib"],
-        [data-theme="dark"] .sidebar-toc-content a:has(code) {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        
-        /* Handle very long function names by adding soft hyphens */
-        .sidebar-toc-content a {
-            hyphens: auto;
         }
         
         /* Adjust main content margin when sidebar is open */
@@ -411,10 +372,6 @@
             word-break: break-word;
             /* Add a bit of padding for better readability */
             padding-right: 5px;
-            /* Force text to fit within container */
-            max-width: 100%;
-            box-sizing: border-box;
-            font-size: 0.95em; /* Slightly smaller font size for better fitting */
         }
         
         .toc a:hover, .toc-sidebar a:hover {
