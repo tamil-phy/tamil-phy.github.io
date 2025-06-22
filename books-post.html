@@ -58,19 +58,6 @@
             --border-color: #dee2e6;
         }
         
-        /* Dark mode variables */
-        [data-theme="dark"] {
-            --primary-color: #4d94ff;
-            --secondary-color: #9966ff;
-            --accent-color: #ff3385;
-            --light-bg: #2a2d3a;
-            --dark-text: #e9ecef;
-            --light-text: #adb5bd;
-            --bg-color: #1a1d24;
-            --card-bg: #2a2d3a;
-            --border-color: #444;
-        }
-        
         body {
             font-family: 'Poppins', sans-serif;
             line-height: 1.8;
@@ -78,7 +65,6 @@
             background-color: var(--bg-color);
             /* Improved base font size for better readability */
             font-size: 18px;
-            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
         h1, h2, h3, h4, h5 {
@@ -117,11 +103,6 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             padding: 15px 0;
             background-color: var(--bg-color) !important;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        [data-theme="dark"] .navbar {
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
         
         .navbar-brand {
@@ -159,11 +140,6 @@
             border-radius: 0 0 50px 50px;
             margin-bottom: 40px;
             text-align: center;
-            transition: background 0.3s ease;
-        }
-        
-        [data-theme="dark"] .book-header {
-            background: linear-gradient(135deg, #2a2d3a 0%, #1a1d24 100%);
         }
         
         .book-title {
@@ -182,7 +158,6 @@
             padding: 20px 30px;
             margin: 20px 0 30px;
             border-left: 5px solid var(--primary-color);
-            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         
         /* Sidebar TOC */
@@ -733,11 +708,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="papers.html">Papers</a>
                     </li>
-                    <li class="nav-item">
-                        <button id="theme-toggle" class="btn btn-sm btn-outline-secondary ms-2" title="Toggle Dark Mode">
-                            <i class="fas fa-moon"></i>
-                        </button>
-                    </li>
+
                 </ul>
             </div>
         </div>
@@ -844,40 +815,7 @@
             document.getElementById('reading-progress').style.width = progress + '%';
         }
         
-        // Dark mode functionality
-        function toggleDarkMode() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            
-            // Update the icon
-            const themeIcon = document.querySelector('#theme-toggle i');
-            if (newTheme === 'dark') {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            } else {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-            }
-        }
-        
-        // Initialize theme based on user preference or system preference
-        function initializeTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            
-            if (savedTheme) {
-                document.documentElement.setAttribute('data-theme', savedTheme);
-                if (savedTheme === 'dark') {
-                    document.querySelector('#theme-toggle i').classList.replace('fa-moon', 'fa-sun');
-                }
-            } else if (prefersDark) {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                document.querySelector('#theme-toggle i').classList.replace('fa-moon', 'fa-sun');
-            }
-        }
+
         
         // Add scroll event listener for reading progress
         window.addEventListener('scroll', updateReadingProgress);
@@ -1006,8 +944,7 @@
             // Initialize reading progress
             updateReadingProgress();
             
-            // Initialize theme
-            initializeTheme();
+
             
             // Initialize sidebar TOC
             const tocToggleBtn = document.getElementById('toc-toggle-btn');
@@ -1029,7 +966,7 @@
             }
             
             // Add event listener for theme toggle
-            document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
+
             // Get query parameters for file and title
             const urlParams = new URLSearchParams(window.location.search);
             const file = urlParams.get('file'); // Markdown file path
