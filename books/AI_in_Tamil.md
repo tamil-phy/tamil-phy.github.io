@@ -1,8 +1,3 @@
-[toc]
-
-<div style="page-break-after: always;"></div>
-
-
 # கருத்தாக்கமும் நடைமுறையும்
 
 ### 1. செய்யறிவின் (ArtificiaI Intelligence) வரலாறும் அடிப்படைகளும்
