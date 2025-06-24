@@ -27,13 +27,12 @@
                 }
             },
             options: {
-                skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"],
-                processHtmlClass: "math"
+                skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"]
             },
             startup: {
-                pageReady: function() {
-                    console.log('MathJax is ready');
-                    return MathJax.startup.defaultPageReady();
+                pageReady: function () {
+                    // Don't run MathJax automatically on the whole page
+                    console.log('MathJax is ready, typesetting will be done manually.');
                 }
             },
             chtml: {
@@ -306,6 +305,39 @@
     </footer>
 
     <script>
+        // Ensure Books tab is properly displayed
+        document.addEventListener("DOMContentLoaded", function() {
+            // Check if Books tab exists
+            const navbarNav = document.getElementById("navbarNav");
+            const navItems = navbarNav.querySelectorAll(".nav-item");
+            
+            // Find Notes tab position
+            let notesIndex = -1;
+            for (let i = 0; i < navItems.length; i++) {
+                if (navItems[i].querySelector(".nav-link").getAttribute("href") === "notes.html") {
+                    notesIndex = i;
+                    break;
+                }
+            }
+            
+            // Check if Books tab exists after Notes tab
+            if (notesIndex !== -1 && notesIndex + 1 < navItems.length) {
+                const nextItem = navItems[notesIndex + 1];
+                const nextLink = nextItem.querySelector(".nav-link");
+                
+                if (!nextLink || nextLink.getAttribute("href") !== "books.html") {
+                    // Books tab is missing or in wrong position, insert it
+                    const booksItem = document.createElement("li");
+                    booksItem.className = "nav-item";
+                    booksItem.innerHTML = '<a class="nav-link" href="books.html">Books</a>';
+                    
+                    // Insert after Notes tab
+                    navItems[notesIndex].insertAdjacentElement("afterend", booksItem);
+                    console.log("Books tab added dynamically");
+                }
+            }
+        });
+
         document.addEventListener("DOMContentLoaded", function() {
             // Get query parameters for file and title
             const urlParams = new URLSearchParams(window.location.search);
@@ -380,73 +412,58 @@
                         return response.text();
                     })
                     .then(text => {
-                        // Configure marked for better code and math handling
-                        marked.setOptions({
-                            highlight: function(code, lang) {
-                                return code;
-                            },
-                            breaks: true,
-                            gfm: true
+                        // --- Robust Math and Markdown Processing ---
+
+                        const mathStore = [];
+                        
+                        // 1. Isolate math expressions before parsing markdown
+                        let processedText = text
+                            // First, handle display math ($$)
+                            .replace(/\$\$([\s\S]*?)\$\$/g, (match, content) => {
+                                const id = mathStore.length;
+                                mathStore.push({ type: 'display', content: `$$${content}$$` });
+                                return `<!--MATH_PLACEHOLDER_${id}-->`;
+                            })
+                            // Then, handle inline math ($)
+                            .replace(/\$([^$]+)\$/g, (match, content) => {
+                                const id = mathStore.length;
+                                mathStore.push({ type: 'inline', content: `$${content}$` });
+                                return `<!--MATH_PLACEHOLDER_${id}-->`;
+                            });
+
+                        // 2. Parse the processed markdown
+                        let htmlContent = marked.parse(processedText);
+
+                        // 3. Restore math expressions into the generated HTML
+                        htmlContent = htmlContent.replace(/<!--MATH_PLACEHOLDER_(\d+)-->/g, (match, id) => {
+                            const math = mathStore[parseInt(id)];
+                            if (math.type === 'display') {
+                                return `<div class="math-container">${math.content}</div>`;
+                            }
+                            return math.content;
                         });
-                        
-                        // Process the content with simple configuration
-                        marked.setOptions({
-                            breaks: true,
-                            gfm: true
-                        });
-                        
-                        // Process the content
-                        let processedContent = marked.parse(text);
-                        
-                        // Add language attribute to paragraphs with Tamil text
+
+                        // 4. Set the final content
+                        content.innerHTML = htmlContent;
+
+                        // Add language attribute if needed
                         if (detectedLang === 'ta') {
                             content.setAttribute('lang', 'ta');
                         }
-                        
-                        // Process math blocks for better styling
-                        processedContent = processedContent.replace(
-                            /<p>\s*\$\$(.*?)\$\$\s*<\/p>/gs, 
-                            '<div class="math-container">$$$$1$$</div>'
-                        );
-                        
-                        // Mark paragraphs containing math with a class
-                        processedContent = processedContent.replace(
-                            /<p>([^<]*\$[^<]*\$[^<]*)<\/p>/g,
-                            '<p class="math">$1</p>'
-                        );
-                        
-                        content.innerHTML = processedContent;
-                        
-                        // Force MathJax to typeset the content
-                        if (typeof MathJax !== 'undefined') {
-                            try {
-                                // Clear any previous typesetting
-                                if (MathJax.typesetClear) {
-                                    MathJax.typesetClear([content]);
-                                }
-                                
-                                // Wait a bit longer to ensure DOM is fully ready
-                                setTimeout(() => {
-                                    console.log('Attempting to typeset math...');
-                                    MathJax.typesetPromise([content]).then(() => {
-                                        console.log('MathJax rendering complete');
-                                    }).catch(err => {
-                                        console.error('MathJax error:', err);
-                                        // Try one more time with a longer delay
-                                        setTimeout(() => {
-                                            MathJax.typesetPromise([content]).catch(e => {
-                                                console.error('Final MathJax attempt failed:', e);
-                                            });
-                                        }, 500);
+
+                        // 5. Typeset with MathJax
+                        if (window.MathJax && MathJax.startup) {
+                            MathJax.startup.promise.then(() => {
+                                MathJax.typesetPromise([content])
+                                    .then(() => {
+                                        console.log('MathJax typesetting complete.');
+                                    })
+                                    .catch((err) => {
+                                        console.error('MathJax typesetting failed:', err);
                                     });
-                                }, 200);
-                            } catch (mathJaxError) {
-                                console.error('Error initializing MathJax:', mathJaxError);
-                            }
-                        } else {
-                            console.error('MathJax is not defined');
+                            });
                         }
-                        
+
                         // Add target="_blank" to external links
                         document.querySelectorAll('#markdown-content a').forEach(link => {
                             if (link.hostname !== window.location.hostname) {

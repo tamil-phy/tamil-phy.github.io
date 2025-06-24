@@ -28,13 +28,12 @@
                 }
             },
             options: {
-                skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"],
-                processHtmlClass: "math"
+                skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"]
             },
             startup: {
-                pageReady: function() {
-                    console.log('MathJax is ready');
-                    return MathJax.startup.defaultPageReady();
+                pageReady: function () {
+                    // Don't run MathJax automatically on the whole page
+                    console.log('MathJax is ready, typesetting will be done manually.');
                 }
             },
             chtml: {
@@ -1165,135 +1164,113 @@
                             return { toc, headingMap };
                         }
                         
-                        // Check if TOC is requested in the markdown
-                        const tocPlaceholders = ['[TOC]', '[toc]'];
-                        let processedContent = '';
+                        // --- Robust Math and Markdown Processing ---
+
+                        const mathStore = [];
                         
-                        if (tocPlaceholders.some(placeholder => text.includes(placeholder))) {
-                            // Generate TOC with heading map
-                            const tocData = generateTableOfContents(text);
-                            
-                            // Replace TOC placeholder with generated TOC
-                            let modifiedText = text;
-                            tocPlaceholders.forEach(placeholder => {
-                                modifiedText = modifiedText.replace(placeholder, tocData.toc);
+                        // 1. Isolate math expressions before parsing markdown
+                        let processedText = text
+                            // First, handle display math ($$)
+                            .replace(/\$\$([\s\S]*?)\$\$/g, (match, content) => {
+                                const id = mathStore.length;
+                                mathStore.push({ type: 'display', content: `$$${content}$$` });
+                                return `<!--MATH_PLACEHOLDER_${id}-->`;
+                            })
+                            // Then, handle inline math ($)
+                            .replace(/\$([^$]+)\$/g, (match, content) => {
+                                const id = mathStore.length;
+                                mathStore.push({ type: 'inline', content: `$${content}$` });
+                                return `<!--MATH_PLACEHOLDER_${id}-->`;
                             });
-                            
-                            // Parse the content
-                            processedContent = marked.parse(modifiedText);
-                            
-                            // Add debugging information
-                            console.log('TOC generated and content parsed');
-                            
-                            // Add IDs to all headings for better navigation
-                            setTimeout(() => {
-                                const contentElement = document.getElementById('markdown-content');
-                                if (contentElement) {
-                                    // First ensure all headings have proper IDs that match the TOC
-                                    const headings = contentElement.querySelectorAll('h1, h2, h3, h4, h5, h6');
-                                    const headingTexts = Array.from(headings).map(h => h.textContent.trim());
-                                    console.log('Found headings in content:', headingTexts);
-                                    
-                                    // Map headings to their IDs from the TOC
-                                    tocData.headingMap.forEach(mapping => {
-                                        // Find the heading with matching text
-                                        const matchingHeadings = Array.from(headings).filter(
-                                            h => h.textContent.trim() === mapping.text
-                                        );
-                                        
-                                        // Set the ID to match the TOC link
-                                        matchingHeadings.forEach(heading => {
-                                            heading.id = mapping.id;
-                                            console.log(`Set ID '${mapping.id}' for heading '${mapping.text}'`);
-                                        });
-                                    });
-                                    
-                                    // Add smooth scrolling to TOC links
-                                    const tocLinks = document.querySelectorAll('.toc a');
-                                    tocLinks.forEach(link => {
-                                        link.addEventListener('click', function(e) {
-                                            e.preventDefault();
-                                            const targetId = this.getAttribute('data-target');
-                                            console.log('Clicked TOC link with target ID:', targetId);
-                                            
-                                            const targetElement = document.getElementById(targetId);
-                                            if (targetElement) {
-                                                console.log('Found target element:', targetElement);
-                                                window.scrollTo({
-                                                    top: targetElement.offsetTop - 80,
-                                                    behavior: 'smooth'
-                                                });
-                                            } else {
-                                                console.error('Target element not found for ID:', targetId);
-                                            }
-                                        });
-                                    });
-                                }
-                            }, 500); // Increased timeout to ensure content is fully rendered
+
+                        // 2. Handle Table of Contents (if requested)
+                        const tocPlaceholders = ['[TOC]', '[toc]'];
+                        let htmlContent = '';
+                        let tocData = null;
+
+                        if (tocPlaceholders.some(placeholder => processedText.includes(placeholder))) {
+                            tocData = generateTableOfContents(processedText);
+                            let textWithToc = processedText;
+                            tocPlaceholders.forEach(placeholder => {
+                                textWithToc = textWithToc.replace(placeholder, tocData.toc);
+                            });
+                            htmlContent = marked.parse(textWithToc);
                         } else {
-                            // Process content normally
-                            processedContent = marked.parse(text);
+                            htmlContent = marked.parse(processedText);
                         }
-                        
-                        // Add language attribute to paragraphs with Tamil text
+
+                        // 3. Restore math expressions into the generated HTML
+                        htmlContent = htmlContent.replace(/<!--MATH_PLACEHOLDER_(\d+)-->/g, (match, id) => {
+                            const math = mathStore[parseInt(id)];
+                            if (math.type === 'display') {
+                                return `<div class="math-container">${math.content}</div>`;
+                            }
+                            return math.content;
+                        });
+
+                        // 4. Set the final content
+                        content.innerHTML = htmlContent;
+
+                        // Add language attribute if needed
                         if (detectedLang === 'ta') {
                             content.setAttribute('lang', 'ta');
                         }
-                        
-                        // Process math blocks for better styling
-                        processedContent = processedContent.replace(
-                            /<p>\s*\$\$(.*?)\$\$\s*<\/p>/gs, 
-                            '<div class="math-container">$$$$1$$</div>'
-                        );
-                        
-                        // Mark paragraphs containing math with a class
-                        processedContent = processedContent.replace(
-                            /<p>([^<]*\$[^<]*\$[^<]*)<\/p>/g,
-                            '<p class="math">$1</p>'
-                        );
-                        
-                        content.innerHTML = processedContent;
-                        
-                        // Force MathJax to typeset the content
-                        if (typeof MathJax !== 'undefined') {
-                            try {
-                                // Clear any previous typesetting
-                                if (MathJax.typesetClear) {
-                                    MathJax.typesetClear([content]);
-                                }
-                                
-                                // Wait a bit longer to ensure DOM is fully ready
-                                setTimeout(() => {
-                                    // Process MathJax content
-                                    MathJax.typesetPromise([content]).then(() => {
-                                        console.log('MathJax typesetting completed');
-                                        
-                                        // Populate the sidebar TOC after content is loaded and processed
-                                        setTimeout(() => {
-                                            generateSidebarTOC();
-                                            console.log('Sidebar TOC populated after content load');
-                                        }, 500);
-                                    }).catch(e => {
-                                        console.error('MathJax typesetting error:', e);
-                                        
-                                        // Try one more time with a longer delay
-                                        setTimeout(() => {
-                                            MathJax.typesetPromise([content]).then(() => {
-                                                // Still populate the sidebar TOC even if first MathJax attempt failed
-                                                generateSidebarTOC();
-                                            }).catch(e => {
-                                                console.error('Final MathJax attempt failed:', e);
-                                                // Still try to populate the sidebar TOC
-                                                generateSidebarTOC();
-                                            });
-                                        }, 800);
+
+                        // 5. Typeset with MathJax and handle TOC linking
+                        if (window.MathJax && MathJax.startup) {
+                            MathJax.startup.promise.then(() => {
+                                MathJax.typesetPromise([content])
+                                    .then(() => {
+                                        console.log('MathJax typesetting complete.');
+                                        if (tocData) {
+                                            setupTocLinks(tocData.headingMap);
+                                        }
+                                        generateSidebarTOC();
+                                    })
+                                    .catch((err) => {
+                                        console.error('MathJax typesetting failed:', err);
+                                        if (tocData) {
+                                            setupTocLinks(tocData.headingMap);
+                                        }
+                                        generateSidebarTOC();
                                     });
-                                }, 300);
-                            } catch (mathJaxError) {
-                                console.error('Error initializing MathJax:', mathJaxError);
-                            }
+                            });
                         } else {
-                            console.error('MathJax is not defined');
+                            if (tocData) {
+                                setupTocLinks(tocData.headingMap);
+                            }
+                            generateSidebarTOC();
+                        }
+
+                        // Helper function to set up TOC links and IDs
+                        function setupTocLinks(headingMap) {
+                            setTimeout(() => {
+                                const contentElement = document.getElementById('markdown-content');
+                                if (!contentElement) return;
+
+                                const headings = contentElement.querySelectorAll('h1, h2, h3, h4, h5, h6');
+                                headingMap.forEach(mapping => {
+                                    const matchingHeadings = Array.from(headings).filter(
+                                        h => h.textContent.trim() === mapping.text.replace(/<[^>]*>?/gm, '')
+                                    );
+                                    matchingHeadings.forEach(heading => heading.id = mapping.id);
+                                });
+
+                                const tocLinks = document.querySelectorAll('.toc a');
+                                tocLinks.forEach(link => {
+                                    link.addEventListener('click', function(e) {
+                                        e.preventDefault();
+                                        const targetId = this.getAttribute('data-target');
+                                        const targetElement = document.getElementById(targetId);
+                                        if (targetElement) {
+                                            window.scrollTo({
+                                                top: targetElement.offsetTop - 80,
+                                                behavior: 'smooth'
+                                            });
+                                        }
+                                    });
+                                });
+                            }, 100);
                         }
                         
                         // Add target="_blank" to external links

@@ -27,13 +27,12 @@
                 }
             },
             options: {
-                skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"],
-                processHtmlClass: "math"
+                skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"]
             },
             startup: {
-                pageReady: function() {
-                    console.log('MathJax is ready');
-                    return MathJax.startup.defaultPageReady();
+                pageReady: function () {
+                    // Don't run MathJax automatically on the whole page
+                    console.log('MathJax is ready, typesetting will be done manually.');
                 }
             },
             chtml: {
@@ -396,50 +395,48 @@
                     .then(text => {
                         console.log('File content received, length:', text.length);
                         
-                        // Configure marked for better code and math handling
-                        marked.setOptions({
-                            highlight: function(code, lang) {
-                                return code;
-                            },
-                            breaks: true,
-                            gfm: true
+                        // --- Robust Math and Markdown Processing ---
+
+                        const mathStore = [];
+                        
+                        // 1. Isolate math expressions before parsing markdown
+                        let processedText = text
+                            // First, handle display math ($$)
+                            .replace(/\$\$([\s\S]*?)\$\$/g, (match, content) => {
+                                const id = mathStore.length;
+                                mathStore.push({ type: 'display', content: `$$${content}$$` });
+                                return `<!--MATH_PLACEHOLDER_${id}-->`;
+                            })
+                            // Then, handle inline math ($)
+                            .replace(/\$([^$]+)\$/g, (match, content) => {
+                                const id = mathStore.length;
+                                mathStore.push({ type: 'inline', content: `$${content}$` });
+                                return `<!--MATH_PLACEHOLDER_${id}-->`;
+                            });
+
+                        // 2. Parse the processed markdown
+                        let htmlContent = marked.parse(processedText);
+
+                        // 3. Restore math expressions into the generated HTML
+                        htmlContent = htmlContent.replace(/<!--MATH_PLACEHOLDER_(\d+)-->/g, (match, id) => {
+                            const math = mathStore[parseInt(id)];
+                            if (math.type === 'display') {
+                                return `<div class="math-container">${math.content}</div>`;
+                            }
+                            return math.content;
                         });
-                        
-                        // Process the content with simple configuration
-                        marked.setOptions({
-                            breaks: true,
-                            gfm: true
-                        });
-                        
-                        // Process the content
-                        let processedContent = marked.parse(text);
-                        
-                        // Process math blocks for better styling
-                        processedContent = processedContent.replace(
-                            /<p>\s*\$\$(.*?)\$\$\s*<\/p>/gs, 
-                            '<div class="math-container">$$$$1$$</div>'
-                        );
-                        
-                        // Mark paragraphs containing math with a class
-                        processedContent = processedContent.replace(
-                            /<p>([^<]*\$[^<]*\$[^<]*)<\/p>/g,
-                            '<p class="math">$1</p>'
-                        );
-                        
-                        content.innerHTML = processedContent;
-                        console.log('Content rendered to DOM');
-                        
-                        // Generate simple table of contents
+
+                        // 4. Set the final content
+                        content.innerHTML = htmlContent;
+
+                        // 5. Generate simple table of contents
                         const headings = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
                         if (headings.length >= 3) {
                             const toc = document.createElement('ul');
-                            
                             headings.forEach((heading, index) => {
-                                // Add ID to heading if it doesn't have one
                                 if (!heading.id) {
                                     heading.id = 'heading-' + index;
                                 }
-                                
                                 const listItem = document.createElement('li');
                                 const link = document.createElement('a');
                                 link.href = '#' + heading.id;
@@ -447,42 +444,24 @@
                                 listItem.appendChild(link);
                                 toc.appendChild(listItem);
                             });
-                            
                             tocContent.innerHTML = '';
                             tocContent.appendChild(toc);
                             tocElement.style.display = 'block';
                         }
-                        
-                        // Force MathJax to typeset the content
-                        if (typeof MathJax !== 'undefined') {
-                            try {
-                                // Clear any previous typesetting
-                                if (MathJax.typesetClear) {
-                                    MathJax.typesetClear([content]);
-                                }
-                                
-                                // Wait a bit longer to ensure DOM is fully ready
-                                setTimeout(() => {
-                                    console.log('Attempting to typeset math...');
-                                    MathJax.typesetPromise([content]).then(() => {
-                                        console.log('MathJax rendering complete');
-                                    }).catch(err => {
-                                        console.error('MathJax error:', err);
-                                        // Try one more time with a longer delay
-                                        setTimeout(() => {
-                                            MathJax.typesetPromise([content]).catch(e => {
-                                                console.error('Final MathJax attempt failed:', e);
-                                            });
-                                        }, 500);
+
+                        // 6. Typeset with MathJax
+                        if (window.MathJax && MathJax.startup) {
+                            MathJax.startup.promise.then(() => {
+                                MathJax.typesetPromise([content])
+                                    .then(() => {
+                                        console.log('MathJax typesetting complete.');
+                                    })
+                                    .catch((err) => {
+                                        console.error('MathJax typesetting failed:', err);
                                     });
-                                }, 200);
-                            } catch (mathJaxError) {
-                                console.error('Error initializing MathJax:', mathJaxError);
-                            }
-                        } else {
-                            console.error('MathJax is not defined');
+                            });
                         }
-                        
+
                         // Add target="_blank" to external links
                         document.querySelectorAll('#markdown-content a').forEach(link => {
                             if (link.hostname !== window.location.hostname) {
@@ -490,7 +469,7 @@
                                 link.setAttribute('rel', 'noopener noreferrer');
                             }
                         });
-                        
+
                         // Add copy button to code blocks
                         document.querySelectorAll('pre code').forEach(codeBlock => {
                             const container = codeBlock.parentNode;
