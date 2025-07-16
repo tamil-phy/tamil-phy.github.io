@@ -72,10 +72,10 @@
         }
         
         .papers-header {
-            padding: 50px 0 30px;
+            padding: 60px 0 40px;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             border-radius: 0 0 50px 50px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             text-align: center;
         }
         
@@ -95,8 +95,8 @@
             background-color: white;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            padding: 20px;
-            margin-bottom: 30px;
+            padding: 25px;
+            margin-bottom: 40px;
         }
         
         .filter-title {
@@ -144,40 +144,41 @@
         
         .paper-card {
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            padding: 28px;
+            margin-bottom: 30px;
             transition: var(--transition);
-            border-left: 4px solid var(--primary-color);
+            border-top: 4px solid var(--primary-color);
         }
         
         .paper-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
         }
         
         .paper-card.sciml {
-            border-left-color: var(--primary-color);
+            border-top-color: var(--primary-color);
         }
         
         .paper-card.nlp {
-            border-left-color: var(--secondary-color);
+            border-top-color: var(--secondary-color);
         }
         
         .paper-card.physics {
-            border-left-color: var(--accent-color);
+            border-top-color: var(--accent-color);
         }
         
         .paper-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             color: var(--dark-text);
             text-decoration: none;
             font-weight: 700;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             transition: var(--transition);
+            line-height: 1.3;
         }
         
         .paper-title:hover {
@@ -186,22 +187,34 @@
         
         .paper-authors {
             color: var(--light-text);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-size: 0.95rem;
+            line-height: 1.5;
         }
         
         .paper-journal {
             font-style: italic;
             color: var(--light-text);
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .paper-journal::before {
+            content: '\f5fc';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            margin-right: 8px;
+            color: var(--primary-color);
+            font-style: normal;
         }
         
         .paper-abstract {
-            color: var(--dark-text);
-            margin-bottom: 15px;
+            color: var(--light-text);
+            margin-bottom: 20px;
+            line-height: 1.6;
             font-size: 0.95rem;
-            display: none;
         }
         
         .paper-meta {
@@ -209,7 +222,7 @@
             align-items: center;
             justify-content: space-between;
             margin-top: 15px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         
         .paper-category {
@@ -243,18 +256,24 @@
         
         .paper-links {
             display: flex;
-            gap: 10px;
+            flex-wrap: wrap;
+            gap: 12px;
             margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0,0,0,0.05);
         }
         
         .paper-link {
             display: inline-flex;
             align-items: center;
-            color: var(--primary-color);
-            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: var(--transition);
+            font-weight: 500;
         }
         
         .paper-link i {
@@ -366,27 +385,28 @@
         </div>
     </nav>
 
-    <!-- Header Section -->
-    <header class="papers-header">
-        <div class="container">
-            <h1>Academic Publications</h1>
-            <p>A collection of my research papers in Scientific Machine Learning, Natural Language Processing, and Physical Sciences.</p>
-        </div>
-    </header>
+
 
     <div class="container">
-        <!-- Filters and Search -->
-        <div class="filter-container">
-            <h3 class="filter-title">Filter Publications</h3>
-            <div class="d-flex flex-wrap">
-                <button class="category-btn active" data-category="all">All</button>
-                <button class="category-btn" data-category="sciml">Scientific ML</button>
-                <button class="category-btn" data-category="nlp">NLP</button>
-                <button class="category-btn" data-category="physics">Physics</button>
-            </div>
-            <div class="search-container">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" class="form-control" placeholder="Search papers...">
+        <!-- Header with Filter Dropdown -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">All Publications</h2>
+            <div class="filter-controls d-flex">
+                <div class="search-container me-3">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="form-control" id="paper-search" placeholder="Search publications...">
+                </div>
+                <div class="dropdown">
+                    <button class="btn filter-dropdown-btn dropdown-toggle" type="button" id="categoryFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-filter me-2"></i>Filter
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="categoryFilterDropdown">
+                        <li><a class="dropdown-item active" href="#" data-category="all">All Categories</a></li>
+                        <li><a class="dropdown-item" href="#" data-category="sciml">Scientific ML</a></li>
+                        <li><a class="dropdown-item" href="#" data-category="nlp">NLP</a></li>
+                        <li><a class="dropdown-item" href="#" data-category="physics">Physics</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -395,8 +415,9 @@
             <!-- Scientific Machine Learning Papers -->
             <div class="paper-card sciml">
                 <a href="https://link.springer.com/chapter/10.1007/978-3-031-50631-4_34" class="paper-title" target="_blank">Active Learning for Probabilistic Machine Learning based Modeling of Dynamical Systems</a>
-                <p class="paper-authors">Tamil Arasan Bakthavatchalam, Sai Kiran Karthik, Vishal Subramanian, Raghunathan Rengaswamy</p>
-                <p class="paper-journal">International Conference on Computational Science 2023</p>
+                <p class="paper-authors">Tamil Arasan Bakthavatchalam, Selvakumar Murugan, Murugesan Vadivel, Meiyazhagan Jaganathan, Gopinath Balu & Malaikannan Sankarasubbu </p>
+                <p class="paper-journal">Advances in Nonlinear Dynamics, Volume I
+                    (ICNDA 2023)</p>
                 <p class="paper-abstract">This paper presents an active learning framework for probabilistic machine learning models of dynamical systems, enhancing sample efficiency and model accuracy while providing uncertainty quantification.</p>
                 <div class="paper-meta">
                     <span><i class="fas fa-calendar-alt"></i> 2023</span>
@@ -406,7 +427,15 @@
 
             <div class="paper-card sciml">
                 <a href="https://www.sciencedirect.com/science/article/pii/S0960077923004101" class="paper-title" target="_blank">Data-driven Multi-Valley Dark Solitons of Multi-component Manakov Model using Physics Informed Neural Network</a>
-                <p class="paper-authors">Tamil Arasan Bakthavatchalam, Vishal Subramanian, Raghunathan Rengaswamy</p>
+                <p class="paper-authors">Meiyazhagan Jaganathan, 
+                    Tamil Arasan Bakthavatchalam, 
+                    Murugesan Vadivel,
+                    Selvakumar Murugan, 
+                    Gopinath Balu, 
+                    Malaikannan Sankarasubbu, 
+                    Radha Ramaswamy, 
+                    Vijayalakshmi Sethuraman, 
+                    Boris A. Malomed</p>
                 <p class="paper-journal">Chaos, Solitons & Fractals, 2023</p>
                 <p class="paper-abstract">This study employs Physics-Informed Neural Networks to discover multi-valley dark soliton solutions in the multi-component Manakov model, demonstrating the effectiveness of data-driven approaches for complex nonlinear systems.</p>
                 <div class="paper-meta">
@@ -417,8 +446,14 @@
 
             <div class="paper-card sciml">
                 <a href="https://www.researchgate.net/profile/Tamil-Arasan-Bakthavatchalam/publication/361701779_PRIMER_ON_SOLVING_DIFFERENTIAL_EQUATIONS_USING_MACHINE_LEARNING_TECHNIQUES/links/63a2b9a751f6c723c6b76146/PRIMER-ON-SOLVING-DIFFERENTIAL-EQUATIONS-USING-MACHINE-LEARNING-TECHNIQUES.pdf" class="paper-title" target="_blank">Primer On Solving Differential Equations Using Machine Learning Techniques</a>
-                <p class="paper-authors">Tamil Arasan Bakthavatchalam, Vishal Subramanian, Raghunathan Rengaswamy</p>
-                <p class="paper-journal">Technical Report, 2022</p>
+                <p class="paper-authors">Tamil Arasan Bakthavatchalam, 
+                    Selvakumar Murugan, 
+                    Suriyadeepan Ramamoorthy, 
+                    Malaikannan Sankarasubbu, 
+                    Radha Ramaswamy, 
+                    Vijayalakshmi Sethuraman, 
+                    Boris A. Malomed</p>
+                <p class="paper-journal">Romanian Reports in Physics</p>
                 <p class="paper-abstract">A comprehensive introduction to solving differential equations using various machine learning approaches, including neural networks, Gaussian processes, and physics-informed methods.</p>
                 <div class="paper-meta">
                     <span><i class="fas fa-calendar-alt"></i> 2022</span>
@@ -428,7 +463,11 @@
 
             <div class="paper-card sciml">
                 <a href="https://www.nature.com/articles/s41598-021-84336-0" class="paper-title" target="_blank">Bayesian Optimization Of Bose-Einstein Condensates</a>
-                <p class="paper-authors">Sai Kiran Rajendran, Tamil Arasan Bakthavatchalam, et al.</p>
+                <p class="paper-authors">Tamil Arasan Bakthavatchalam, 
+                    Suriyadeepan Ramamoorthy, 
+                    Malaikannan Sankarasubbu, 
+                    Radha Ramaswamy, 
+                    Vijayalakshmi Sethuraman </p>
                 <p class="paper-journal">Scientific Reports, 2021</p>
                 <p class="paper-abstract">This work demonstrates the application of Bayesian optimization techniques to efficiently tune experimental parameters for Bose-Einstein condensate production, significantly reducing experimental overhead.</p>
                 <div class="paper-meta">
@@ -440,8 +479,8 @@
             <!-- NLP Papers -->
             <div class="paper-card nlp">
                 <a href="http://uttamam.org/papers/20_17.pdf" class="paper-title" target="_blank">SymSpell and LSTM based Spell-Checkers for Tamil</a>
-                <p class="paper-authors">Tamil Arasan Bakthavatchalam, Anand Kumar M</p>
-                <p class="paper-journal">Forum for Information Retrieval Evaluation, 2020</p>
+                <p class="paper-authors">Tamil Arasan Bakthavatchalam et al. </p>
+                <p class="paper-journal">INFITT</p>
                 <p class="paper-abstract">This paper presents novel spell-checking approaches for Tamil language using SymSpell algorithm and LSTM neural networks, addressing the challenges of morphologically rich languages.</p>
                 <div class="paper-meta">
                     <span><i class="fas fa-calendar-alt"></i> 2020</span>
@@ -452,7 +491,7 @@
             <!-- Physics Papers -->
             <div class="paper-card physics">
                 <a href="https://link.springer.com/article/10.1007/s11071-019-05354-2" class="paper-title" target="_blank">Dynamics of Solitons in the Fourth-order Nonlocal Nonlinear Schrödinger Equation</a>
-                <p class="paper-authors">Tamil Arasan Bakthavatchalam, Alagar Karthick, et al.</p>
+                <p class="paper-authors">Tamil Arasan Bakthavatchalam,et al.</p>
                 <p class="paper-journal">Nonlinear Dynamics, 2019</p>
                 <p class="paper-abstract">An investigation of soliton dynamics in the fourth-order nonlocal nonlinear Schrödinger equation, revealing novel behaviors and stability properties of these nonlinear wave structures.</p>
                 <div class="paper-meta">
@@ -474,7 +513,7 @@
 
             <div class="paper-card physics">
                 <a href="https://www.sciencedirect.com/science/article/abs/pii/S0925346720306042" class="paper-title" target="_blank">Structural, Linear and Nonlinear Optical, Electrical, Piezoelectric and Thermal Investigation on New Semi-Organic Single Crystal for Microelectronics and High Power Laser Applications</a>
-                <p class="paper-authors">Alagar Karthick, Tamil Arasan Bakthavatchalam, et al.</p>
+                <p class="paper-authors">S.Kandhan, Tamil Arasan Bakthavatchalam, et al.</p>
                 <p class="paper-journal">Optical Materials, 2020</p>
                 <p class="paper-abstract">A comprehensive characterization of a novel semi-organic crystal, Brucinium Di-Hydrogen Borate Hydrate, revealing its potential for microelectronics and high-power laser applications.</p>
                 <div class="paper-meta">
@@ -485,7 +524,7 @@
 
             <div class="paper-card physics">
                 <a href="https://www.sciencedirect.com/science/article/abs/pii/S0022286018313991" class="paper-title" target="_blank">Structural, Optical and Piezoelectric Investigation on Brucinium Bromide Hydrate Non Linear Optical Single Crystal</a>
-                <p class="paper-authors">Alagar Karthick, Tamil Arasan Bakthavatchalam, et al.</p>
+                <p class="paper-authors">S.Kandhan, Tamil Arasan Bakthavatchalam, et al.</p>
                 <p class="paper-journal">Journal of Molecular Structure, 2019</p>
                 <p class="paper-abstract">Investigation of Brucinium Bromide Hydrate crystal properties for applications in optical parametric oscillators, high-power lasers, piezo-sensors and transducers.</p>
                 <div class="paper-meta">
@@ -524,14 +563,32 @@
     <script>
         // Filter functionality
         document.addEventListener('DOMContentLoaded', function() {
-            const categoryButtons = document.querySelectorAll('.category-btn');
-            const searchInput = document.getElementById('searchInput');
+            const filterDropdownItems = document.querySelectorAll('.dropdown-item');
+            const searchInput = document.getElementById('paper-search');
             const paperCards = document.querySelectorAll('.paper-card');
             const noResults = document.getElementById('noResults');
+            const sectionTitle = document.querySelector('.section-title');
             
             function filterPapers() {
                 const searchTerm = searchInput.value.toLowerCase();
-                const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
+                let activeCategory = 'all';
+                
+                filterDropdownItems.forEach(item => {
+                    if (item.classList.contains('active')) {
+                        activeCategory = item.getAttribute('data-category');
+                    }
+                });
+                
+                // Update section title based on filter
+                if (activeCategory === 'all') {
+                    sectionTitle.textContent = 'All Publications';
+                } else if (activeCategory === 'sciml') {
+                    sectionTitle.textContent = 'Scientific ML Publications';
+                } else if (activeCategory === 'nlp') {
+                    sectionTitle.textContent = 'NLP Publications';
+                } else if (activeCategory === 'physics') {
+                    sectionTitle.textContent = 'Physics Publications';
+                }
                 
                 let visibleCount = 0;
                 
@@ -559,15 +616,19 @@
             }
             
             // Event listeners
-            categoryButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    categoryButtons.forEach(b => b.classList.remove('active'));
+            filterDropdownItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    filterDropdownItems.forEach(i => i.classList.remove('active'));
                     this.classList.add('active');
                     filterPapers();
                 });
             });
             
             searchInput.addEventListener('input', filterPapers);
+            
+            // Initial filtering
+            filterPapers();
             
             // Initialize
             filterPapers();

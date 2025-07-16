@@ -72,10 +72,10 @@
         }
         
         .notes-header {
-            padding: 50px 0 30px;
+            padding: 60px 0 40px;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             border-radius: 0 0 50px 50px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             text-align: center;
         }
         
@@ -95,44 +95,71 @@
             background-color: white;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            padding: 20px;
-            margin-bottom: 30px;
+            padding: 25px;
+            margin-bottom: 40px;
         }
         
-        .filter-title {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            color: var(--primary-color);
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--dark-text);
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
         }
         
-        .category-btn {
-            border: 2px solid transparent;
+        .filter-dropdown-btn {
+            background-color: white;
+            border: 2px solid var(--light-bg);
             border-radius: 30px;
             padding: 8px 20px;
-            margin-right: 10px;
             font-weight: 500;
+            transition: var(--transition);
+            color: var(--dark-text);
+        }
+        
+        .filter-dropdown-btn:hover, .filter-dropdown-btn:focus {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background-color: white;
+        }
+        
+        .dropdown-menu {
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: none;
+            padding: 10px;
+        }
+        
+        .dropdown-item {
+            border-radius: 8px;
+            padding: 8px 15px;
             transition: var(--transition);
         }
         
-        .category-btn.active {
+        .dropdown-item.active, .dropdown-item:active {
             background-color: var(--primary-color);
             color: white;
         }
         
-        .category-btn:hover:not(.active) {
-            border-color: var(--primary-color);
+        .dropdown-item:hover:not(.active) {
+            background-color: rgba(58, 134, 255, 0.1);
             color: var(--primary-color);
         }
         
         .search-container {
             position: relative;
-            margin-top: 20px;
+            min-width: 250px;
         }
         
         .search-container input {
             border-radius: 30px;
             padding-left: 40px;
-            border: 1px solid #dee2e6;
+            border: 2px solid var(--light-bg);
+            height: 42px;
+        }
+        
+        .search-container input:focus {
+            border-color: var(--primary-color);
+            box-shadow: none;
         }
         
         .search-container i {
@@ -146,27 +173,23 @@
             list-style-type: none;
             padding: 0;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            min-height: 200px; /* Ensure minimum height */
-            visibility: visible !important; /* Force visibility */
-            opacity: 1 !important; /* Ensure opacity */
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            min-height: 200px;
         }
         
         .note-item {
             background-color: white;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            padding: 25px;
+            padding: 28px;
             height: 100%;
-            display: flex !important; /* Force display */
+            display: flex;
             flex-direction: column;
             transition: var(--transition);
             position: relative;
             overflow: hidden;
             border-top: 5px solid var(--primary-color);
-            visibility: visible !important; /* Force visibility */
-            opacity: 1 !important; /* Ensure opacity */
         }
         
         .note-item:hover {
@@ -180,12 +203,12 @@
         
         .note-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             color: var(--dark-text);
             text-decoration: none;
             font-weight: 700;
             display: block;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             transition: var(--transition);
             line-height: 1.3;
         }
@@ -196,30 +219,33 @@
         
         .note-description {
             color: var(--light-text);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             font-style: normal;
             flex-grow: 1;
+            line-height: 1.6;
+            font-size: 0.95rem;
         }
         
         .note-meta {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            margin-top: auto;
+            align-items: center;
+            margin-top: 20px;
             padding-top: 15px;
-            font-size: 0.9rem;
             border-top: 1px solid rgba(0,0,0,0.05);
+            font-size: 0.9rem;
         }
         
         .note-category {
             display: inline-block;
-            padding: 5px 12px;
+            padding: 6px 12px;
             border-radius: 20px;
-            font-weight: 500;
             font-size: 0.8rem;
+            font-weight: 500;
+            background-color: rgba(58, 134, 255, 0.1);
+            color: var(--primary-color);
             letter-spacing: 0.5px;
-            margin-right: 5px;
-            margin-bottom: 5px;
+            text-transform: uppercase;
         }
         
         .note-category.tamil {
@@ -227,25 +253,14 @@
             color: var(--accent-color);
         }
         
-        .note-category.english {
-            background-color: rgba(58, 134, 255, 0.1);
-            color: var(--primary-color);
-        }
-        
-        .note-category.science {
-            background-color: rgba(131, 56, 236, 0.1);
-            color: var(--secondary-color);
-        }
-        
         .note-date {
-            color: var(--light-text);
-            font-size: 0.9rem;
             display: flex;
             align-items: center;
         }
         
         .note-date i {
             margin-right: 5px;
+            color: var(--primary-color);
         }
         
         .read-more {
@@ -342,28 +357,28 @@
         </div>
     </nav>
 
-    <!-- Notes Header Section -->
-    <section class="notes-header">
-        <div class="container">
-            <h1>My Notes</h1>
-            <p>A collection of thoughts, ideas, and learnings across science, philosophy, and technology</p>
-        </div>
-    </section>
+
 
     <div class="container">
-        <!-- Filters and Search -->
-        <div class="filter-container">
-            <h3 class="filter-title">Filter Notes</h3>
-            <div class="d-flex flex-wrap">
-                <button class="btn category-btn active" data-category="all">All Notes</button>
-                <button class="btn category-btn" data-category="tamil">தமிழ் | Tamil</button>
-                <button class="btn category-btn" data-category="english">English</button>
-                <button class="btn category-btn" data-category="science">Science</button>
-                <button class="btn category-btn" data-category="philosophy">Philosophy</button>
-            </div>
-            <div class="search-container">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" class="form-control" placeholder="Search notes...">
+        <!-- Header with Filter Dropdown -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">All Notes</h2>
+            <div class="filter-controls d-flex">
+                <div class="search-container me-3">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="form-control" id="note-search" placeholder="Search notes...">
+                </div>
+                <div class="dropdown">
+                    <button class="btn filter-dropdown-btn dropdown-toggle" type="button" id="categoryFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-filter me-2"></i>Filter
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="categoryFilterDropdown">
+                        <li><a class="dropdown-item active" href="#" data-category="all">All Categories</a></li>
+                        <li><a class="dropdown-item" href="#" data-category="science">Science</a></li>
+                        <li><a class="dropdown-item" href="#" data-category="technology">Technology</a></li>
+                        <li><a class="dropdown-item" href="#" data-category="tamil">Tamil</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -487,289 +502,300 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Ensure Books tab is properly displayed
         document.addEventListener("DOMContentLoaded", function() {
             // Check if Books tab exists
-            const navbarNav = document.getElementById("navbarNav");
+            const navbarNav = document.querySelector(".navbar-nav");
             const navItems = navbarNav.querySelectorAll(".nav-item");
-            
-            // Find Notes tab position
             let notesIndex = -1;
+            
+            // Find the Notes tab
             for (let i = 0; i < navItems.length; i++) {
-                if (navItems[i].querySelector(".nav-link").getAttribute("href") === "notes.html") {
+                const link = navItems[i].querySelector(".nav-link");
+                if (link && link.textContent.includes("Notes")) {
                     notesIndex = i;
                     break;
                 }
             }
             
-            // Check if Books tab exists after Notes tab
-            if (notesIndex !== -1 && notesIndex + 1 < navItems.length) {
-                const nextItem = navItems[notesIndex + 1];
-                const nextLink = nextItem.querySelector(".nav-link");
-                
-                if (!nextLink || nextLink.getAttribute("href") !== "books.html") {
-                    // Books tab is missing or in wrong position, insert it
-                    const booksItem = document.createElement("li");
-                    booksItem.className = "nav-item";
-                    booksItem.innerHTML = '<a class="nav-link" href="books.html">Books</a>';
-                    
-                    // Insert after Notes tab
-                    navItems[notesIndex].insertAdjacentElement("afterend", booksItem);
-                    console.log("Books tab added dynamically");
+            // Check if Books tab already exists
+            let booksExists = false;
+            navItems.forEach(item => {
+                const link = item.querySelector(".nav-link");
+                if (link && link.textContent.includes("Books")) {
+                    booksExists = true;
+                    // Make sure it's visible
+                    item.style.display = "block";
+                    item.style.visibility = "visible";
+                    link.style.display = "block";
+                    link.style.visibility = "visible";
                 }
+            });
+            
+            // If Notes tab found and Books tab doesn't exist, add it
+            if (notesIndex !== -1 && !booksExists) {
+                const booksItem = document.createElement("li");
+                booksItem.className = "nav-item";
+                booksItem.innerHTML = '<a class="nav-link" href="books.html">Books</a>';
+                
+                // Insert after Notes tab
+                navbarNav.insertBefore(booksItem, navItems[notesIndex + 1]);
             }
-        });
-        
-        document.addEventListener("DOMContentLoaded", function () {
-            // Initialize variables
-            const noteList = document.getElementById("note-list");
-            const searchInput = document.getElementById("searchInput");
-            const noResults = document.getElementById("no-results");
-            const categoryButtons = document.querySelectorAll(".category-btn");
-            const noteItems = Array.from(noteList.children);
-            const totalNotes = noteItems.length;
             
-            console.log("Notes initialization started");
-            console.log("Total notes found:", totalNotes);
-            console.log("Note list element:", noteList);
+            // Notes functionality
+            // DOM elements
+            const noteItems = document.querySelectorAll('.note-item');
+            const filterDropdownItems = document.querySelectorAll('.dropdown-item');
+            const searchInput = document.getElementById('note-search');
+            const sectionTitle = document.querySelector('.section-title');
+            const noResults = document.getElementById('no-results');
+            const visibleCountElement = document.getElementById('visible-count');
+            const totalCountElement = document.getElementById('total-count');
+            const paginationControls = document.getElementById('pagination-controls');
+            const paginationContainer = document.querySelector('.pagination');
+            const notesPerPageSelect = document.getElementById('notes-per-page');
             
-            // Make sure notes are visible by default
-            noteItems.forEach(item => {
-                item.style.display = "flex";
-                item.style.visibility = "visible";
-                item.style.opacity = "1";
-            });
-            
-            // Initialize counters for categories
-            const tamilNotes = noteItems.filter(item => item.dataset.category.includes("tamil")).length;
-            const englishNotes = noteItems.filter(item => item.dataset.category.includes("english")).length;
-            const scienceNotes = noteItems.filter(item => item.dataset.category.includes("science")).length;
-            const philosophyNotes = noteItems.filter(item => item.dataset.category.includes("philosophy")).length;
-            
-            // Update button text with counts
-            categoryButtons.forEach(btn => {
-                const category = btn.dataset.category;
-                if (category === "all") {
-                    btn.innerHTML = `All Notes <span class="badge bg-secondary ms-1">${totalNotes}</span>`;
-                } else if (category === "tamil") {
-                    btn.innerHTML = `தமிழ் | Tamil <span class="badge bg-secondary ms-1">${tamilNotes}</span>`;
-                } else if (category === "english") {
-                    btn.innerHTML = `English <span class="badge bg-secondary ms-1">${englishNotes}</span>`;
-                } else if (category === "science") {
-                    btn.innerHTML = `Science <span class="badge bg-secondary ms-1">${scienceNotes}</span>`;
-                } else if (category === "philosophy") {
-                    btn.innerHTML = `Philosophy <span class="badge bg-secondary ms-1">${philosophyNotes}</span>`;
-                }
-            });
-            
-            // Current page state
+            // State variables
             let currentPage = 1;
-            let notesPerPage = 12;
-            let filteredItems = [];
+            let filteredItems = Array.from(noteItems); // Initialize with all notes
             
-            // Filter function
+            // Initialize counts
+            if (totalCountElement) totalCountElement.textContent = noteItems.length;
+            if (visibleCountElement) visibleCountElement.textContent = noteItems.length;
+            
+            // Make all notes visible initially and add to filtered items
+            noteItems.forEach(item => {
+                item.style.display = '';
+            });
+            
+            // Initial pagination setup
+            updatePagination();
+            
+            // Main filter function
             function filterNotes() {
-                console.log("Filtering notes...");
-                const activeCategories = document.querySelectorAll(".category-btn.active");
+                // Get current filter values
                 const searchTerm = searchInput.value.toLowerCase();
-                let visibleCount = 0;
+                let activeCategory = 'all';
                 
-                // Get all active categories
-                const activeFilters = Array.from(activeCategories).map(btn => btn.dataset.category);
-                
-                // Reset filtered items
-                filteredItems = [];
-                
-                noteItems.forEach(item => {
-                    const categories = item.dataset.category.split(" ");
-                    const title = item.querySelector(".note-title").textContent.toLowerCase();
-                    const description = item.querySelector(".note-description").textContent.toLowerCase();
-                    
-                    // Check if note matches any active category
-                    const matchesCategory = activeFilters.includes("all") || 
-                                          categories.some(cat => activeFilters.includes(cat));
-                    
-                    // Check if note matches search term
-                    const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
-                    
-                    // Hide all items first
-                    item.style.display = "none";
-                    
-                    if (matchesCategory && matchesSearch) {
-                        filteredItems.push(item);
-                        visibleCount++;
+                // Find active filter category
+                filterDropdownItems.forEach(item => {
+                    if (item.classList.contains('active')) {
+                        activeCategory = item.getAttribute('data-category');
                     }
                 });
                 
-                // Update visible count
-                document.getElementById("visible-count").textContent = visibleCount;
-                document.getElementById("total-count").textContent = totalNotes;
+                // Update section title
+                if (sectionTitle) {
+                    if (activeCategory === 'all') {
+                        sectionTitle.textContent = 'All Notes';
+                    } else if (activeCategory === 'science') {
+                        sectionTitle.textContent = 'Science Notes';
+                    } else if (activeCategory === 'technology') {
+                        sectionTitle.textContent = 'Technology Notes';
+                    } else if (activeCategory === 'tamil') {
+                        sectionTitle.textContent = 'Tamil Notes';
+                    }
+                }
                 
-                console.log("Filtered items:", filteredItems.length);
-                console.log("Visible count:", visibleCount);
+                // Reset filtered items array
+                filteredItems = [];
+                
+                // Apply filters to each note item
+                noteItems.forEach(item => {
+                    // Get note properties
+                    const category = item.dataset.category || '';
+                    const title = item.querySelector('.note-title')?.textContent.toLowerCase() || '';
+                    const description = item.querySelector('.note-description')?.textContent.toLowerCase() || '';
+                    
+                    // Check if note matches filters
+                    const matchesCategory = activeCategory === 'all' || category.includes(activeCategory);
+                    const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+                    
+                    // Hide all items initially
+                    item.style.display = 'none';
+                    
+                    // Add to filtered items if it matches
+                    if (matchesCategory && matchesSearch) {
+                        filteredItems.push(item);
+                    }
+                });
+                
+                // Update counts
+                if (visibleCountElement) visibleCountElement.textContent = filteredItems.length;
                 
                 // Show/hide no results message
-                if (visibleCount === 0) {
-                    noResults.style.display = "block";
-                    document.getElementById("pagination-controls").style.display = "none";
-                } else {
-                    noResults.style.display = "none";
-                    document.getElementById("pagination-controls").style.display = "flex";
-                    // Reset to first page when filter changes
-                    currentPage = 1;
-                    updatePagination();
+                if (noResults) {
+                    if (filteredItems.length === 0) {
+                        noResults.style.display = 'block';
+                        if (paginationControls) paginationControls.style.display = 'none';
+                    } else {
+                        noResults.style.display = 'none';
+                        if (paginationControls) paginationControls.style.display = 'flex';
+                    }
                 }
+                
+                // Reset to first page and update pagination
+                currentPage = 1;
+                updatePagination();
             }
             
-            // Update pagination controls and display current page items
+            // Update pagination and display current page items
             function updatePagination() {
+                const notesPerPage = notesPerPageSelect ? 
+                    (notesPerPageSelect.value === 'all' ? 'all' : parseInt(notesPerPageSelect.value)) : 12;
+                
                 // If showing all notes
-                if (notesPerPage === "all") {
-                    filteredItems.forEach(item => item.style.display = "");
-                    document.getElementById("pagination-controls").style.display = "none";
+                if (notesPerPage === 'all') {
+                    filteredItems.forEach(item => item.style.display = '');
+                    if (paginationControls) paginationControls.style.display = 'none';
                     return;
                 }
                 
-                // Calculate total pages
+                // Calculate pagination
                 const totalPages = Math.ceil(filteredItems.length / notesPerPage);
-                
-                // Ensure current page is valid
-                if (currentPage > totalPages) {
-                    currentPage = totalPages || 1;
-                }
+                currentPage = Math.min(Math.max(1, currentPage), Math.max(1, totalPages));
                 
                 // Show only items for current page
                 const startIndex = (currentPage - 1) * notesPerPage;
                 const endIndex = Math.min(startIndex + notesPerPage, filteredItems.length);
                 
                 filteredItems.forEach((item, index) => {
-                    if (index >= startIndex && index < endIndex) {
-                        item.style.display = "";
-                    } else {
-                        item.style.display = "none";
-                    }
+                    item.style.display = (index >= startIndex && index < endIndex) ? '' : 'none';
                 });
                 
-                // Update pagination controls
-                const paginationControls = document.getElementById("pagination-controls");
-                const paginationList = paginationControls.querySelector(".pagination");
+                // Update pagination controls if they exist
+                if (!paginationContainer) return;
                 
-                // Clear existing page numbers
-                while (paginationList.children.length > 2) {
-                    paginationList.removeChild(paginationList.children[1]);
-                }
+                // Clear existing pagination
+                paginationContainer.innerHTML = '';
+                
+                // Add previous button
+                const prevItem = document.createElement('li');
+                prevItem.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+                const prevLink = document.createElement('a');
+                prevLink.className = 'page-link';
+                prevLink.href = '#';
+                prevLink.innerHTML = '&laquo;';
+                prevLink.setAttribute('aria-label', 'Previous');
+                prevItem.appendChild(prevLink);
+                paginationContainer.appendChild(prevItem);
                 
                 // Add page numbers
-                for (let i = totalPages; i >= 1; i--) {
-                    const pageItem = document.createElement("li");
+                const maxVisiblePages = 5;
+                let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+                let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+                
+                if (endPage - startPage + 1 < maxVisiblePages) {
+                    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                }
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageItem = document.createElement('li');
                     pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
                     
-                    const pageLink = document.createElement("a");
-                    pageLink.className = "page-link";
-                    pageLink.href = "#";
+                    const pageLink = document.createElement('a');
+                    pageLink.className = 'page-link';
+                    pageLink.href = '#';
                     pageLink.textContent = i;
-                    pageLink.addEventListener("click", function(e) {
+                    
+                    // Add click event
+                    pageLink.addEventListener('click', function(e) {
                         e.preventDefault();
                         currentPage = i;
                         updatePagination();
                     });
                     
                     pageItem.appendChild(pageLink);
-                    paginationList.insertBefore(pageItem, paginationList.children[1]);
+                    paginationContainer.appendChild(pageItem);
                 }
                 
-                // Update prev/next buttons
-                const prevButton = document.getElementById("prev-page");
-                const nextButton = document.getElementById("next-page");
+                // Add next button
+                const nextItem = document.createElement('li');
+                nextItem.className = `page-item ${currentPage === totalPages || totalPages === 0 ? 'disabled' : ''}`;
+                const nextLink = document.createElement('a');
+                nextLink.className = 'page-link';
+                nextLink.href = '#';
+                nextLink.innerHTML = '&raquo;';
+                nextLink.setAttribute('aria-label', 'Next');
+                nextItem.appendChild(nextLink);
+                paginationContainer.appendChild(nextItem);
                 
-                prevButton.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
-                nextButton.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+                // Add event listeners to prev/next buttons
+                prevLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (currentPage > 1) {
+                        currentPage--;
+                        updatePagination();
+                    }
+                });
                 
-                // Hide pagination if only one page
-                if (totalPages <= 1) {
-                    paginationControls.style.display = "none";
-                } else {
-                    paginationControls.style.display = "flex";
-                }
+                nextLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        updatePagination();
+                    }
+                });
             }
             
             // Event listeners
-            categoryButtons.forEach(btn => {
-                btn.addEventListener("click", function() {
-                    if (this.dataset.category === "all") {
-                        // If "All Notes" is clicked, deactivate all other buttons
-                        categoryButtons.forEach(b => {
-                            if (b.dataset.category !== "all") {
-                                b.classList.remove("active");
-                            } else {
-                                b.classList.add("active");
-                            }
-                        });
-                    } else {
-                        // If a specific category is clicked
-                        // First, deactivate the "All Notes" button
-                        document.querySelector('.category-btn[data-category="all"]').classList.remove("active");
-                        
-                        // Toggle the clicked button
-                        this.classList.toggle("active");
-                        
-                        // If no specific categories are selected, reactivate "All Notes"
-                        if (!document.querySelector('.category-btn.active')) {
-                            document.querySelector('.category-btn[data-category="all"]').classList.add("active");
-                        }
-                    }
-                    
-                    // Filter notes based on selected categories
+            filterDropdownItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    filterDropdownItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
                     filterNotes();
                 });
             });
             
-            searchInput.addEventListener("input", filterNotes);
+            // Add search input event listener
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    filterNotes();
+                });
+            }
             
-            // Notes per page dropdown
-            document.getElementById("notes-per-page").addEventListener("change", function() {
-                notesPerPage = this.value === "all" ? "all" : parseInt(this.value);
-                updatePagination();
-            });
-            
-            // Previous page button
-            document.getElementById("prev-page").addEventListener("click", function(e) {
-                e.preventDefault();
-                if (currentPage > 1) {
-                    currentPage--;
+            // Add notes per page change event listener
+            if (notesPerPageSelect) {
+                notesPerPageSelect.addEventListener('change', function() {
                     updatePagination();
-                }
-            });
+                });
+            }
             
-            // Next page button
-            document.getElementById("next-page").addEventListener("click", function(e) {
-                e.preventDefault();
-                const totalPages = Math.ceil(filteredItems.length / notesPerPage);
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    updatePagination();
-                }
-            });
+            // Add pagination control event listeners
+            if (document.getElementById('prev-page')) {
+                document.getElementById('prev-page').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (currentPage > 1) {
+                        currentPage--;
+                        updatePagination();
+                    }
+                });
+            }
             
-            // Initial pagination setup
-            console.log("Starting initial pagination setup");
+            if (document.getElementById('next-page')) {
+                document.getElementById('next-page').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const notesPerPage = notesPerPageSelect ? parseInt(notesPerPageSelect.value) : 12;
+                    const totalPages = Math.ceil(filteredItems.length / notesPerPage);
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        updatePagination();
+                    }
+                });
+            }
             
+            // Run initial filtering
+            filterNotes();
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
             // Make sure all notes are visible initially
+            const noteItems = document.querySelectorAll('.note-item');
             noteItems.forEach(item => {
-                item.style.display = "flex";
                 item.style.visibility = "visible";
                 item.style.opacity = "1";
             });
-            
-            // Update counts
-            document.getElementById("visible-count").textContent = totalNotes;
-            document.getElementById("total-count").textContent = totalNotes;
-            
-            // Initialize filtered items with all items
-            filteredItems = [...noteItems];
-            
-            // Then apply filtering
-            filterNotes();
         });
     </script>
 </body>
