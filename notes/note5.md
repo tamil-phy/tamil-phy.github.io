@@ -1,4 +1,4 @@
-# What I am Going to Talk About at the PINN Conference
+# A Preview of My Session at the PINN Conference
 
 Most people wonder how a physicist ended up working in clinical trials. The truth is, it all began with the habits I picked up in physics. When I once asked Newton how you actually quantify force, the answer was: you need calculus. That got me hooked. After solving every example in the textbook on differential equations, I thought I had cracked the code of how systems behave at least in time, for single variables. But soon I realized the world is rarely that simple. My professor then introduced me to partial differential equations (PDEs), which take the same ideas but extend them to describe how systems evolve across both space and time.
 
@@ -76,7 +76,7 @@ These conditions are the "data" we know for a fact.How the PINN Learns Using Thi
 
 The PINN, which we'll call `N(x, t)`, now has two clear jobs, defined by its two loss functions:
 
-1. Data Loss (Loss_data)
+1. **Data Loss (Loss_data)**
 
 This loss function ensures the PINN's solution N(x, t) respects the known factual conditions. The network is penalized if:
 
@@ -86,7 +86,7 @@ This loss function ensures the PINN's solution N(x, t) respects the known factua
 
 This loss **anchors** the solution. The PINN knows how the simulation must **start** and what must happen at the **boundaries**. But it still doesn't know how the heat should spread in the middle of the rod for `t > 0`.
 
-2. Physics Loss (Loss_phys)
+2. **Physics Loss (Loss_phys)**
 
 This is where the magic happens. We pick thousands of random points in space and time (x_random, t_random) inside the rod. At these points, we don't have data, but we do have the law of physics.
 
