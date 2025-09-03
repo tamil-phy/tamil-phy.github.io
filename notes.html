@@ -761,6 +761,13 @@
                         updatePagination();
                     }
                 });
+                
+                // Hide pagination if only one page or no items
+                if (totalPages <= 1) {
+                    paginationControls.style.display = 'none';
+                } else {
+                    paginationControls.style.display = 'flex';
+                }
             }
             
             // Event listeners
@@ -783,32 +790,13 @@
             // Add notes per page change event listener
             if (notesPerPageSelect) {
                 notesPerPageSelect.addEventListener('change', function() {
+                    currentPage = 1; // Reset to first page when changing notes per page
                     updatePagination();
                 });
             }
             
-            // Add pagination control event listeners
-            if (document.getElementById('prev-page')) {
-                document.getElementById('prev-page').addEventListener('click', function(e) {
-                    e.preventDefault();
-                    if (currentPage > 1) {
-                        currentPage--;
-                        updatePagination();
-                    }
-                });
-            }
-            
-            if (document.getElementById('next-page')) {
-                document.getElementById('next-page').addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const notesPerPage = notesPerPageSelect ? parseInt(notesPerPageSelect.value) : 12;
-                    const totalPages = Math.ceil(filteredItems.length / notesPerPage);
-                    if (currentPage < totalPages) {
-                        currentPage++;
-                        updatePagination();
-                    }
-                });
-            }
+            // Initialize pagination
+            updatePagination();
             
             // Run initial filtering
             filterNotes();

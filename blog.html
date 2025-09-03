@@ -990,8 +990,8 @@
             
             // Current page state
             let currentPage = 1;
-            let postsPerPage = 12;
-            let filteredItems = [];
+            let postsPerPage = parseInt(document.getElementById('posts-per-page').value);
+            let filteredItems = Array.from(blogItems);
             
             // Filter function
             function filterBlogs() {
@@ -1056,73 +1056,112 @@
             
             // Update pagination controls and display current page items
             function updatePagination() {
+                const postsPerPageSelect = document.getElementById('posts-per-page');
+                const currentPostsPerPage = postsPerPageSelect ? 
+                    (postsPerPageSelect.value === 'all' ? 'all' : parseInt(postsPerPageSelect.value)) : 12;
+                
                 // If showing all posts
-                if (postsPerPage === "all") {
-                    filteredItems.forEach(item => item.style.display = "");
-                    document.getElementById("pagination-controls").style.display = "none";
+                if (currentPostsPerPage === 'all') {
+                    filteredItems.forEach(item => item.style.display = '');
+                    const paginationControls = document.getElementById('pagination-controls');
+                    if (paginationControls) paginationControls.style.display = 'none';
                     return;
                 }
                 
                 // Calculate total pages
-                const totalPages = Math.ceil(filteredItems.length / postsPerPage);
-                
-                // Ensure current page is valid
-                if (currentPage > totalPages) {
-                    currentPage = totalPages || 1;
-                }
+                const totalPages = Math.ceil(filteredItems.length / currentPostsPerPage);
+                currentPage = Math.min(Math.max(1, currentPage), Math.max(1, totalPages));
                 
                 // Show only items for current page
-                const startIndex = (currentPage - 1) * postsPerPage;
-                const endIndex = Math.min(startIndex + postsPerPage, filteredItems.length);
+                const startIndex = (currentPage - 1) * currentPostsPerPage;
+                const endIndex = Math.min(startIndex + currentPostsPerPage, filteredItems.length);
                 
                 filteredItems.forEach((item, index) => {
-                    if (index >= startIndex && index < endIndex) {
-                        item.style.display = "";
-                    } else {
-                        item.style.display = "none";
-                    }
+                    item.style.display = (index >= startIndex && index < endIndex) ? '' : 'none';
                 });
                 
                 // Update pagination controls
-                const paginationControls = document.getElementById("pagination-controls");
-                const paginationList = paginationControls.querySelector(".pagination");
+                const paginationControls = document.getElementById('pagination-controls');
+                if (!paginationControls) return;
                 
-                // Clear existing page numbers
-                while (paginationList.children.length > 2) {
-                    paginationList.removeChild(paginationList.children[1]);
-                }
+                const paginationList = paginationControls.querySelector('.pagination');
+                if (!paginationList) return;
+                
+                // Clear existing pagination
+                paginationList.innerHTML = '';
+                
+                // Add previous button
+                const prevItem = document.createElement('li');
+                prevItem.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+                const prevLink = document.createElement('a');
+                prevLink.className = 'page-link';
+                prevLink.href = '#';
+                prevLink.innerHTML = '&laquo;';
+                prevLink.setAttribute('aria-label', 'Previous');
+                prevItem.appendChild(prevLink);
+                paginationList.appendChild(prevItem);
                 
                 // Add page numbers
-                for (let i = totalPages; i >= 1; i--) {
-                    const pageItem = document.createElement("li");
+                const maxVisiblePages = 5;
+                let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+                let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+                
+                if (endPage - startPage + 1 < maxVisiblePages) {
+                    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                }
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageItem = document.createElement('li');
                     pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
                     
-                    const pageLink = document.createElement("a");
-                    pageLink.className = "page-link";
-                    pageLink.href = "#";
+                    const pageLink = document.createElement('a');
+                    pageLink.className = 'page-link';
+                    pageLink.href = '#';
                     pageLink.textContent = i;
-                    pageLink.addEventListener("click", function(e) {
+                    
+                    pageLink.addEventListener('click', function(e) {
                         e.preventDefault();
                         currentPage = i;
                         updatePagination();
                     });
                     
                     pageItem.appendChild(pageLink);
-                    paginationList.insertBefore(pageItem, paginationList.children[1]);
+                    paginationList.appendChild(pageItem);
                 }
                 
-                // Update prev/next buttons
-                const prevButton = document.getElementById("prev-page");
-                const nextButton = document.getElementById("next-page");
+                // Add next button
+                const nextItem = document.createElement('li');
+                nextItem.className = `page-item ${currentPage === totalPages || totalPages === 0 ? 'disabled' : ''}`;
+                const nextLink = document.createElement('a');
+                nextLink.className = 'page-link';
+                nextLink.href = '#';
+                nextLink.innerHTML = '&raquo;';
+                nextLink.setAttribute('aria-label', 'Next');
+                nextItem.appendChild(nextLink);
+                paginationList.appendChild(nextItem);
                 
-                prevButton.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
-                nextButton.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+                // Add event listeners to prev/next buttons
+                prevLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (currentPage > 1) {
+                        currentPage--;
+                        updatePagination();
+                    }
+                });
                 
-                // Hide pagination if only one page
+                nextLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        updatePagination();
+                    }
+                });
+                
+                // Hide pagination if only one page or no items
                 if (totalPages <= 1) {
-                    paginationControls.style.display = "none";
+                    paginationControls.style.display = 'none';
                 } else {
-                    paginationControls.style.display = "flex";
+                    paginationControls.style.display = 'flex';
                 }
             }
             
@@ -1139,29 +1178,19 @@
             searchInput.addEventListener('input', filterBlogs);
             
             // Posts per page dropdown
-            document.getElementById("posts-per-page").addEventListener("change", function() {
-                postsPerPage = this.value === "all" ? "all" : parseInt(this.value);
-                updatePagination();
-            });
-            
-            // Previous page button
-            document.getElementById("prev-page").addEventListener("click", function(e) {
-                e.preventDefault();
-                if (currentPage > 1) {
-                    currentPage--;
+            const postsPerPageSelect = document.getElementById('posts-per-page');
+            if (postsPerPageSelect) {
+                postsPerPageSelect.addEventListener('change', function() {
+                    currentPage = 1; // Reset to first page when changing posts per page
                     updatePagination();
-                }
-            });
+                });
+            }
             
-            // Next page button
-            document.getElementById("next-page").addEventListener("click", function(e) {
-                e.preventDefault();
-                const totalPages = Math.ceil(filteredItems.length / postsPerPage);
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    updatePagination();
-                }
-            });
+            // Initialize pagination
+            updatePagination();
+            
+            // Run initial filtering
+            filterBlogs();
             
             // Sort blog items by date (newest first)
             blogItems.sort((a, b) => {
