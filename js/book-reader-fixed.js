@@ -345,6 +345,26 @@ console.log('Hello World');
                 hljs.highlightElement(block);
             });
             
+            // Add IDs to headings for TOC navigation
+            markdownContent.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((heading, index) => {
+                heading.id = `heading-${index}`;
+            });
+            
+            // Add scroll listener for progress bar
+            markdownContent.addEventListener('scroll', () => {
+                console.log('Scroll event triggered');
+                this.updateReadingProgress();
+            });
+            
+            // Also add scroll listener to the parent container in case markdown content doesn't scroll
+            const contentDisplay = document.getElementById('contentDisplay');
+            if (contentDisplay) {
+                contentDisplay.addEventListener('scroll', () => {
+                    console.log('Content display scroll event triggered');
+                    this.updateReadingProgressForContainer();
+                });
+            }
+            
             // Update reading progress
             this.updateReadingProgress();
             
@@ -365,6 +385,11 @@ console.log('Hello World');
 
     generateTOC(content) {
         const tocContainer = document.getElementById('tocContainer');
+        if (!tocContainer) {
+            console.log('TOC container not found');
+            return;
+        }
+        
         const headings = content.match(/^#{1,6}\s+.+$/gm);
         
         if (!headings || headings.length === 0) {
@@ -379,7 +404,7 @@ console.log('Hello World');
             const id = `heading-${index}`;
             
             tocHTML += `
-                <div class="toc-item toc-level-${level}" data-target="${id}">
+                <div class="toc-item toc-level-${level}" data-target="${id}" style="cursor: pointer; padding: 5px; margin-left: ${(level-1)*15}px;">
                     ${text}
                 </div>
             `;
@@ -393,7 +418,9 @@ console.log('Hello World');
                 const targetId = item.dataset.target;
                 const targetElement = document.getElementById(targetId);
                 if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    console.log('Target element not found:', targetId);
                 }
             });
         });
@@ -629,12 +656,47 @@ console.log('Hello World');
     }
 
     updateReadingProgress() {
+        const markdownContent = document.getElementById('markdownContent');
+        if (!markdownContent) {
+            console.log('markdownContent not found for progress bar');
+            return;
+        }
+        
+        const scrollTop = markdownContent.scrollTop;
+        const scrollHeight = markdownContent.scrollHeight - markdownContent.clientHeight;
+        const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+        
+        console.log('Progress calculation:', { scrollTop, scrollHeight, progress });
+        
+        const progressBar = document.getElementById('readingProgress');
+        if (progressBar) {
+            progressBar.style.width = `${Math.min(progress, 100)}%`;
+            console.log('Progress bar updated to:', `${Math.min(progress, 100)}%`);
+        } else {
+            console.log('Progress bar element not found');
+        }
+    }
+
+    updateReadingProgressForContainer() {
         const contentDisplay = document.getElementById('contentDisplay');
+        if (!contentDisplay) {
+            console.log('contentDisplay not found for progress bar');
+            return;
+        }
+        
         const scrollTop = contentDisplay.scrollTop;
         const scrollHeight = contentDisplay.scrollHeight - contentDisplay.clientHeight;
         const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
         
-        document.getElementById('readingProgress').style.width = `${Math.min(progress, 100)}%`;
+        console.log('Container progress calculation:', { scrollTop, scrollHeight, progress });
+        
+        const progressBar = document.getElementById('readingProgress');
+        if (progressBar) {
+            progressBar.style.width = `${Math.min(progress, 100)}%`;
+            console.log('Progress bar updated to:', `${Math.min(progress, 100)}%`);
+        } else {
+            console.log('Progress bar element not found');
+        }
     }
 
     printBook() {

@@ -273,10 +273,11 @@ Numpy-ல் array-களை உருவாக்குவதற்கான �
 
 **Input:**
 
+list data-யை numpy array-ஆக மாற்றுதல்
 ```python
 import numpy as np
 
-# list data-யை numpy array-ஆக மாற்றுதல்
+
 list_data = [1, 2, 3, 4, 5]
 array_data = np.asarray(list_data)
 print("Array from list:", array_data)
