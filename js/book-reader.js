@@ -451,39 +451,159 @@ console.log('Hello World');
     }
 
     performSearch() {
-        const query = document.getElementById('searchInput').value.trim().toLowerCase();
+        const searchInput = document.getElementById('searchInput');
         const resultsContainer = document.getElementById('searchResults');
         
+        if (!searchInput) {
+            console.log('Search input not found');
+            return;
+        }
+        
+        const query = searchInput.value.trim();
+        
         if (!query) {
-            resultsContainer.style.display = 'none';
+            this.clearSearchHighlights();
+            if (resultsContainer) {
+                resultsContainer.style.display = 'none';
+                resultsContainer.innerHTML = '';
+            }
             return;
         }
 
-        const results = [];
-        const queryWords = query.split(/\s+/);
+        // Clear previous highlights
+        this.clearSearchHighlights();
         
-        queryWords.forEach(word => {
-            if (this.searchIndex.has(word)) {
-                results.push(...this.searchIndex.get(word));
+        // Highlight matches in document
+        const matchCount = this.highlightSearchInDocument(query);
+        
+        // Show simple result count instead of cluttered list
+        if (resultsContainer) {
+            if (matchCount > 0) {
+                resultsContainer.innerHTML = `
+                    <div class="search-summary">
+                        <div class="search-count">${matchCount} matches found</div>
+                        <div class="search-navigation">
+                            <button class="btn btn-sm btn-outline-primary" onclick="bookReader.navigateSearchResults('prev')">
+                                <i class="fas fa-chevron-up"></i> Previous
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary" onclick="bookReader.navigateSearchResults('next')">
+                                <i class="fas fa-chevron-down"></i> Next
+                            </button>
+                        </div>
+                    </div>
+                `;
+                this.currentSearchIndex = 0;
+                this.scrollToSearchResult(0);
+            } else {
+                resultsContainer.innerHTML = '<div class="search-summary">No matches found</div>';
+            }
+            resultsContainer.style.display = 'block';
+        }
+    }
+
+    highlightSearchInDocument(query) {
+        const markdownContent = document.getElementById('markdownContent');
+        if (!markdownContent) return 0;
+
+        const searchTerms = query.toLowerCase().split(/\s+/).filter(term => term.length > 0);
+        let matchCount = 0;
+        
+        // Create a TreeWalker to traverse text nodes
+        const walker = document.createTreeWalker(
+            markdownContent,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+
+        const textNodes = [];
+        let node;
+        while (node = walker.nextNode()) {
+            textNodes.push(node);
+        }
+
+        // Process each text node
+        textNodes.forEach(textNode => {
+            const originalText = textNode.textContent;
+            let highlightedText = originalText;
+            let hasMatch = false;
+
+            searchTerms.forEach(term => {
+                const regex = new RegExp(`(${this.escapeRegex(term)})`, 'gi');
+                if (regex.test(originalText)) {
+                    hasMatch = true;
+                    highlightedText = highlightedText.replace(regex, '<mark class="search-highlight" data-search-index="' + matchCount + '">$1</mark>');
+                    matchCount++;
+                }
+            });
+
+            if (hasMatch) {
+                const span = document.createElement('span');
+                span.innerHTML = highlightedText;
+                textNode.parentNode.replaceChild(span, textNode);
             }
         });
 
-        if (results.length === 0) {
-            resultsContainer.innerHTML = '<div class="search-result-item">No results found</div>';
+        return matchCount;
+    }
+
+    clearSearchHighlights() {
+        const markdownContent = document.getElementById('markdownContent');
+        if (!markdownContent) return;
+
+        // Remove all search highlights
+        const highlights = markdownContent.querySelectorAll('mark.search-highlight');
+        highlights.forEach(highlight => {
+            const parent = highlight.parentNode;
+            parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+            parent.normalize(); // Merge adjacent text nodes
+        });
+
+        // Remove any span wrappers that were created
+        const spans = markdownContent.querySelectorAll('span');
+        spans.forEach(span => {
+            if (span.children.length === 0 && span.textContent) {
+                const parent = span.parentNode;
+                parent.replaceChild(document.createTextNode(span.textContent), span);
+                parent.normalize();
+            }
+        });
+    }
+
+    navigateSearchResults(direction) {
+        const highlights = document.querySelectorAll('mark.search-highlight');
+        if (highlights.length === 0) return;
+
+        if (direction === 'next') {
+            this.currentSearchIndex = (this.currentSearchIndex + 1) % highlights.length;
         } else {
-            const uniqueResults = results.filter((result, index, self) => 
-                index === self.findIndex(r => r.line === result.line)
-            );
-            
-            resultsContainer.innerHTML = uniqueResults.slice(0, 10).map(result => `
-                <div class="search-result-item" data-line="${result.line}">
-                    <div class="search-result-title">Line ${result.line}</div>
-                    <div class="search-result-content">${result.content}</div>
-                </div>
-            `).join('');
+            this.currentSearchIndex = this.currentSearchIndex === 0 ? highlights.length - 1 : this.currentSearchIndex - 1;
         }
 
-        resultsContainer.style.display = 'block';
+        this.scrollToSearchResult(this.currentSearchIndex);
+    }
+
+    scrollToSearchResult(index) {
+        const highlights = document.querySelectorAll('mark.search-highlight');
+        if (highlights.length === 0 || index >= highlights.length) return;
+
+        // Remove previous active highlight
+        highlights.forEach(h => h.classList.remove('search-highlight-active'));
+        
+        // Add active class to current highlight
+        const currentHighlight = highlights[index];
+        currentHighlight.classList.add('search-highlight-active');
+        
+        // Scroll to the highlight
+        currentHighlight.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center',
+            inline: 'nearest'
+        });
+    }
+
+    escapeRegex(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
     addBookmark() {

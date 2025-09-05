@@ -518,8 +518,6 @@ Broadcasting என்பது NumPy-யின் திறனாக, இரண
 
 ```python
 import numpy as np
-
-# Broadcasting உதாரணம்
 array1 = np.array([1, 2, 3])
 array2 = np.array([[1], [2], [3]])
 print("array1 shape: ", array1.shape)
