@@ -7,6 +7,12 @@ class BookReader {
         this.bookmarks = this.loadBookmarks();
         this.searchIndex = new Map();
         this.books = [];
+        this.currentSearchIndex = 0;
+        
+        // Test localStorage
+        console.log('Testing localStorage...');
+        localStorage.setItem('test', 'working');
+        console.log('localStorage test result:', localStorage.getItem('test'));
         
         console.log('Calling init...');
         this.init();
@@ -25,6 +31,11 @@ class BookReader {
             this.setupAccessibility();
             console.log('Loading user preferences...');
             this.loadUserPreferences();
+            console.log('Loading bookmarks...');
+            // Wait for DOM to be ready before updating bookmarks
+            setTimeout(() => {
+                this.updateBookmarksList();
+            }, 100);
             console.log('Handling URL parameters...');
             this.handleURLParameters();
             console.log('Init completed successfully');
@@ -98,9 +109,15 @@ class BookReader {
         });
 
         // Bookmark functionality
-        document.getElementById('addBookmark').addEventListener('click', () => {
-            this.addBookmark();
-        });
+        const addBookmarkBtn = document.getElementById('addBookmark');
+        if (addBookmarkBtn) {
+            addBookmarkBtn.addEventListener('click', () => {
+                console.log('Add bookmark button clicked');
+                this.addBookmark();
+            });
+        } else {
+            console.error('addBookmark button not found');
+        }
     }
 
     setupKeyboardShortcuts() {
@@ -286,6 +303,10 @@ console.log('Hello World');
             this.buildSearchIndex(markdownContent);
 
             this.hideLoading();
+            
+            // Update bookmarks list after book is loaded
+            this.updateBookmarksList();
+            
             console.log('Book loaded successfully');
         } catch (error) {
             console.error('Error loading book:', error);
@@ -606,43 +627,156 @@ console.log('Hello World');
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
+    debugBookmarks() {
+        console.log('=== BOOKMARK DEBUG ===');
+        console.log('this.bookmarks:', this.bookmarks);
+        console.log('localStorage bookmarks:', localStorage.getItem('bookReader_bookmarks'));
+        console.log('currentBook:', this.currentBook);
+        
+        const bookmarksList = document.getElementById('bookmarksList');
+        console.log('bookmarksList element:', bookmarksList);
+        
+        // Force refresh bookmarks list
+        this.updateBookmarksList();
+        
+        // Test adding a bookmark
+        if (this.currentBook) {
+            console.log('Adding test bookmark...');
+            this.addBookmark();
+        } else {
+            console.log('No current book loaded');
+        }
+    }
+
     addBookmark() {
-        if (!this.currentBook) return;
+        console.log('addBookmark called');
+        if (!this.currentBook) {
+            console.log('No current book, cannot add bookmark');
+            this.showNotification('Please load a book first');
+            return;
+        }
 
         const contentDisplay = document.getElementById('contentDisplay');
+        if (!contentDisplay) {
+            console.error('contentDisplay element not found');
+            return;
+        }
+        
         const scrollPosition = contentDisplay.scrollTop;
+        console.log('Current scroll position:', scrollPosition);
+        
+        // Get current heading context for better bookmark titles
+        const markdownContent = document.getElementById('markdownContent');
+        let contextTitle = 'Bookmark';
+        
+        if (markdownContent) {
+            const headings = markdownContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
+            let closestHeading = null;
+            let minDistance = Infinity;
+            
+            headings.forEach(heading => {
+                const headingTop = heading.offsetTop;
+                const distance = Math.abs(headingTop - scrollPosition);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestHeading = heading;
+                }
+            });
+            
+            if (closestHeading) {
+                contextTitle = closestHeading.textContent.substring(0, 30) + (closestHeading.textContent.length > 30 ? '...' : '');
+            }
+        }
         
         const bookmark = {
             id: Date.now(),
             bookId: this.currentBook.id,
-            title: `Bookmark ${this.bookmarks.length + 1}`,
+            bookTitle: this.currentBook.title,
+            title: contextTitle,
             position: scrollPosition,
             timestamp: new Date().toISOString()
         };
 
+        console.log('Creating bookmark:', bookmark);
         this.bookmarks.push(bookmark);
+        console.log('Bookmarks array after push:', this.bookmarks);
+        
         this.saveBookmarks();
         this.updateBookmarksList();
-        this.showNotification('Bookmark added successfully');
+        this.showNotification('Bookmark added: ' + contextTitle);
     }
 
     updateBookmarksList() {
+        console.log('updateBookmarksList called');
         const bookmarksList = document.getElementById('bookmarksList');
-        if (!bookmarksList) return;
+        console.log('bookmarksList element:', bookmarksList);
+        console.log('this.bookmarks:', this.bookmarks);
+        console.log('this.currentBook:', this.currentBook);
+        
+        if (!bookmarksList) {
+            console.log('bookmarksList element not found');
+            return;
+        }
 
-        if (this.bookmarks.length === 0) {
+        // Filter bookmarks for current book if one is loaded
+        const currentBookmarks = this.currentBook 
+            ? this.bookmarks.filter(b => b.bookId === this.currentBook.id)
+            : this.bookmarks;
+
+        console.log('currentBookmarks:', currentBookmarks);
+
+        if (currentBookmarks.length === 0) {
             bookmarksList.innerHTML = '<p class="text-muted small">No bookmarks yet</p>';
             return;
         }
 
-        bookmarksList.innerHTML = this.bookmarks.map(bookmark => `
-            <div class="bookmark-item" data-id="${bookmark.id}">
-                <span class="bookmark-title">${bookmark.title}</span>
-                <button class="btn btn-sm btn-outline-danger" onclick="bookReader.removeBookmark(${bookmark.id})">
+        bookmarksList.innerHTML = currentBookmarks.map(bookmark => `
+            <div class="bookmark-item" data-id="${bookmark.id}" onclick="bookReader.goToBookmark(${bookmark.id})">
+                <div class="bookmark-content">
+                    <div class="bookmark-title">${bookmark.title}</div>
+                    <div class="bookmark-location">Page position: ${Math.round(bookmark.position)}px</div>
+                    <div class="bookmark-time">${new Date(bookmark.timestamp).toLocaleDateString()}</div>
+                </div>
+                <button class="bookmark-delete" onclick="event.stopPropagation(); bookReader.removeBookmark(${bookmark.id})">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
         `).join('');
+        
+        console.log('Bookmarks HTML updated');
+    }
+
+    goToBookmark(bookmarkId) {
+        const bookmark = this.bookmarks.find(b => b.id === bookmarkId);
+        if (!bookmark) return;
+
+        // If bookmark is for a different book, load that book first
+        if (this.currentBook && bookmark.bookId !== this.currentBook.id) {
+            const targetBook = this.books.find(b => b.id === bookmark.bookId);
+            if (targetBook) {
+                this.loadBook(targetBook.id).then(() => {
+                    // Wait a bit for content to load before scrolling
+                    setTimeout(() => {
+                        this.scrollToPosition(bookmark.position);
+                    }, 500);
+                });
+                return;
+            }
+        }
+
+        // Scroll to bookmark position
+        this.scrollToPosition(bookmark.position);
+        this.showNotification(`Jumped to: ${bookmark.title}`);
+    }
+
+    scrollToPosition(position) {
+        const contentDisplay = document.getElementById('contentDisplay');
+        if (contentDisplay) {
+            contentDisplay.scrollTo({
+                top: position,
+                behavior: 'smooth'
+            });
+        }
     }
 
     removeBookmark(bookmarkId) {
@@ -653,12 +787,22 @@ console.log('Hello World');
     }
 
     loadBookmarks() {
-        const saved = localStorage.getItem('bookReader_bookmarks');
-        return saved ? JSON.parse(saved) : [];
+        try {
+            const saved = localStorage.getItem('bookReader_bookmarks');
+            console.log('Loading bookmarks from localStorage:', saved);
+            const bookmarks = saved ? JSON.parse(saved) : [];
+            console.log('Parsed bookmarks:', bookmarks);
+            return bookmarks;
+        } catch (error) {
+            console.error('Error loading bookmarks:', error);
+            return [];
+        }
     }
 
     saveBookmarks() {
+        console.log('Saving bookmarks:', this.bookmarks);
         localStorage.setItem('bookReader_bookmarks', JSON.stringify(this.bookmarks));
+        console.log('Bookmarks saved to localStorage');
     }
 
     adjustZoom(delta) {
