@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Reader | Tamil Arasan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&family=Hind+Madurai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <link rel="stylesheet" href="css/book-reader.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Tamil Arasan</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blog.html">Blogs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="notes.html">Notes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="books.html">Books</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="papers.html">Papers</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Book Reader Interface -->
+    <div class="book-reader-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <button class="btn btn-sm btn-outline-secondary" id="closeSidebar" aria-label="Close sidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Book Selection -->
+            <div class="book-selection mb-4">
+                <h6 class="sidebar-title">Select Book</h6>
+                <select class="form-select form-select-sm" id="bookSelector">
+                    <option value="">Choose a book...</option>
+                    <!-- <option value="AI_in_Tamil">AI in Tamil</option> -->
+                    <option value="numpy">NumPy Guide</option>
+                </select>
+            </div>
+
+
+            <!-- Table of Contents -->
+            <div class="toc-section">
+                <h6 class="sidebar-title">
+                    <i class="fas fa-list me-2"></i>Table of Contents
+                </h6>
+                <div id="tocContainer" class="toc-container">
+                    <p class="text-muted small">Select a book to view contents</p>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="search-section mt-4">
+                <h6 class="sidebar-title">
+                    <i class="fas fa-search me-2"></i>Search
+                </h6>
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" id="searchInput" placeholder="Search in book...">
+                    <button class="btn btn-outline-secondary" type="button" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div id="searchResults" class="search-results mt-2"></div>
+            </div>
+
+            <!-- Bookmarks -->
+            <div class="bookmarks-section mt-4">
+                <h6 class="sidebar-title">
+                    <i class="fas fa-bookmark me-2"></i>Bookmarks
+                </h6>
+                <div id="bookmarksList" class="bookmarks-list">
+                    <p class="text-muted small">No bookmarks yet</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <button class="btn btn-sm btn-outline-secondary" id="toggleSidebar" aria-label="Toggle sidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <span class="book-title" id="currentBookTitle">Book Reader</span>
+                </div>
+                
+                <div class="toolbar-center">
+                    <!-- PDF Navigation (hidden by default) -->
+                    <div class="pdf-navigation" id="pdfNavigation" style="display: none;">
+                        <button class="btn btn-sm btn-outline-secondary" id="prevPage" aria-label="Previous page">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span class="page-info">
+                            <input type="number" id="currentPageInput" class="form-control form-control-sm" min="1" style="width: 60px; display: inline-block;">
+                            <span>of <span id="totalPages">0</span></span>
+                        </span>
+                        <button class="btn btn-sm btn-outline-secondary" id="nextPage" aria-label="Next page">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="toolbar-right">
+                    <div class="reading-progress">
+                        <div class="progress-bar" id="readingProgress"></div>
+                    </div>
+                    <button class="btn btn-sm btn-outline-secondary" id="addBookmark" aria-label="Add bookmark">
+                        <i class="fas fa-bookmark"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" id="printBook" aria-label="Print book">
+                        <i class="fas fa-print"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" id="fullscreen" aria-label="Toggle fullscreen">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Display -->
+            <div class="content-display" id="contentDisplay">
+                <!-- Markdown Content -->
+                <div class="markdown-content" id="markdownContent">
+                    <div class="welcome-message">
+                        <div class="text-center py-5">
+                            <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
+                            <h3 class="text-muted">Welcome to Book Reader</h3>
+                            <p class="text-muted">Select a book from the sidebar to start reading</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Results Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchModalLabel">Search Results</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="searchModalBody">
+                    <!-- Search results will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/book-reader-fixed.js"></script>
+</body>
+</html>
