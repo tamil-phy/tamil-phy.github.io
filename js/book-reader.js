@@ -1,3 +1,5 @@
+console.log('book-reader.js file loaded');
+
 class BookReader {
     constructor() {
         console.log('BookReader constructor called');
@@ -7,12 +9,6 @@ class BookReader {
         this.bookmarks = this.loadBookmarks();
         this.searchIndex = new Map();
         this.books = [];
-        this.currentSearchIndex = 0;
-        
-        // Test localStorage
-        console.log('Testing localStorage...');
-        localStorage.setItem('test', 'working');
-        console.log('localStorage test result:', localStorage.getItem('test'));
         
         console.log('Calling init...');
         this.init();
@@ -31,11 +27,6 @@ class BookReader {
             this.setupAccessibility();
             console.log('Loading user preferences...');
             this.loadUserPreferences();
-            console.log('Loading bookmarks...');
-            // Wait for DOM to be ready before updating bookmarks
-            setTimeout(() => {
-                this.updateBookmarksList();
-            }, 100);
             console.log('Handling URL parameters...');
             this.handleURLParameters();
             console.log('Init completed successfully');
@@ -45,10 +36,19 @@ class BookReader {
     }
 
     setupEventListeners() {
+        console.log('Running setupEventListeners...');
         // Sidebar toggle
-        document.getElementById('toggleSidebar').addEventListener('click', () => {
-            this.toggleSidebar();
-        });
+        const toggleButton = document.getElementById('toggleSidebar');
+        console.log('Found toggle button:', toggleButton);
+        if (toggleButton) {
+            toggleButton.addEventListener('click', () => {
+                console.log('Toggle button clicked!');
+                this.toggleSidebar();
+            });
+            console.log('Event listener attached to toggle button');
+        } else {
+            console.error('Sidebar toggle button not found!');
+        }
 
         const closeSidebarBtn = document.getElementById('closeSidebar');
         if (closeSidebarBtn) {
@@ -109,15 +109,9 @@ class BookReader {
         });
 
         // Bookmark functionality
-        const addBookmarkBtn = document.getElementById('addBookmark');
-        if (addBookmarkBtn) {
-            addBookmarkBtn.addEventListener('click', () => {
-                console.log('Add bookmark button clicked');
-                this.addBookmark();
-            });
-        } else {
-            console.error('addBookmark button not found');
-        }
+        document.getElementById('addBookmark').addEventListener('click', () => {
+            this.addBookmark();
+        });
     }
 
     setupKeyboardShortcuts() {
@@ -303,10 +297,6 @@ console.log('Hello World');
             this.buildSearchIndex(markdownContent);
 
             this.hideLoading();
-            
-            // Update bookmarks list after book is loaded
-            this.updateBookmarksList();
-            
             console.log('Book loaded successfully');
         } catch (error) {
             console.error('Error loading book:', error);
@@ -405,46 +395,82 @@ console.log('Hello World');
     }
 
     generateTOC(content) {
+        console.log('generateTOC called with content length:', content.length);
         const tocContainer = document.getElementById('tocContainer');
+        console.log('TOC container element:', tocContainer);
+        
         if (!tocContainer) {
             console.log('TOC container not found');
             return;
         }
         
-        const headings = content.match(/^#{1,6}\s+.+$/gm);
-        
-        if (!headings || headings.length === 0) {
-            tocContainer.innerHTML = '<p class="text-muted small">No headings found</p>';
-            return;
-        }
-
-        let tocHTML = '';
-        headings.forEach((heading, index) => {
-            const level = heading.match(/^#+/)[0].length;
-            const text = heading.replace(/^#+\s+/, '');
-            const id = `heading-${index}`;
+        // Wait for DOM to be ready, then generate TOC from actual rendered headings
+        setTimeout(() => {
+            const markdownContent = document.getElementById('markdownContent');
+            if (!markdownContent) {
+                console.log('markdownContent not found');
+                return;
+            }
             
-            tocHTML += `
-                <div class="toc-item toc-level-${level}" data-target="${id}" style="cursor: pointer; padding: 5px; margin-left: ${(level-1)*15}px;">
-                    ${text}
-                </div>
-            `;
-        });
+            const headings = markdownContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
+            console.log('Headings found in DOM:', headings.length);
+            
+            if (headings.length === 0) {
+                tocContainer.innerHTML = '<p class="text-muted small">No headings found</p>';
+                return;
+            }
 
-        tocContainer.innerHTML = tocHTML;
-
-        // Add click handlers for TOC items
-        tocContainer.querySelectorAll('.toc-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const targetId = item.dataset.target;
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                } else {
-                    console.log('Target element not found:', targetId);
+            let tocHTML = '';
+            headings.forEach((heading, index) => {
+                // Ensure heading has an ID
+                if (!heading.id) {
+                    heading.id = `heading-${index}`;
                 }
+                
+                const level = parseInt(heading.tagName.charAt(1));
+                const text = heading.textContent.trim();
+                
+                tocHTML += `
+                    <div class="toc-item level-${level}" data-target="${heading.id}" style="cursor: pointer; padding: 8px 12px; margin-left: ${(level-1)*15}px; border-radius: 4px; transition: background-color 0.3s;">
+                        ${text}
+                    </div>
+                `;
             });
-        });
+
+            console.log('Generated TOC HTML:', tocHTML.substring(0, 200) + '...');
+            tocContainer.innerHTML = tocHTML;
+
+            // Add click handlers for TOC items
+            console.log('Adding TOC click handlers for', tocContainer.querySelectorAll('.toc-item').length, 'items');
+            tocContainer.querySelectorAll('.toc-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('TOC item clicked:', item.textContent.trim());
+                    const targetId = item.dataset.target;
+                    console.log('Target ID:', targetId);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        console.log('Target element found, scrolling...');
+                        targetElement.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start',
+                            inline: 'nearest'
+                        });
+                        
+                        // Close sidebar on mobile after navigation
+                        if (window.innerWidth <= 1024) {
+                            setTimeout(() => {
+                                this.closeSidebar();
+                            }, 500);
+                        }
+                    } else {
+                        console.log('Target element not found:', targetId);
+                    }
+                });
+            });
+            
+            console.log('TOC generation completed with', headings.length, 'items');
+        }, 200);
     }
 
     buildSearchIndex(content) {
@@ -627,156 +653,83 @@ console.log('Hello World');
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
-    debugBookmarks() {
-        console.log('=== BOOKMARK DEBUG ===');
-        console.log('this.bookmarks:', this.bookmarks);
-        console.log('localStorage bookmarks:', localStorage.getItem('bookReader_bookmarks'));
-        console.log('currentBook:', this.currentBook);
-        
-        const bookmarksList = document.getElementById('bookmarksList');
-        console.log('bookmarksList element:', bookmarksList);
-        
-        // Force refresh bookmarks list
-        this.updateBookmarksList();
-        
-        // Test adding a bookmark
-        if (this.currentBook) {
-            console.log('Adding test bookmark...');
-            this.addBookmark();
-        } else {
-            console.log('No current book loaded');
-        }
-    }
-
     addBookmark() {
-        console.log('addBookmark called');
-        if (!this.currentBook) {
-            console.log('No current book, cannot add bookmark');
-            this.showNotification('Please load a book first');
-            return;
-        }
+        if (!this.currentBook) return;
 
         const contentDisplay = document.getElementById('contentDisplay');
-        if (!contentDisplay) {
-            console.error('contentDisplay element not found');
-            return;
-        }
-        
         const scrollPosition = contentDisplay.scrollTop;
-        console.log('Current scroll position:', scrollPosition);
         
-        // Get current heading context for better bookmark titles
-        const markdownContent = document.getElementById('markdownContent');
-        let contextTitle = 'Bookmark';
+        // Find the nearest heading for a better bookmark title
+        const headings = document.querySelectorAll('#markdownContent h1, #markdownContent h2, #markdownContent h3, #markdownContent h4, #markdownContent h5, #markdownContent h6');
+        let nearestHeading = 'Bookmark';
         
-        if (markdownContent) {
-            const headings = markdownContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
-            let closestHeading = null;
-            let minDistance = Infinity;
-            
-            headings.forEach(heading => {
-                const headingTop = heading.offsetTop;
-                const distance = Math.abs(headingTop - scrollPosition);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestHeading = heading;
-                }
-            });
-            
-            if (closestHeading) {
-                contextTitle = closestHeading.textContent.substring(0, 30) + (closestHeading.textContent.length > 30 ? '...' : '');
+        for (let heading of headings) {
+            const headingTop = heading.offsetTop;
+            if (headingTop <= scrollPosition + 100) {
+                nearestHeading = heading.textContent.trim();
+            } else {
+                break;
             }
         }
         
         const bookmark = {
             id: Date.now(),
             bookId: this.currentBook.id,
-            bookTitle: this.currentBook.title,
-            title: contextTitle,
+            title: nearestHeading || `Bookmark ${this.bookmarks.length + 1}`,
             position: scrollPosition,
             timestamp: new Date().toISOString()
         };
 
-        console.log('Creating bookmark:', bookmark);
         this.bookmarks.push(bookmark);
-        console.log('Bookmarks array after push:', this.bookmarks);
-        
         this.saveBookmarks();
         this.updateBookmarksList();
-        this.showNotification('Bookmark added: ' + contextTitle);
+        this.showNotification('Bookmark added successfully');
     }
 
     updateBookmarksList() {
-        console.log('updateBookmarksList called');
         const bookmarksList = document.getElementById('bookmarksList');
-        console.log('bookmarksList element:', bookmarksList);
-        console.log('this.bookmarks:', this.bookmarks);
-        console.log('this.currentBook:', this.currentBook);
-        
-        if (!bookmarksList) {
-            console.log('bookmarksList element not found');
-            return;
-        }
+        if (!bookmarksList) return;
 
-        // Filter bookmarks for current book if one is loaded
-        const currentBookmarks = this.currentBook 
-            ? this.bookmarks.filter(b => b.bookId === this.currentBook.id)
-            : this.bookmarks;
-
-        console.log('currentBookmarks:', currentBookmarks);
-
-        if (currentBookmarks.length === 0) {
+        if (this.bookmarks.length === 0) {
             bookmarksList.innerHTML = '<p class="text-muted small">No bookmarks yet</p>';
             return;
         }
 
-        bookmarksList.innerHTML = currentBookmarks.map(bookmark => `
-            <div class="bookmark-item" data-id="${bookmark.id}" onclick="bookReader.goToBookmark(${bookmark.id})">
-                <div class="bookmark-content">
+        bookmarksList.innerHTML = this.bookmarks.map(bookmark => `
+            <div class="bookmark-item" data-id="${bookmark.id}" onclick="bookReader.navigateToBookmark(${bookmark.id})" style="cursor: pointer;">
+                <div>
                     <div class="bookmark-title">${bookmark.title}</div>
-                    <div class="bookmark-location">Page position: ${Math.round(bookmark.position)}px</div>
-                    <div class="bookmark-time">${new Date(bookmark.timestamp).toLocaleDateString()}</div>
+                    <div class="bookmark-location text-muted small">${this.currentBook ? this.currentBook.title : 'Unknown book'}</div>
                 </div>
-                <button class="bookmark-delete" onclick="event.stopPropagation(); bookReader.removeBookmark(${bookmark.id})">
+                <button class="bookmark-delete" onclick="event.stopPropagation(); bookReader.removeBookmark(${bookmark.id})" title="Remove bookmark">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
         `).join('');
-        
-        console.log('Bookmarks HTML updated');
     }
 
-    goToBookmark(bookmarkId) {
+    navigateToBookmark(bookmarkId) {
         const bookmark = this.bookmarks.find(b => b.id === bookmarkId);
         if (!bookmark) return;
 
         // If bookmark is for a different book, load that book first
-        if (this.currentBook && bookmark.bookId !== this.currentBook.id) {
-            const targetBook = this.books.find(b => b.id === bookmark.bookId);
-            if (targetBook) {
-                this.loadBook(targetBook.id).then(() => {
-                    // Wait a bit for content to load before scrolling
-                    setTimeout(() => {
-                        this.scrollToPosition(bookmark.position);
-                    }, 500);
-                });
-                return;
-            }
-        }
-
-        // Scroll to bookmark position
-        this.scrollToPosition(bookmark.position);
-        this.showNotification(`Jumped to: ${bookmark.title}`);
-    }
-
-    scrollToPosition(position) {
-        const contentDisplay = document.getElementById('contentDisplay');
-        if (contentDisplay) {
-            contentDisplay.scrollTo({
-                top: position,
-                behavior: 'smooth'
+        if (bookmark.bookId !== this.currentBook?.id) {
+            const bookSelector = document.getElementById('bookSelector');
+            bookSelector.value = bookmark.bookId;
+            this.loadBook(bookmark.bookId).then(() => {
+                // Wait for book to load, then scroll to position
+                setTimeout(() => {
+                    const contentDisplay = document.getElementById('contentDisplay');
+                    contentDisplay.scrollTop = bookmark.position;
+                }, 500);
             });
+        } else {
+            // Same book, just scroll to position
+            const contentDisplay = document.getElementById('contentDisplay');
+            contentDisplay.scrollTop = bookmark.position;
         }
+
+        this.showNotification(`Navigated to: ${bookmark.title}`);
     }
 
     removeBookmark(bookmarkId) {
@@ -787,22 +740,12 @@ console.log('Hello World');
     }
 
     loadBookmarks() {
-        try {
-            const saved = localStorage.getItem('bookReader_bookmarks');
-            console.log('Loading bookmarks from localStorage:', saved);
-            const bookmarks = saved ? JSON.parse(saved) : [];
-            console.log('Parsed bookmarks:', bookmarks);
-            return bookmarks;
-        } catch (error) {
-            console.error('Error loading bookmarks:', error);
-            return [];
-        }
+        const saved = localStorage.getItem('bookReader_bookmarks');
+        return saved ? JSON.parse(saved) : [];
     }
 
     saveBookmarks() {
-        console.log('Saving bookmarks:', this.bookmarks);
         localStorage.setItem('bookReader_bookmarks', JSON.stringify(this.bookmarks));
-        console.log('Bookmarks saved to localStorage');
     }
 
     adjustZoom(delta) {
@@ -820,63 +763,34 @@ console.log('Hello World');
     }
 
     toggleSidebar() {
+        console.log('toggleSidebar called');
         const sidebar = document.getElementById('sidebar');
-        if (!sidebar) return;
+        console.log('Sidebar element:', sidebar);
+        console.log('Current display style:', sidebar.style.display);
         
-        if (window.innerWidth <= 1024) {
-            sidebar.classList.toggle('show');
-            
-            // Add overlay for mobile
-            if (sidebar.classList.contains('show')) {
-                this.addMobileOverlay();
+        // Check if sidebar is currently hidden
+        if (sidebar.style.display === 'none') {
+            console.log('Showing sidebar');
+            // Show sidebar
+            sidebar.style.display = 'block';
+            if (window.innerWidth > 1024) {
+                sidebar.classList.remove('collapsed');
             } else {
-                this.removeMobileOverlay();
+                sidebar.classList.add('show');
             }
         } else {
-            sidebar.classList.toggle('collapsed');
+            console.log('Hiding sidebar');
+            // Hide sidebar completely
+            sidebar.style.display = 'none';
         }
-    }
-
-    addMobileOverlay() {
-        // Remove existing overlay if any
-        this.removeMobileOverlay();
         
-        const overlay = document.createElement('div');
-        overlay.className = 'mobile-sidebar-overlay';
-        overlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-        `;
-        
-        overlay.addEventListener('click', () => {
-            this.closeSidebar();
-        });
-        
-        document.body.appendChild(overlay);
-    }
-
-    removeMobileOverlay() {
-        const overlay = document.querySelector('.mobile-sidebar-overlay');
-        if (overlay) {
-            overlay.remove();
-        }
+        console.log('Final display style:', sidebar.style.display);
     }
 
     closeSidebar() {
         const sidebar = document.getElementById('sidebar');
-        if (!sidebar) return;
-        
-        if (window.innerWidth <= 1024) {
-            sidebar.classList.remove('show');
-            this.removeMobileOverlay();
-        } else {
-            sidebar.classList.add('collapsed');
-        }
+        // Always hide sidebar completely regardless of screen size
+        sidebar.style.display = 'none';
     }
 
     toggleFullscreen() {
@@ -1054,6 +968,22 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
         window.bookReader = new BookReader();
         console.log('BookReader initialized successfully');
+        
+        // Add direct event listener as backup
+        setTimeout(() => {
+            const toggleBtn = document.getElementById('toggleSidebar');
+            console.log('Backup check - toggle button:', toggleBtn);
+            if (toggleBtn && !toggleBtn.hasAttribute('data-listener-added')) {
+                console.log('Adding backup event listener');
+                toggleBtn.addEventListener('click', () => {
+                    console.log('Backup toggle clicked');
+                    if (window.bookReader) {
+                        window.bookReader.toggleSidebar();
+                    }
+                });
+                toggleBtn.setAttribute('data-listener-added', 'true');
+            }
+        }, 1000);
     } catch (error) {
         console.error('Failed to initialize BookReader:', error);
     }
