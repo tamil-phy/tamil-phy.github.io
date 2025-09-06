@@ -20,7 +20,7 @@
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <a class="navbar-brand" href="index.html">Tamil Arasan</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -90,15 +90,6 @@
                 <div id="searchResults" class="search-results mt-2"></div>
             </div>
 
-            <!-- Bookmarks -->
-            <div class="bookmarks-section mt-4">
-                <h6 class="sidebar-title">
-                    <i class="fas fa-bookmark me-2"></i>Bookmarks
-                </h6>
-                <div id="bookmarksList" class="bookmarks-list">
-                    <p class="text-muted small">No bookmarks yet</p>
-                </div>
-            </div>
         </div>
 
         <!-- Main Content Area -->
@@ -132,9 +123,6 @@
                     <div class="reading-progress">
                         <div class="progress-bar" id="readingProgress"></div>
                     </div>
-                    <button class="btn btn-sm btn-outline-secondary" id="addBookmark" aria-label="Add bookmark">
-                        <i class="fas fa-bookmark"></i>
-                    </button>
                     <button class="btn btn-sm btn-outline-secondary" id="printBook" aria-label="Print book">
                         <i class="fas fa-print"></i>
                     </button>
@@ -218,6 +206,60 @@
                 sidebar.style.display = 'none';
             }
         }
+        
+        // Ensure Bootstrap navbar toggle works properly on mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            const navbarCollapse = document.querySelector('.navbar-collapse');
+            
+            if (navbarToggler && navbarCollapse) {
+                // Remove any existing event listeners
+                navbarToggler.removeEventListener('click', toggleNavbar);
+                
+                // Add click event with proper mobile support
+                navbarToggler.addEventListener('click', toggleNavbar);
+                navbarToggler.addEventListener('touchstart', toggleNavbar);
+                
+                function toggleNavbar(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const isExpanded = navbarCollapse.classList.contains('show');
+                    
+                    if (isExpanded) {
+                        navbarCollapse.classList.remove('show');
+                        navbarToggler.setAttribute('aria-expanded', 'false');
+                    } else {
+                        navbarCollapse.classList.add('show');
+                        navbarToggler.setAttribute('aria-expanded', 'true');
+                    }
+                }
+                
+                // Close navbar when clicking outside (with touch support)
+                document.addEventListener('click', closeNavbarOutside);
+                document.addEventListener('touchstart', closeNavbarOutside);
+                
+                function closeNavbarOutside(event) {
+                    if (!navbarToggler.contains(event.target) && 
+                        !navbarCollapse.contains(event.target) && 
+                        navbarCollapse.classList.contains('show')) {
+                        navbarCollapse.classList.remove('show');
+                        navbarToggler.setAttribute('aria-expanded', 'false');
+                    }
+                }
+                
+                // Close navbar when nav links are clicked on mobile
+                const navLinks = navbarCollapse.querySelectorAll('.nav-link');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth < 992) {
+                            navbarCollapse.classList.remove('show');
+                            navbarToggler.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                });
+            }
+        });
     </script>
     <script>
         // Initialize the book reader and make it globally available

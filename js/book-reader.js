@@ -6,17 +6,12 @@ class BookReader {
         this.books = [];
         this.currentBook = null;
         this.searchIndex = new Map();
-        this.bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
         this.isHorizontalLayout = false;
         this.pages = [];
         this.currentPageIndex = 0;
         console.log('Calling init...');
         this.init();
         
-        // Load bookmarks on page load
-        setTimeout(() => {
-            this.updateBookmarksList();
-        }, 1000);
     }
 
     init() {
@@ -156,13 +151,6 @@ class BookReader {
             }
         });
 
-        // Bookmark functionality
-        const addBookmarkBtn = document.getElementById('addBookmark');
-        if (addBookmarkBtn) {
-            addBookmarkBtn.addEventListener('click', () => {
-                this.addBookmark();
-            });
-        }
     }
 
     setupKeyboardShortcuts() {
@@ -189,12 +177,6 @@ class BookReader {
                     if (e.ctrlKey || e.metaKey) {
                         e.preventDefault();
                         this.printBook();
-                    }
-                    break;
-                case 'b':
-                    if (e.ctrlKey || e.metaKey) {
-                        e.preventDefault();
-                        this.addBookmark();
                     }
                     break;
                 case 'Escape':
@@ -719,117 +701,6 @@ console.log('Hello World');
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
-    addBookmark() {
-        if (!this.currentBook) return;
-
-        const contentDisplay = document.getElementById('contentDisplay');
-        const scrollPosition = contentDisplay.scrollTop;
-        
-        // Check if bookmark already exists at this position
-        const existingBookmark = this.bookmarks.find(b => 
-            b.bookId === this.currentBook.id && 
-            Math.abs(b.position - scrollPosition) < 50
-        );
-        
-        if (existingBookmark) {
-            this.showNotification('Bookmark already exists at this location');
-            return;
-        }
-        
-        // Find the nearest heading for a better bookmark title
-        const headings = document.querySelectorAll('#markdownContent h1, #markdownContent h2, #markdownContent h3, #markdownContent h4, #markdownContent h5, #markdownContent h6');
-        let nearestHeading = 'Bookmark';
-        
-        for (let heading of headings) {
-            const headingTop = heading.offsetTop;
-            if (headingTop <= scrollPosition + 100) {
-                nearestHeading = heading.textContent.trim();
-            } else {
-                break;
-            }
-        }
-        
-        const bookmark = {
-            id: Date.now(),
-            bookId: this.currentBook.id,
-            title: nearestHeading || `Bookmark ${this.bookmarks.length + 1}`,
-            position: scrollPosition,
-            timestamp: new Date().toISOString()
-        };
-
-        this.bookmarks.push(bookmark);
-        this.saveBookmarks();
-        this.updateBookmarksList();
-        this.showNotification('Bookmark added successfully');
-    }
-
-    updateBookmarksList() {
-        const bookmarksList = document.getElementById('bookmarksList');
-        if (!bookmarksList) return;
-
-        if (this.bookmarks.length === 0) {
-            bookmarksList.innerHTML = '<p class="text-muted small">No bookmarks yet</p>';
-            return;
-        }
-
-        // Get book title for each bookmark
-        bookmarksList.innerHTML = this.bookmarks.map(bookmark => {
-            const book = this.books.find(b => b.id === bookmark.bookId);
-            const bookTitle = book ? book.title : 'Unknown book';
-            
-            return `
-                <div class="bookmark-item" data-id="${bookmark.id}" onclick="window.bookReader.navigateToBookmark(${bookmark.id})" style="cursor: pointer;">
-                    <div>
-                        <div class="bookmark-title">${bookmark.title}</div>
-                        <div class="bookmark-location text-muted small">${bookTitle}</div>
-                    </div>
-                    <button class="bookmark-delete" onclick="event.stopPropagation(); window.bookReader.removeBookmark(${bookmark.id})" title="Remove bookmark">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            `;
-        }).join('');
-    }
-
-    navigateToBookmark(bookmarkId) {
-        const bookmark = this.bookmarks.find(b => b.id === bookmarkId);
-        if (!bookmark) return;
-
-        // If bookmark is for a different book, load that book first
-        if (bookmark.bookId !== this.currentBook?.id) {
-            const bookSelector = document.getElementById('bookSelector');
-            bookSelector.value = bookmark.bookId;
-            this.loadBook(bookmark.bookId).then(() => {
-                // Wait for book to load, then scroll to position
-                setTimeout(() => {
-                    const contentDisplay = document.getElementById('contentDisplay');
-                    contentDisplay.scrollTop = bookmark.position;
-                }, 500);
-            });
-        } else {
-            // Same book, just scroll to position
-            const contentDisplay = document.getElementById('contentDisplay');
-            contentDisplay.scrollTop = bookmark.position;
-        }
-
-        this.showNotification(`Navigated to: ${bookmark.title}`);
-    }
-
-    removeBookmark(bookmarkId) {
-        this.bookmarks = this.bookmarks.filter(b => b.id !== bookmarkId);
-        this.saveBookmarks();
-        this.updateBookmarksList();
-        this.showNotification('Bookmark removed');
-    }
-
-    loadBookmarks() {
-        const saved = localStorage.getItem('bookReader_bookmarks');
-        return saved ? JSON.parse(saved) : [];
-    }
-
-    saveBookmarks() {
-        localStorage.setItem('bookReader_bookmarks', JSON.stringify(this.bookmarks));
-    }
 
     adjustZoom(delta) {
         this.currentZoom = Math.max(50, Math.min(200, this.currentZoom + delta));
@@ -987,41 +858,167 @@ console.log('Hello World');
     }
 
     printBook() {
-        if (this.currentView === 'markdown') {
-            const printWindow = window.open('', '_blank');
-            const markdownContent = document.getElementById('markdownContent').innerHTML;
-            
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>${this.currentBook ? this.currentBook.title : 'Book'} - Print</title>
-                    <style>
-                        body { font-family: 'Times New Roman', serif; line-height: 1.6; margin: 2cm; }
-                        h1, h2, h3, h4, h5, h6 { font-family: 'Georgia', serif; page-break-after: avoid; }
-                        pre { background: #f5f5f5; padding: 10px; border: 1px solid #ddd; }
-                        blockquote { border-left: 4px solid #ddd; margin-left: 0; padding-left: 20px; }
-                        table { border-collapse: collapse; width: 100%; }
-                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                        th { background-color: #f2f2f2; }
-                        img { max-width: 100%; height: auto; }
-                        @page { margin: 2cm; }
-                    </style>
-                </head>
-                <body>
-                    <h1>${this.currentBook ? this.currentBook.title : 'Book'}</h1>
-                    ${markdownContent}
-                </body>
-                </html>
-            `);
-            
-            printWindow.document.close();
-            printWindow.focus();
-            setTimeout(() => {
-                printWindow.print();
-                printWindow.close();
-            }, 500);
+        // Get content based on current layout mode
+        let contentToPrint = '';
+        
+        if (this.isHorizontalLayout && this.pages && this.pages.length > 0) {
+            // In horizontal mode, combine all pages
+            contentToPrint = this.pages.join('');
+        } else {
+            // In vertical mode, use markdown content
+            const markdownElement = document.getElementById('markdownContent');
+            contentToPrint = markdownElement ? markdownElement.innerHTML : '';
         }
+        
+        if (!contentToPrint.trim()) {
+            alert('No content available to print');
+            return;
+        }
+        
+        const printWindow = window.open('', '_blank');
+        const bookTitle = this.currentBook ? this.currentBook.title : 'Book';
+        
+        printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>${bookTitle} - Print</title>
+                <style>
+                    @import url('https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@300;400;500;600;700&display=swap');
+                    
+                    body { 
+                        font-family: 'Hind Madurai', 'Times New Roman', serif; 
+                        line-height: 1.8; 
+                        margin: 0; 
+                        padding: 2cm;
+                        font-size: 12pt;
+                        color: #333;
+                    }
+                    
+                    h1, h2, h3, h4, h5, h6 { 
+                        font-family: 'Hind Madurai', 'Georgia', serif; 
+                        page-break-after: avoid;
+                        color: #2c3e50;
+                        margin-top: 1.5em;
+                        margin-bottom: 0.5em;
+                    }
+                    
+                    h1 { 
+                        font-size: 24pt; 
+                        border-bottom: 2px solid #2c3e50; 
+                        padding-bottom: 0.3em;
+                        page-break-before: always;
+                    }
+                    
+                    h2 { font-size: 20pt; }
+                    h3 { font-size: 16pt; }
+                    h4 { font-size: 14pt; }
+                    
+                    p { 
+                        margin-bottom: 1em; 
+                        text-align: justify;
+                        orphans: 2;
+                        widows: 2;
+                    }
+                    
+                    pre { 
+                        background: #f8f9fa; 
+                        padding: 15px; 
+                        border: 1px solid #e9ecef;
+                        border-radius: 4px;
+                        font-size: 10pt;
+                        overflow-x: auto;
+                        page-break-inside: avoid;
+                    }
+                    
+                    code {
+                        background: #f8f9fa;
+                        padding: 2px 4px;
+                        border-radius: 3px;
+                        font-size: 10pt;
+                    }
+                    
+                    blockquote { 
+                        border-left: 4px solid #2c3e50; 
+                        margin: 1em 0; 
+                        padding-left: 20px;
+                        font-style: italic;
+                        background: #f8f9fa;
+                        padding: 15px 20px;
+                    }
+                    
+                    table { 
+                        border-collapse: collapse; 
+                        width: 100%; 
+                        margin: 1em 0;
+                        page-break-inside: avoid;
+                    }
+                    
+                    th, td { 
+                        border: 1px solid #ddd; 
+                        padding: 8px; 
+                        text-align: left; 
+                    }
+                    
+                    th { 
+                        background-color: #f2f2f2; 
+                        font-weight: 600;
+                    }
+                    
+                    img { 
+                        max-width: 100%; 
+                        height: auto; 
+                        display: block;
+                        margin: 1em auto;
+                        page-break-inside: avoid;
+                    }
+                    
+                    ul, ol {
+                        margin: 1em 0;
+                        padding-left: 2em;
+                    }
+                    
+                    li {
+                        margin-bottom: 0.5em;
+                    }
+                    
+                    @page { 
+                        margin: 2cm; 
+                        @bottom-right {
+                            content: "Page " counter(page);
+                        }
+                    }
+                    
+                    @media print {
+                        body { font-size: 11pt; }
+                        h1 { font-size: 22pt; }
+                        h2 { font-size: 18pt; }
+                        h3 { font-size: 15pt; }
+                        h4 { font-size: 13pt; }
+                    }
+                </style>
+            </head>
+            <body>
+                <div style="text-align: center; margin-bottom: 2em; border-bottom: 1px solid #ddd; padding-bottom: 1em;">
+                    <h1 style="margin: 0; border: none; page-break-before: auto;">${bookTitle}</h1>
+                    <p style="margin: 0.5em 0 0 0; font-style: italic; color: #666;">
+                        ${this.currentBook && this.currentBook.author ? this.currentBook.author : 'Tamil Arasan'}
+                    </p>
+                </div>
+                ${contentToPrint}
+            </body>
+            </html>
+        `);
+        
+        printWindow.document.close();
+        printWindow.focus();
+        
+        // Wait for content to load before printing
+        setTimeout(() => {
+            printWindow.print();
+            // Don't auto-close to allow user to save as PDF if needed
+        }, 1000);
     }
 
     loadUserPreferences() {

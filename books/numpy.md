@@ -2814,4 +2814,3 @@ Array saved as 'my_array.txt' with comma-separated values.
 - **np.savetxt( )** function array-ஐ text file format-ல் (.txt) சேமிக்கிறது.
 - Text file format data-ஐ human-readable-ஆக save செய்ய உதவுகிறது, இது data analysis மற்றும் data sharing-க்கு பயனுள்ளதாக இருக்கும்.
 
-
