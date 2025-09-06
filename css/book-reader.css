@@ -503,6 +503,170 @@ body {
 
 /* PDF styles removed - GitBook-style markdown only */
 
+/* Print and PDF Styles */
+@media print {
+    .sidebar, .toolbar, .search-modal {
+        display: none !important;
+    }
+    
+    .main-content {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+    
+    .content-display {
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 !important;
+        padding: 20px !important;
+    }
+    
+    .markdown-content {
+        font-size: 12pt !important;
+        line-height: 1.6 !important;
+        color: #000 !important;
+    }
+    
+    .markdown-content h1 {
+        font-size: 20pt !important;
+        page-break-before: always !important;
+        margin-top: 0 !important;
+        margin-bottom: 20pt !important;
+    }
+    
+    .markdown-content h2 {
+        font-size: 16pt !important;
+        page-break-before: auto !important;
+        page-break-after: avoid !important;
+        margin-top: 20pt !important;
+        margin-bottom: 12pt !important;
+    }
+    
+    .markdown-content h3 {
+        font-size: 14pt !important;
+        page-break-after: avoid !important;
+        margin-top: 16pt !important;
+        margin-bottom: 8pt !important;
+    }
+    
+    .markdown-content h4, .markdown-content h5, .markdown-content h6 {
+        font-size: 12pt !important;
+        page-break-after: avoid !important;
+        margin-top: 12pt !important;
+        margin-bottom: 6pt !important;
+    }
+    
+    .markdown-content p {
+        margin-bottom: 12pt !important;
+        orphans: 3 !important;
+        widows: 3 !important;
+    }
+    
+    .markdown-content ul, .markdown-content ol {
+        margin-bottom: 12pt !important;
+        page-break-inside: avoid !important;
+    }
+    
+    .markdown-content li {
+        margin-bottom: 6pt !important;
+    }
+    
+    .markdown-content pre {
+        page-break-inside: avoid !important;
+        margin: 12pt 0 !important;
+        padding: 12pt !important;
+        border: 1px solid #ccc !important;
+        background: #f5f5f5 !important;
+    }
+    
+    .markdown-content blockquote {
+        page-break-inside: avoid !important;
+        margin: 12pt 0 !important;
+        padding: 12pt !important;
+        border-left: 3pt solid #ccc !important;
+    }
+    
+    .markdown-content img {
+        max-width: 100% !important;
+        page-break-inside: avoid !important;
+        margin: 12pt 0 !important;
+    }
+    
+    .markdown-content table {
+        page-break-inside: avoid !important;
+        margin: 12pt 0 !important;
+        border-collapse: collapse !important;
+    }
+    
+    .markdown-content th, .markdown-content td {
+        border: 1px solid #ccc !important;
+        padding: 6pt !important;
+    }
+}
+
+/* PDF Export specific styles */
+.pdf-export-mode {
+    font-family: 'Hind Madurai', sans-serif !important;
+}
+
+.pdf-export-mode .markdown-content {
+    max-width: none !important;
+    padding: 40px !important;
+    background: white !important;
+}
+
+.pdf-export-mode h1 {
+    color: #2c3e50 !important;
+    border-bottom: 2px solid #3498db !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 30px !important;
+}
+
+.pdf-export-mode h2 {
+    color: #34495e !important;
+    margin-top: 40px !important;
+    margin-bottom: 20px !important;
+}
+
+.pdf-export-mode h3 {
+    color: #34495e !important;
+    margin-top: 30px !important;
+    margin-bottom: 15px !important;
+}
+
+.pdf-export-mode p {
+    text-align: justify !important;
+    margin-bottom: 15px !important;
+    line-height: 1.8 !important;
+}
+
+.pdf-export-mode ul, .pdf-export-mode ol {
+    margin-bottom: 20px !important;
+    padding-left: 30px !important;
+}
+
+.pdf-export-mode li {
+    margin-bottom: 8px !important;
+    line-height: 1.6 !important;
+}
+
+.pdf-export-mode pre {
+    background: #f8f9fa !important;
+    border: 1px solid #e9ecef !important;
+    border-radius: 4px !important;
+    padding: 20px !important;
+    margin: 20px 0 !important;
+    overflow-x: auto !important;
+}
+
+.pdf-export-mode blockquote {
+    border-left: 4px solid #3498db !important;
+    background: #f8f9fa !important;
+    padding: 15px 20px !important;
+    margin: 20px 0 !important;
+    font-style: italic !important;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
     .sidebar {
@@ -717,22 +881,179 @@ html {
     background-color: #a8a8a8;
 }
 
-/* Reading Progress Bar */
+/* Reading Progress */
 .reading-progress {
-    width: 100px;
+    width: 200px;
     height: 4px;
-    background-color: #e9ecef;
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 2px;
-    margin-right: 10px;
+    margin-right: 15px;
     overflow: hidden;
 }
 
 .progress-bar {
     height: 100%;
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     width: 0%;
     transition: width 0.3s ease;
-    border-radius: 2px;
+}
+
+/* Horizontal Layout Styles */
+.horizontal-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.horizontal-pages-container {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.horizontal-page {
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+    overflow-y: auto;
+    font-family: 'Hind Madurai', sans-serif;
+    line-height: 1.8;
+    font-size: 16px;
+    color: #333;
+    background: white;
+    box-sizing: border-box;
+}
+
+.horizontal-page h1, .horizontal-page h2, .horizontal-page h3, 
+.horizontal-page h4, .horizontal-page h5, .horizontal-page h6 {
+    color: var(--primary-color);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.horizontal-page h1 {
+    font-size: 2.5rem;
+    border-bottom: 3px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+}
+
+.horizontal-page h2 {
+    font-size: 2rem;
+}
+
+.horizontal-page h3 {
+    font-size: 1.5rem;
+}
+
+.horizontal-page p {
+    margin-bottom: 1.2rem;
+    text-align: justify;
+}
+
+.horizontal-page img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.horizontal-page pre {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 20px;
+    margin: 20px 0;
+    overflow-x: auto;
+    font-size: 14px;
+}
+
+.horizontal-page code {
+    background: #f8f9fa;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.horizontal-page blockquote {
+    border-left: 4px solid var(--primary-color);
+    margin: 20px 0;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-radius: 0 6px 6px 0;
+}
+
+.horizontal-page ul, .horizontal-page ol {
+    margin-bottom: 1.2rem;
+    padding-left: 2rem;
+}
+
+.horizontal-page li {
+    margin-bottom: 0.5rem;
+}
+
+.horizontal-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-top: auto;
+}
+
+.page-indicator {
+    font-weight: 500;
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.horizontal-navigation .btn {
+    min-width: 120px;
+}
+
+.horizontal-navigation .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Layout Toggle Button Active State */
+.layout-horizontal #layoutToggle {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.layout-horizontal #layoutToggle i {
+    transform: rotate(90deg);
+}
+
+/* Responsive adjustments for horizontal layout */
+@media (max-width: 768px) {
+    .horizontal-page {
+        padding: 20px;
+        font-size: 15px;
+    }
+    
+    .horizontal-navigation {
+        padding: 10px 15px;
+    }
+    
+    .horizontal-navigation .btn {
+        min-width: 80px;
+        font-size: 12px;
+    }
+    
+    .page-indicator {
+        font-size: 12px;
+    }
 }
 
 /* Remove all dark mode styles - keeping consistent with other pages */

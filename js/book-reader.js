@@ -3,15 +3,20 @@ console.log('book-reader.js file loaded');
 class BookReader {
     constructor() {
         console.log('BookReader constructor called');
-        this.currentBook = null;
-        this.currentView = 'markdown';
-        this.currentZoom = 100;
-        this.bookmarks = this.loadBookmarks();
-        this.searchIndex = new Map();
         this.books = [];
-        
+        this.currentBook = null;
+        this.searchIndex = new Map();
+        this.bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+        this.isHorizontalLayout = false;
+        this.pages = [];
+        this.currentPageIndex = 0;
         console.log('Calling init...');
         this.init();
+        
+        // Load bookmarks on page load
+        setTimeout(() => {
+            this.updateBookmarksList();
+        }, 1000);
     }
 
     init() {
@@ -100,20 +105,64 @@ class BookReader {
             });
         }
 
-        // Print functionality
-        document.getElementById('printBook').addEventListener('click', () => {
-            this.printBook();
-        });
+        const printBtn = document.getElementById('printBook');
+        if (printBtn) {
+            printBtn.addEventListener('click', () => {
+                window.print();
+            });
+        }
+
+
+        // Layout toggle
+        const layoutToggleBtn = document.getElementById('layoutToggle');
+        if (layoutToggleBtn) {
+            layoutToggleBtn.addEventListener('click', () => {
+                this.toggleLayout();
+            });
+        }
 
         // Fullscreen toggle
-        document.getElementById('fullscreen').addEventListener('click', () => {
-            this.toggleFullscreen();
+        const fullscreenBtn = document.getElementById('fullscreen');
+        if (fullscreenBtn) {
+            fullscreenBtn.addEventListener('click', () => {
+                this.toggleFullscreen();
+            });
+        }
+
+        // Horizontal navigation
+        const prevPageBtn = document.getElementById('prevPageBtn');
+        const nextPageBtn = document.getElementById('nextPageBtn');
+        if (prevPageBtn) {
+            prevPageBtn.addEventListener('click', () => {
+                this.previousPage();
+            });
+        }
+        if (nextPageBtn) {
+            nextPageBtn.addEventListener('click', () => {
+                this.nextPage();
+            });
+        }
+
+        // Keyboard navigation for horizontal layout
+        document.addEventListener('keydown', (e) => {
+            if (this.isHorizontalLayout) {
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    this.previousPage();
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    this.nextPage();
+                }
+            }
         });
 
         // Bookmark functionality
-        document.getElementById('addBookmark').addEventListener('click', () => {
-            this.addBookmark();
-        });
+        const addBookmarkBtn = document.getElementById('addBookmark');
+        if (addBookmarkBtn) {
+            addBookmarkBtn.addEventListener('click', () => {
+                this.addBookmark();
+            });
+        }
     }
 
     setupKeyboardShortcuts() {
@@ -210,6 +259,7 @@ class BookReader {
                 id: 'numpy',
                 title: 'NumPy Guide',
                 markdownPath: 'books/numpy.md',
+                coverImage: 'images/numpy-cover.jpeg', // Add cover image path
                 language: 'en'
             }
         ];
@@ -282,7 +332,8 @@ console.log('Hello World');
             
             // Now try loading the actual file
             console.log('Fetching:', book.markdownPath);
-            const response = await fetch(book.markdownPath);
+            const cacheBuster = '?v=' + Date.now();
+            const response = await fetch(book.markdownPath + cacheBuster);
             console.log('Response status:', response.status, response.ok);
             
             if (!response.ok) {
@@ -391,6 +442,12 @@ console.log('Hello World');
     fixImagePaths(content) {
         // Replace relative image paths with absolute paths
         return content.replace(/!\[([^\]]*)\]\((?!http)([^)]+)\)/g, (match, alt, src) => {
+            // Handle relative paths that start with ../
+            if (src.startsWith('../')) {
+                const absolutePath = src.replace('../', '/');
+                return `![${alt}](${absolutePath})`;
+            }
+            // Handle other relative paths
             const absolutePath = src.startsWith('/') ? src : `/${src}`;
             return `![${alt}](${absolutePath})`;
         });
@@ -450,23 +507,30 @@ console.log('Hello World');
                     console.log('TOC item clicked:', item.textContent.trim());
                     const targetId = item.dataset.target;
                     console.log('Target ID:', targetId);
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        console.log('Target element found, scrolling...');
-                        targetElement.scrollIntoView({ 
-                            behavior: 'smooth', 
-                            block: 'start',
-                            inline: 'nearest'
-                        });
-                        
-                        // Close sidebar on mobile after navigation
-                        if (window.innerWidth <= 1024) {
-                            setTimeout(() => {
-                                this.closeSidebar();
-                            }, 500);
-                        }
+                    
+                    if (this.isHorizontalLayout) {
+                        // Find the page containing this heading
+                        this.navigateToHeadingInHorizontalMode(targetId);
                     } else {
-                        console.log('Target element not found:', targetId);
+                        // Vertical layout - scroll to element
+                        const targetElement = document.getElementById(targetId);
+                        if (targetElement) {
+                            console.log('Target element found, scrolling...');
+                            targetElement.scrollIntoView({ 
+                                behavior: 'smooth', 
+                                block: 'start',
+                                inline: 'nearest'
+                            });
+                            
+                            // Close sidebar on mobile after navigation
+                            if (window.innerWidth <= 1024) {
+                                setTimeout(() => {
+                                    this.closeSidebar();
+                                }, 500);
+                            }
+                        } else {
+                            console.log('Target element not found:', targetId);
+                        }
                     }
                 });
             });
@@ -476,7 +540,7 @@ console.log('Hello World');
     }
 
     buildSearchIndex(content) {
-        this.searchIndex.clear();
+        this.searchIndex = new Map();
         const lines = content.split('\n');
         
         lines.forEach((line, index) => {
@@ -661,6 +725,17 @@ console.log('Hello World');
         const contentDisplay = document.getElementById('contentDisplay');
         const scrollPosition = contentDisplay.scrollTop;
         
+        // Check if bookmark already exists at this position
+        const existingBookmark = this.bookmarks.find(b => 
+            b.bookId === this.currentBook.id && 
+            Math.abs(b.position - scrollPosition) < 50
+        );
+        
+        if (existingBookmark) {
+            this.showNotification('Bookmark already exists at this location');
+            return;
+        }
+        
         // Find the nearest heading for a better bookmark title
         const headings = document.querySelectorAll('#markdownContent h1, #markdownContent h2, #markdownContent h3, #markdownContent h4, #markdownContent h5, #markdownContent h6');
         let nearestHeading = 'Bookmark';
@@ -697,17 +772,23 @@ console.log('Hello World');
             return;
         }
 
-        bookmarksList.innerHTML = this.bookmarks.map(bookmark => `
-            <div class="bookmark-item" data-id="${bookmark.id}" onclick="bookReader.navigateToBookmark(${bookmark.id})" style="cursor: pointer;">
-                <div>
-                    <div class="bookmark-title">${bookmark.title}</div>
-                    <div class="bookmark-location text-muted small">${this.currentBook ? this.currentBook.title : 'Unknown book'}</div>
+        // Get book title for each bookmark
+        bookmarksList.innerHTML = this.bookmarks.map(bookmark => {
+            const book = this.books.find(b => b.id === bookmark.bookId);
+            const bookTitle = book ? book.title : 'Unknown book';
+            
+            return `
+                <div class="bookmark-item" data-id="${bookmark.id}" onclick="window.bookReader.navigateToBookmark(${bookmark.id})" style="cursor: pointer;">
+                    <div>
+                        <div class="bookmark-title">${bookmark.title}</div>
+                        <div class="bookmark-location text-muted small">${bookTitle}</div>
+                    </div>
+                    <button class="bookmark-delete" onclick="event.stopPropagation(); window.bookReader.removeBookmark(${bookmark.id})" title="Remove bookmark">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-                <button class="bookmark-delete" onclick="event.stopPropagation(); bookReader.removeBookmark(${bookmark.id})" title="Remove bookmark">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     }
 
     navigateToBookmark(bookmarkId) {
@@ -828,31 +909,25 @@ console.log('Hello World');
         `;
     }
 
-    showNotification(message, type = 'success') {
-        const toast = document.createElement('div');
-        toast.className = `alert alert-${type} position-fixed`;
-        toast.style.cssText = `
+    showNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
             top: 20px;
             right: 20px;
-            z-index: 9999;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            z-index: 10000;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         `;
-        toast.textContent = message;
+        notification.textContent = message;
+        document.body.appendChild(notification);
         
-        document.body.appendChild(toast);
-        
-        // Fade in
         setTimeout(() => {
-            toast.style.opacity = '1';
-        }, 100);
-        
-        // Fade out and remove
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => {
-                document.body.removeChild(toast);
-            }, 300);
+            notification.remove();
         }, 3000);
     }
 
@@ -951,6 +1026,191 @@ console.log('Hello World');
 
     loadUserPreferences() {
         // No dark mode preferences to load - keeping consistent with other pages
+    }
+
+    toggleLayout() {
+        this.isHorizontalLayout = !this.isHorizontalLayout;
+        const markdownContent = document.getElementById('markdownContent');
+        const horizontalContent = document.getElementById('horizontalContent');
+        const body = document.body;
+
+        if (this.isHorizontalLayout) {
+            // Switch to horizontal layout
+            markdownContent.style.display = 'none';
+            horizontalContent.style.display = 'flex';
+            body.classList.add('layout-horizontal');
+            
+            // Convert content to pages if we have content
+            if (this.currentBook) {
+                this.convertToPages();
+            }
+        } else {
+            // Switch to vertical layout
+            markdownContent.style.display = 'block';
+            horizontalContent.style.display = 'none';
+            body.classList.remove('layout-horizontal');
+        }
+    }
+
+    convertToPages() {
+        const markdownContent = document.getElementById('markdownContent');
+        const content = markdownContent.innerHTML;
+        
+        // Create a mapping of headings to page indices for TOC navigation
+        this.headingToPageMap = new Map();
+        
+        // Split content by H4 headings to create more pages (like chapters/sections)
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = content;
+        
+        const headings = tempDiv.querySelectorAll('h1, h2, h3, h4');
+        this.pages = [];
+        
+        if (headings.length === 0) {
+            // If no headings, treat entire content as one page
+            this.pages.push(content);
+        } else {
+            // Group content by H4 sections (more granular pages)
+            let currentPageContent = '';
+            let pageIndex = 0;
+            
+            // Get all child nodes to process sequentially
+            const allNodes = Array.from(tempDiv.childNodes);
+            
+            for (let i = 0; i < allNodes.length; i++) {
+                const node = allNodes[i];
+                
+                if (node.nodeType === Node.ELEMENT_NODE && 
+                    ['H1', 'H2', 'H3', 'H4'].includes(node.tagName)) {
+                    
+                    // Save previous page if it has content
+                    if (currentPageContent.trim()) {
+                        this.pages.push(currentPageContent);
+                        pageIndex++;
+                    }
+                    
+                    // Map this heading to the new page
+                    if (node.id) {
+                        this.headingToPageMap.set(node.id, pageIndex);
+                    }
+                    
+                    // Start new page with this heading
+                    currentPageContent = node.outerHTML;
+                    
+                    // Add subsequent content until next heading
+                    for (let j = i + 1; j < allNodes.length; j++) {
+                        const nextNode = allNodes[j];
+                        
+                        // Stop if we hit another heading at same or higher level
+                        if (nextNode.nodeType === Node.ELEMENT_NODE && 
+                            ['H1', 'H2', 'H3', 'H4'].includes(nextNode.tagName)) {
+                            break;
+                        }
+                        
+                        // Add content to current page
+                        if (nextNode.nodeType === Node.ELEMENT_NODE) {
+                            // Map subsection headings to current page
+                            if (['H5', 'H6'].includes(nextNode.tagName) && nextNode.id) {
+                                this.headingToPageMap.set(nextNode.id, pageIndex);
+                            }
+                            currentPageContent += nextNode.outerHTML;
+                        } else if (nextNode.nodeType === Node.TEXT_NODE && nextNode.textContent.trim()) {
+                            currentPageContent += nextNode.textContent;
+                        }
+                        
+                        // Update main loop index
+                        i = j;
+                    }
+                } else if (currentPageContent === '') {
+                    // Content before first heading
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                        // Map any headings in initial content
+                        if (['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(node.tagName) && node.id) {
+                            this.headingToPageMap.set(node.id, pageIndex);
+                        }
+                        currentPageContent += node.outerHTML;
+                    } else if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+                        currentPageContent += node.textContent;
+                    }
+                }
+            }
+            
+            // Add the last page
+            if (currentPageContent.trim()) {
+                this.pages.push(currentPageContent);
+            }
+        }
+        
+        console.log('Pages created:', this.pages.length);
+        console.log('Heading to page mapping:', this.headingToPageMap);
+        
+        this.currentPageIndex = 0;
+        this.displayCurrentPage();
+    }
+
+    displayCurrentPage() {
+        const currentPage = document.getElementById('currentPage');
+        const pageIndicator = document.getElementById('pageIndicator');
+        const prevBtn = document.getElementById('prevPageBtn');
+        const nextBtn = document.getElementById('nextPageBtn');
+        
+        if (this.pages.length > 0) {
+            currentPage.innerHTML = this.pages[this.currentPageIndex];
+            pageIndicator.textContent = `Page ${this.currentPageIndex + 1} of ${this.pages.length}`;
+            
+            // Update button states
+            prevBtn.disabled = this.currentPageIndex === 0;
+            nextBtn.disabled = this.currentPageIndex === this.pages.length - 1;
+        }
+    }
+
+    previousPage() {
+        if (this.currentPageIndex > 0) {
+            this.currentPageIndex--;
+            this.displayCurrentPage();
+        }
+    }
+
+    nextPage() {
+        if (this.currentPageIndex < this.pages.length - 1) {
+            this.currentPageIndex++;
+            this.displayCurrentPage();
+        }
+    }
+
+    navigateToHeadingInHorizontalMode(targetId) {
+        console.log('Navigating to heading in horizontal mode:', targetId);
+        
+        // Use the pre-built mapping for faster lookup
+        if (this.headingToPageMap && this.headingToPageMap.has(targetId)) {
+            const pageIndex = this.headingToPageMap.get(targetId);
+            console.log('Found heading on page:', pageIndex);
+            
+            this.currentPageIndex = pageIndex;
+            this.displayCurrentPage();
+            
+            // After page is displayed, scroll to the heading within the page
+            setTimeout(() => {
+                const actualElement = document.getElementById(targetId);
+                if (actualElement) {
+                    actualElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    console.log('Element not found in DOM after page display:', targetId);
+                }
+            }, 200);
+            
+            // Close sidebar on mobile after navigation
+            if (window.innerWidth <= 1024) {
+                setTimeout(() => {
+                    this.closeSidebar();
+                }, 500);
+            }
+            
+            return;
+        }
+        
+        console.log('Heading not found in page mapping:', targetId);
+        console.log('Available headings:', Array.from(this.headingToPageMap.keys()));
     }
 }
 

@@ -1,6 +1,5 @@
-[!TOC]
-
-#### NumPy – அறிமுகம் மற்றும் வரலாறு
+![coverpage](../images/numpy-cover.jpeg)
+# NumPy – அறிமுகம் மற்றும் வரலாறு
 
 NumPy என்பது Python-இல் **scientific computing** (கணினிசார் அறிவியல்) செய்ய பயன்படும் மிக முக்கியமான open-source library ஆகும். இது "Numerical Python" என்பதன் சுருக்கமாகும். Python மொழியின் மைய library-களில் ஒன்று ஆக NumPy இருக்கிறது. இதன் மூலம் நம்மால் எளிதில் multi-dimensional arrays-ஐ கையாள முடிகிறது. இது Python-ஐ கணினி அறிவியல் மற்றும் அறிவியல் கணக்கீடுகளுக்கான ஒரு மிகச்சிறந்த கருவியாக மாற்றியது.
 
@@ -50,7 +49,7 @@ NumPy-யின் N-dimensional arrays-ஐப் பயன்படுத்த
 
 **GitHub:** https://github.com/tamil-phy/NumPy_Book_Tamil
 
-<div style="page-break-after: always;"></div>
+
 
 #### 1. NUMPY − ARRAY ATTRIBUTES   
 
@@ -171,7 +170,7 @@ Flags of the array:
 
 இதன் மூலம், **flags** attribute NumPy array-இன் memory layout மற்றும் array-இன் உள்ளமைப்புகள் பற்றிய முழு தகவல்களை வழங்குகிறது.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 2. NUMPY − ARRAY CREATION ROUTINES    
 
@@ -261,7 +260,7 @@ Ones array:
 
 இதன் மூலம், **zeros( )** மற்றும் **ones( )** functions மிகவும் பயனுள்ளதாக இருக்கும், ஏனெனில் அவை predictable values கொண்ட array-களை உருவாக்குகின்றன, computation-ஐ எளிதாக்குகின்றன.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 3. NUMPY − ARRAY FROM EXISTING DATA
 
@@ -353,7 +352,7 @@ Array from iterable: [ 0  1  4  9 16]
 
 இதனால், NumPy-யில் data-ஐ நமக்கு வேண்டிய படி நமக்கு ஏற்கனவே உள்ள structures-இல் இருந்து array-களாக மாற்றி manipulations மற்றும் calculations செய்ய நம்மால் முடியும்.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 4. NUMPY − ARRAY FROM NUMERICAL RANGES
 
@@ -428,7 +427,7 @@ Array using logspace: [  10.          31.6227766  100.         316.22776602 1000
 
 இந்த functions, numerical ranges அடிப்படையிலான array-களை உருவாக்குவதில் மிகவும் பயனுள்ளதாக இருக்கின்றன, ஏனெனில் இதனால் sequence-based calculations மற்றும் simulations எளிதாக செய்ய முடிகிறது.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 5. NUMPY − INDEXING & SLICING
 
@@ -457,7 +456,7 @@ Sliced array: [20 30 40]
 
 இந்த methods data extraction-ஐ மிக எளிமையாக மாற்றுகின்றன, மேலும் NumPy array-களுடன் நாம் பயனுள்ளதாக மற்றும் திறமையாக செயல்பட உதவுகின்றன.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 6. NUMPY − ADVANCED INDEXING
 
@@ -504,7 +503,7 @@ Filtered array with condition: [30 40 50]
 
 இந்த Code-இல், condition **arr > 25**-ஐ அடிப்படையாகக் கொண்டு array-இல் 25-ஐ விட அதிகமான values மட்டுமே return செய்கின்றன. இதனால் **[30, 40, 50]** என்ற values மட்டும் filter ஆகின்றன.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 7. NUMPY − BROADCASTING
 
@@ -556,7 +555,7 @@ Broadcasting பின்பற்ற வேண்டிய முக்கி�
 
 Broadcasting மூலம், NumPy பயனர் data-ஐ duplicate செய்யாமல் எளிமையாகவும் திறமையாகவும் operations-ஐ செய்ய உதவுகிறது, இதன் மூலம் high-performance calculations மற்றும் memory efficiency ஆகியவை அதிகரிக்கின்றன.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 8. NUMPY − ITERATING OVER ARRAY
 
@@ -705,7 +704,7 @@ x: 3, y: 3
 
 இந்த broadcasting iteration data manipulation மற்றும் array operations-ஐ மிகவும் சுலபமாகவும் திறமையாகவும் செய்கிறது, ஏனெனில் இது different shapes கொண்ட array-களையும் ஒரு நேரத்தில் iterate செய்து எளிதாக இணைக்கிறது.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 9. NUMPY – ARRAY MANIPULATION
 
@@ -1326,7 +1325,7 @@ Unique values: [1 2 3 4 5]
 
 **குறிப்பு**: Data analysis மற்றும் data cleaning செயல்பாடுகளில் redundancy-ஐ அகற்றுகிறது.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 10. NUMPY – BINARY OPERATORS
 
@@ -1460,7 +1459,7 @@ Right Shift: [2]
 
 இந்த binary operators data-ஐ bit-level-ல் manipulate செய்யவும், binary data handling ஐ memory-efficient-ஆகவும் செய்ய உதவுகின்றன.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 11. NUMPY − STRING FUNCTIONS
 
@@ -1543,9 +1542,9 @@ Uppercase Strings: ['HELLO' 'WORLD']
 
 இந்த string functions NumPy array-களில் உள்ள strings-ஐ manipulate செய்ய memory-efficient methods-ஐ வழங்குகின்றன, இது data processing மற்றும் text handling-ஐ எளிதாக்குகிறது.
 
-<div style="page-break-after: always;"></div>
 
-<div style="page-break-after: always;"></div>
+
+
 
 #### 12. NUMPY − MATHEMATICAL FUNCTIONS
 
@@ -1692,7 +1691,7 @@ Logarithmic Values: [0. 1. 2.]
 
 இந்த NumPy mathematical functions arrays-இல் arithmetic மற்றும் statistical operations-ஐ memory-efficient-ஆகவும் computationally fast-ஆகவும் செயல்படுத்த உதவுகின்றன.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 13. NUMPY − ARITHMETIC OPERATIONS
 
@@ -1803,7 +1802,7 @@ Modulus values: [1 0 2]
 
 இந்த arithmetic operations data analysis மற்றும் numerical computations-ஐ memory-efficient-ஆகவும், computationally fast-ஆகவும் செயல்படுத்த உதவுகின்றன.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 14. NUMPY − STATISTICAL FUNCTIONS
 
@@ -1991,7 +1990,7 @@ Variance: 200.0
 
 இந்த statistical functions data analysis மற்றும் data interpretation-ல் முக்கிய பங்காற்றுகின்றன, மேலும் decision-making செயல்பாடுகளை துல்லியமாகவும் memory-efficient-ஆகவும் செய்ய உதவுகின்றன.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 15. NUMPY − SORT, SEARCH & COUNTING FUNCTIONS
 
@@ -2155,7 +2154,7 @@ Extracted values greater than 4: [5 8 9]
 
 இந்த functions data sorting, searching மற்றும் filtering operations-ஐ memory-efficient-ஆகவும் computationally fast-ஆகவும் செய்கின்றன, மேலும் data analysis மற்றும் data handling-ஐ எளிதாக்குகின்றன.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 16. NUMPY − BYTE SWAPPING
 
@@ -2213,7 +2212,7 @@ Byte swapped array: [  256     1 38530]
 
 இந்த **byteswap( )** operation data interoperability மற்றும் endianess conversion-ஐ எளிமையாக memory-efficient-ஆகவும் நுட்பமாகவும் செயல்படுத்த உதவுகிறது.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 17. NUMPY − COPIES & VIEWS
 
@@ -2302,7 +2301,7 @@ Deep copy array: [10  2 30]
 
 NumPy-யின் **copies & views** methods data manipulation-ஐ எளிதாக்கி, memory-யை திறமையாக handle செய்ய உதவுகின்றன.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 18. NUMPY − MATRIX LIBRARY
 
@@ -2496,7 +2495,7 @@ Random matrix:
 
 NumPy-யின் matrix library functions-ஐ memory-efficient-ஆகவும், computationally fast-ஆகவும், data structures-ஐ initialize செய்ய பயன்படுத்தலாம். Scientific computing மற்றும் data analysis-ல் matrix-களை உருவாக்கவும், manipulate செய்யவும் இந்த functions மிகவும் பயனுள்ளதாக இருக்கும்.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 19. NUMPY − LINEAR ALGEBRA
 
@@ -2643,7 +2642,7 @@ Solutions: [2. 3.]
   - 1x + 2y = 8
   - Solution: x = 2, y = 3
 
-<div style="page-break-after: always;"></div>
+
 
 #### 20. NUMPY − MATPLOTLIB
 
@@ -2671,7 +2670,7 @@ plt.show( )  # plot-ஐ காட்டுகிறது
 
 **Output:**
 
-![Output](/Users/tamilarasan/learning/NumPy_Book_Tamil/images/sine_wave.png) 
+![Output](../images/sine_cosine_wave.png) 
 
 - **x** values 0 முதல் 10 வரை equal intervals-ல் values-ஐ கொண்டு வருகிறது.
 - **y = np.sin(x)** என்பது sine function-ஐ பயன்படுத்தி values-ஐ பெறுகிறது.
@@ -2700,7 +2699,7 @@ plt.show( )
 
 **Output:**
 
-![sine_cosine](/Users/tamil.arasan/Desktop/personal/tamil-phy.github.io/images/sine_cosine_wave.png)
+![sine_cosine](../images/sine_cosine_wave.png)
 
 - **plt.subplot(2, 1, 1)** என்பது 2 rows மற்றும் 1 column கொண்ட subplot layout-ஐ முதலில் sine wave-க்கு set செய்கிறது.
 - **plt.subplot(2, 1, 2)** என்பது இரண்டாவது subplot-ஐ cosine wave-ஐ plot செய்ய set செய்கிறது.
@@ -2725,13 +2724,13 @@ plt.show( )
 
 **Output:**
 
-![bar_graph](/Users/tamilarasan/learning/NumPy_Book_Tamil/images/bar_graph.png)
+![bar_graph](../images/bar_graph.png)
 
 - **categories** array-ல் உள்ள values horizontal axis-ல் (X-axis) காட்டப்படும்.
 - **values** array-ல் உள்ள corresponding heights vertical axis-ல் (Y-axis) காட்டப்படும்.
 - Bar chart-கள் data-ஐ categories அடிப்படையில் visual comparison செய்ய மிகவும் உதவுகின்றன.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 21. NUMPY – HISTOGRAM USING MATPLOTLIB
 
@@ -2758,7 +2757,7 @@ plt.show( )  # Display the plot
 
 **Output:**
 
-![histogram](/Users/tamilarasan/learning/NumPy_Book_Tamil/images/histogram.png)
+![histogram](../images/histogram.png)
 
 
 
@@ -2766,7 +2765,7 @@ plt.show( )  # Display the plot
 - **plt.hist( )** function data-ஐ 30 bins-ஆக பிரித்து frequency distribution-ஐ காட்டுகிறது.
 - Histogram data distribution-ஐ எடுத்துக்காட்டி, data-இல் values எந்த range-ல் அதிகமாக உள்ளன என்பதைக் காட்டுகிறது.
 
-<div style="page-break-after: always;"></div>
+
 
 #### 22. NUMPY − I/O WITH NUMPY
 
@@ -2815,4 +2814,4 @@ Array saved as 'my_array.txt' with comma-separated values.
 - **np.savetxt( )** function array-ஐ text file format-ல் (.txt) சேமிக்கிறது.
 - Text file format data-ஐ human-readable-ஆக save செய்ய உதவுகிறது, இது data analysis மற்றும் data sharing-க்கு பயனுள்ளதாக இருக்கும்.
 
-<div style="page-break-after: always;"></div>
+

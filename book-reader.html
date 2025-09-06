@@ -138,6 +138,9 @@
                     <button class="btn btn-sm btn-outline-secondary" id="printBook" aria-label="Print book">
                         <i class="fas fa-print"></i>
                     </button>
+                    <button class="btn btn-sm btn-outline-secondary" id="layoutToggle" aria-label="Toggle layout">
+                        <i class="fas fa-columns"></i>
+                    </button>
                     <button class="btn btn-sm btn-outline-secondary" id="fullscreen" aria-label="Toggle fullscreen">
                         <i class="fas fa-expand"></i>
                     </button>
@@ -154,6 +157,32 @@
                             <h3 class="text-muted">Welcome to Book Reader</h3>
                             <p class="text-muted">Select a book from the sidebar to start reading</p>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Horizontal Layout Content -->
+                <div class="horizontal-content" id="horizontalContent" style="display: none;">
+                    <div class="horizontal-pages-container">
+                        <div class="horizontal-page" id="currentPage">
+                            <div class="welcome-message">
+                                <div class="text-center py-5">
+                                    <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
+                                    <h3 class="text-muted">Horizontal Reading Mode</h3>
+                                    <p class="text-muted">Use arrow keys or navigation buttons to turn pages</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Horizontal Navigation -->
+                    <div class="horizontal-navigation">
+                        <button class="btn btn-outline-secondary" id="prevPageBtn" disabled>
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <span class="page-indicator" id="pageIndicator">Page 1 of 1</span>
+                        <button class="btn btn-outline-secondary" id="nextPageBtn" disabled>
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -177,6 +206,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="js/book-reader.js"></script>
     <script>
         function toggleTOC() {
