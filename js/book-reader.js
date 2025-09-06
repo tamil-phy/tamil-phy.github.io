@@ -821,17 +821,59 @@ console.log('Hello World');
 
     toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
+        if (!sidebar) return;
+        
         if (window.innerWidth <= 1024) {
             sidebar.classList.toggle('show');
+            
+            // Add overlay for mobile
+            if (sidebar.classList.contains('show')) {
+                this.addMobileOverlay();
+            } else {
+                this.removeMobileOverlay();
+            }
         } else {
             sidebar.classList.toggle('collapsed');
         }
     }
 
+    addMobileOverlay() {
+        // Remove existing overlay if any
+        this.removeMobileOverlay();
+        
+        const overlay = document.createElement('div');
+        overlay.className = 'mobile-sidebar-overlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        `;
+        
+        overlay.addEventListener('click', () => {
+            this.closeSidebar();
+        });
+        
+        document.body.appendChild(overlay);
+    }
+
+    removeMobileOverlay() {
+        const overlay = document.querySelector('.mobile-sidebar-overlay');
+        if (overlay) {
+            overlay.remove();
+        }
+    }
+
     closeSidebar() {
         const sidebar = document.getElementById('sidebar');
+        if (!sidebar) return;
+        
         if (window.innerWidth <= 1024) {
             sidebar.classList.remove('show');
+            this.removeMobileOverlay();
         } else {
             sidebar.classList.add('collapsed');
         }
