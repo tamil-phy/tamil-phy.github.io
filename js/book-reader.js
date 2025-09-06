@@ -39,15 +39,17 @@ class BookReader {
         console.log('Running setupEventListeners...');
         // Sidebar toggle
         const toggleButton = document.getElementById('toggleSidebar');
-        console.log('Found toggle button:', toggleButton);
+        console.log('Toggle button found:', toggleButton);
         if (toggleButton) {
-            toggleButton.addEventListener('click', () => {
+            console.log('Adding click listener to toggle button');
+            toggleButton.addEventListener('click', (e) => {
                 console.log('Toggle button clicked!');
+                e.preventDefault();
+                e.stopPropagation();
                 this.toggleSidebar();
             });
-            console.log('Event listener attached to toggle button');
         } else {
-            console.error('Sidebar toggle button not found!');
+            console.error('Toggle button not found!');
         }
 
         const closeSidebarBtn = document.getElementById('closeSidebar');
@@ -763,28 +765,18 @@ console.log('Hello World');
     }
 
     toggleSidebar() {
-        console.log('toggleSidebar called');
         const sidebar = document.getElementById('sidebar');
-        console.log('Sidebar element:', sidebar);
-        console.log('Current display style:', sidebar.style.display);
         
         // Check if sidebar is currently hidden
         if (sidebar.style.display === 'none') {
-            console.log('Showing sidebar');
-            // Show sidebar
-            sidebar.style.display = 'block';
-            if (window.innerWidth > 1024) {
-                sidebar.classList.remove('collapsed');
-            } else {
-                sidebar.classList.add('show');
-            }
+            // Show sidebar - remove inline style to use CSS defaults
+            sidebar.style.display = '';
+            sidebar.style.transform = '';
+            sidebar.style.marginLeft = '';
         } else {
-            console.log('Hiding sidebar');
             // Hide sidebar completely
             sidebar.style.display = 'none';
         }
-        
-        console.log('Final display style:', sidebar.style.display);
     }
 
     closeSidebar() {
@@ -968,22 +960,6 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
         window.bookReader = new BookReader();
         console.log('BookReader initialized successfully');
-        
-        // Add direct event listener as backup
-        setTimeout(() => {
-            const toggleBtn = document.getElementById('toggleSidebar');
-            console.log('Backup check - toggle button:', toggleBtn);
-            if (toggleBtn && !toggleBtn.hasAttribute('data-listener-added')) {
-                console.log('Adding backup event listener');
-                toggleBtn.addEventListener('click', () => {
-                    console.log('Backup toggle clicked');
-                    if (window.bookReader) {
-                        window.bookReader.toggleSidebar();
-                    }
-                });
-                toggleBtn.setAttribute('data-listener-added', 'true');
-            }
-        }, 1000);
     } catch (error) {
         console.error('Failed to initialize BookReader:', error);
     }

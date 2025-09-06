@@ -106,7 +106,7 @@
             <!-- Toolbar -->
             <div class="toolbar">
                 <div class="toolbar-left">
-                    <button class="btn btn-sm btn-outline-secondary" id="toggleSidebar" aria-label="Toggle sidebar">
+                    <button class="btn btn-sm btn-outline-secondary" onclick="toggleTOC()" aria-label="Toggle sidebar">
                         <i class="fas fa-bars"></i>
                     </button>
                     <span class="book-title" id="currentBookTitle">Book Reader</span>
@@ -178,5 +178,23 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/book-reader.js"></script>
+    <script>
+        function toggleTOC() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.style.display === 'none') {
+                sidebar.style.display = '';
+            } else {
+                sidebar.style.display = 'none';
+            }
+        }
+    </script>
+    <script>
+        // Initialize the book reader and make it globally available
+        let bookReader;
+        document.addEventListener('DOMContentLoaded', function() {
+            bookReader = new BookReader();
+            window.bookReader = bookReader; // Make it globally accessible
+        });
+    </script>
 </body>
 </html>
