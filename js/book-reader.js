@@ -245,7 +245,7 @@ class BookReader {
                 language: 'ta'
             },
             {
-                id: 'python',
+                id: 'python_in_tamil',
                 title: 'அகர முதலே Python',
                 markdownPath: 'books/python_in_tamil.md',
                 coverImage: 'images/numpy-cover.jpeg',
@@ -813,10 +813,27 @@ console.log('Hello World');
         const urlParams = new URLSearchParams(window.location.search);
         const bookParam = urlParams.get('book');
         
+        console.log('URL book parameter:', bookParam);
+        
         if (bookParam) {
-            const bookSelector = document.getElementById('bookSelector');
-            bookSelector.value = bookParam;
-            this.loadBook(bookParam);
+            // Find the book in our books array
+            const book = this.books.find(b => b.id === bookParam);
+            if (book) {
+                console.log('Found book:', book.title);
+                // Update the selector to show the selected book
+                const bookSelector = document.getElementById('bookSelector');
+                if (bookSelector) {
+                    bookSelector.value = bookParam;
+                }
+                // Automatically load the book
+                this.loadBook(bookParam);
+            } else {
+                console.error('Book not found:', bookParam);
+                // Show available books for debugging
+                console.log('Available books:', this.books.map(b => b.id));
+            }
+        } else {
+            console.log('No book parameter in URL');
         }
     }
 
