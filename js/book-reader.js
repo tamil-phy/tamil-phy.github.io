@@ -240,7 +240,7 @@ class BookReader {
             {
                 id: 'numpy',
                 title: 'NumPy Guide',
-                markdownPath: 'books/numpy.md',
+                markdownPath: 'books/NumPy_in_tamil.md',
                 coverImage: 'images/numpy-cover.jpeg',
                 language: 'ta'
             },
