@@ -242,7 +242,16 @@ class BookReader {
                 title: 'NumPy Guide',
                 markdownPath: 'books/NumPy_அறிமுகம்.md',
                 coverImage: 'images/numpy-cover.jpeg', // Add cover image path
-                language: 'en'
+                language: 'ta'
+            }
+        ];
+        this.books = [
+            {
+                id: 'python',
+                title: 'அகர முதலே Python',
+                markdownPath: 'books/python_in_tamil.md',
+                coverImage: 'images/numpy-cover.jpeg', // Add cover image path
+                language: 'ta'
             }
         ];
 
