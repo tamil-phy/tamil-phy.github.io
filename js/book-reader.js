@@ -338,6 +338,9 @@ console.log('Hello World');
             this.generateTOC(markdownContent);
             this.buildSearchIndex(markdownContent);
 
+            // Initialize engagement features after book is loaded
+            this.initEngagementFeatures();
+
             this.hideLoading();
             console.log('Book loaded successfully');
         } catch (error) {
@@ -1233,6 +1236,171 @@ console.log('Hello World');
         console.log('Heading not found in page mapping:', targetId);
         console.log('Available headings:', Array.from(this.headingToPageMap.keys()));
     }
+
+    initEngagementFeatures() {
+        console.log('Initializing engagement features...');
+        
+        // Show engagement section first
+        this.showEngagementSection();
+        
+        // Initialize social sharing (functions are already defined globally)
+        console.log('Social sharing initialized');
+        
+        // Disqus is already embedded in HTML, no need to reinitialize
+        console.log('Disqus comments ready');
+    }
+
+    updateReadingTime() {
+        const timeSpent = Math.floor((Date.now() - this.startTime) / 60000); // in minutes
+        const timeElement = document.getElementById('timeSpent');
+        if (timeElement) {
+            timeElement.textContent = `${timeSpent}m`;
+        }
+    }
+
+    initStarRating() {
+        const stars = document.querySelectorAll('.star-rating .star');
+        const feedbackElement = document.getElementById('ratingFeedback');
+        
+        stars.forEach(star => {
+            star.addEventListener('click', (e) => {
+                const rating = parseInt(e.target.dataset.rating);
+                this.setRating(rating);
+                
+                // Update feedback
+                const messages = {
+                    1: "Thanks for your feedback! We'll work to improve.",
+                    2: "We appreciate your input and will make improvements.",
+                    3: "Thank you! Your feedback helps us grow.",
+                    4: "Great! We're glad you found this helpful.",
+                    5: "Excellent! Thank you for the wonderful rating!"
+                };
+                
+                if (feedbackElement) {
+                    feedbackElement.textContent = messages[rating];
+                }
+                
+                // Store rating in localStorage
+                const currentBook = this.getCurrentBookId();
+                if (currentBook) {
+                    localStorage.setItem(`book_rating_${currentBook}`, rating);
+                }
+            });
+            
+            star.addEventListener('mouseover', (e) => {
+                const rating = parseInt(e.target.dataset.rating);
+                this.highlightStars(rating);
+            });
+        });
+        
+        // Load saved rating
+        const currentBook = this.getCurrentBookId();
+        if (currentBook) {
+            const savedRating = localStorage.getItem(`book_rating_${currentBook}`);
+            if (savedRating) {
+                this.setRating(parseInt(savedRating));
+            }
+        }
+    }
+
+    setRating(rating) {
+        const stars = document.querySelectorAll('.star-rating .star');
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
+    }
+
+    highlightStars(rating) {
+        const stars = document.querySelectorAll('.star-rating .star');
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.style.color = '#ffc107';
+            } else {
+                star.style.color = '#ddd';
+            }
+        });
+    }
+
+    initSocialSharing() {
+        // Social sharing functions are defined globally at the end of the file
+    }
+
+    initDisqusComments() {
+        const currentBook = this.getCurrentBookId();
+        if (!currentBook) return;
+        
+        // Configure Disqus
+        window.disqus_config = function () {
+            this.page.url = window.location.href;
+            this.page.identifier = `book_${currentBook}`;
+            this.page.title = document.querySelector('#bookSelector option:checked')?.textContent || 'Book Reader';
+        };
+        
+        // Load Disqus
+        if (!document.getElementById('disqus-script')) {
+            const script = document.createElement('script');
+            script.id = 'disqus-script';
+            script.src = 'https://tamil-phy-github-io.disqus.com/embed.js';
+            script.setAttribute('data-timestamp', +new Date());
+            (document.head || document.body).appendChild(script);
+        } else {
+            // Reset Disqus for new book
+            if (window.DISQUS) {
+                window.DISQUS.reset({
+                    reload: true,
+                    config: window.disqus_config
+                });
+            }
+        }
+    }
+
+    getCurrentBookId() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('book') || document.getElementById('bookSelector')?.value;
+    }
+
+    showEngagementSection() {
+        console.log('Attempting to show engagement section...');
+        const engagementSection = document.getElementById('engagementSection');
+        console.log('Engagement section element:', engagementSection);
+        if (engagementSection) {
+            engagementSection.style.display = 'block';
+            console.log('Engagement section displayed successfully');
+        } else {
+            console.error('Engagement section element not found!');
+        }
+    }
+
+    updateReadingProgress() {
+        const markdownContent = document.getElementById('markdownContent');
+        if (!markdownContent) {
+            console.log('markdownContent not found for progress bar');
+            return;
+        }
+        
+        const scrollTop = markdownContent.scrollTop;
+        const scrollHeight = markdownContent.scrollHeight - markdownContent.clientHeight;
+        
+        if (scrollHeight > 0) {
+            const progress = Math.round((scrollTop / scrollHeight) * 100);
+            
+            // Update progress bar
+            const progressBar = document.querySelector('.reading-progress');
+            if (progressBar) {
+                progressBar.style.width = `${progress}%`;
+            }
+            
+            // Update engagement section progress
+            const progressElement = document.getElementById('readingProgress');
+            if (progressElement) {
+                progressElement.textContent = `${progress}%`;
+            }
+        }
+    }
 }
 
 // Initialize the book reader when the DOM is loaded
@@ -1254,3 +1422,71 @@ document.addEventListener('visibilitychange', () => {
         // Page is visible, resume operations
     }
 });
+
+// Social sharing functions
+function shareOnTwitter() {
+    const url = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent(document.querySelector('#bookSelector option:checked')?.textContent || 'Check out this book');
+    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`, '_blank');
+}
+
+function shareOnLinkedIn() {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+}
+
+function shareOnFacebook() {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+}
+
+function scrollToComments() {
+    const commentsSection = document.getElementById('disqus_thread');
+    if (commentsSection) {
+        commentsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Add a subtle highlight effect to draw attention
+        const engagementSection = document.getElementById('engagementSection');
+        if (engagementSection) {
+            engagementSection.style.transition = 'background-color 0.3s ease';
+            engagementSection.style.backgroundColor = 'rgba(58, 134, 255, 0.05)';
+            
+            setTimeout(() => {
+                engagementSection.style.backgroundColor = '';
+            }, 2000);
+        }
+    }
+}
+
+function copyBookLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        // Show notification
+        const notification = document.createElement('div');
+        notification.className = 'alert alert-success position-fixed';
+        notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 250px;';
+        notification.innerHTML = '<i class="fas fa-check me-2"></i>Link copied to clipboard!';
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }).catch(() => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = window.location.href;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        const notification = document.createElement('div');
+        notification.className = 'alert alert-success position-fixed';
+        notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 250px;';
+        notification.innerHTML = '<i class="fas fa-check me-2"></i>Link copied to clipboard!';
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    });
+}

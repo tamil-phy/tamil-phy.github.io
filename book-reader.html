@@ -90,6 +90,16 @@
                 <div id="searchResults" class="search-results mt-2"></div>
             </div>
 
+            <!-- Comments Section -->
+            <div class="feedback-section mt-4">
+                <h6 class="sidebar-title">
+                    <i class="fas fa-comments me-2"></i>Comments
+                </h6>
+                <button class="btn btn-sm btn-outline-primary w-100" id="feedbackBtn" onclick="scrollToComments()">
+                    <i class="fas fa-comments me-2"></i>View Comments
+                </button>
+            </div>
+
         </div>
 
         <!-- Main Content Area -->
@@ -176,6 +186,29 @@
 
             </div>
         </div>
+    </div>
+
+
+    <!-- Comments Section -->
+    <div class="container" id="engagementSection">
+        <div id="disqus_thread"></div>
+        <script>
+          var disqus_config = function () {
+            this.page.url = window.location.href;
+            this.page.identifier = new URLSearchParams(window.location.search).get('book') || window.location.pathname;
+            this.page.title = document.querySelector('#bookSelector option:checked')?.textContent || 'Book Reader';
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            s.src = 'https://tamil-phy-github-io.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+        </noscript>
     </div>
 
     <!-- Search Results Modal -->
