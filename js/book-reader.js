@@ -108,6 +108,7 @@ class BookReader {
         }
 
 
+
         // Layout toggle
         const layoutToggleBtn = document.getElementById('layoutToggle');
         if (layoutToggleBtn) {
@@ -137,6 +138,7 @@ class BookReader {
                 this.nextPage();
             });
         }
+
 
         // Keyboard navigation for horizontal layout
         document.addEventListener('keydown', (e) => {
@@ -241,6 +243,8 @@ class BookReader {
                 id: 'numpy',
                 title: 'NumPy Guide',
                 markdownPath: 'books/NumPy_in_tamil.md',
+                pdfPath: 'books/numpy.pdf',
+                epubPath: 'books/numpy.epub',
                 coverImage: 'images/numpy-cover.jpeg',
                 language: 'ta'
             },
@@ -248,6 +252,8 @@ class BookReader {
                 id: 'python_in_tamil',
                 title: 'அகர முதலே Python',
                 markdownPath: 'books/python_in_tamil.md',
+                pdfPath: 'books/python_in_tamil.pdf',
+                epubPath: 'books/python_in_tamil.epub',
                 coverImage: 'images/numpy-cover.jpeg',
                 language: 'ta'
             }
@@ -295,6 +301,9 @@ class BookReader {
         if (titleElement) {
             titleElement.textContent = book.title;
         }
+
+        // Update download links for the current book
+        this.updateDownloadLinks();
 
         // Show loading state
         this.showLoading();
@@ -1401,6 +1410,109 @@ console.log('Hello World');
             }
         }
     }
+
+    downloadBook(format) {
+        if (!this.currentBook) {
+            console.warn('No book currently loaded');
+            return;
+        }
+
+        let downloadUrl;
+        let filename;
+
+        if (format === 'pdf') {
+            downloadUrl = this.currentBook.pdfPath;
+            filename = `${this.currentBook.title}.pdf`;
+        } else if (format === 'epub') {
+            downloadUrl = this.currentBook.epubPath;
+            filename = `${this.currentBook.title}.epub`;
+        } else {
+            console.error('Invalid format:', format);
+            return;
+        }
+
+        // Update download links
+        const downloadPdfBtn = document.getElementById('downloadPdf');
+        const downloadEpubBtn = document.getElementById('downloadEpub');
+
+        if (downloadPdfBtn && format === 'pdf') {
+            downloadPdfBtn.href = downloadUrl;
+            downloadPdfBtn.download = filename;
+        }
+        
+        if (downloadEpubBtn && format === 'epub') {
+            downloadEpubBtn.href = downloadUrl;
+            downloadEpubBtn.download = filename;
+        }
+
+        // Create a temporary link and trigger download
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = filename;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        
+        // Force download by opening in new window for localhost
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            // For localhost, open in new window to bypass Chrome's security restrictions
+            window.open(downloadUrl, '_blank');
+            document.body.removeChild(link);
+        } else {
+            // Check if file exists before downloading for production
+            fetch(downloadUrl, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        link.click();
+                    } else {
+                        this.showNotification(`${format.toUpperCase()} file not available for download`, 'warning');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking file:', error);
+                    // Try direct download anyway
+                    link.click();
+                })
+                .finally(() => {
+                    document.body.removeChild(link);
+                });
+        }
+    }
+
+    showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type === 'error' ? 'danger' : type === 'warning' ? 'warning' : 'success'} position-fixed`;
+        notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 250px;';
+        
+        const icon = type === 'error' ? 'fas fa-exclamation-triangle' : 
+                    type === 'warning' ? 'fas fa-exclamation-circle' : 
+                    'fas fa-check';
+        
+        notification.innerHTML = `<i class="${icon} me-2"></i>${message}`;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 4000);
+    }
+
+    updateDownloadLinks() {
+        if (!this.currentBook) return;
+
+        const downloadPdfBtn = document.getElementById('downloadPdf');
+        const downloadEpubBtn = document.getElementById('downloadEpub');
+
+        if (downloadPdfBtn) {
+            downloadPdfBtn.href = this.currentBook.pdfPath;
+            downloadPdfBtn.download = `${this.currentBook.title}.pdf`;
+        }
+        
+        if (downloadEpubBtn) {
+            downloadEpubBtn.href = this.currentBook.epubPath;
+            downloadEpubBtn.download = `${this.currentBook.title}.epub`;
+        }
+    }
 }
 
 // Initialize the book reader when the DOM is loaded
@@ -1424,7 +1536,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // Social sharing functions
-function shareOnTwitter() {
+function shareOnX() {
     const url = encodeURIComponent(window.location.href);
     const title = encodeURIComponent(document.querySelector('#bookSelector option:checked')?.textContent || 'Check out this book');
     window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`, '_blank');
@@ -1454,6 +1566,18 @@ function scrollToComments() {
             setTimeout(() => {
                 engagementSection.style.backgroundColor = '';
             }, 2000);
+        }
+        
+        // Trigger Disqus reset if available
+        if (typeof DISQUS !== 'undefined') {
+            DISQUS.reset({
+                reload: true,
+                config: function () {
+                    this.page.url = window.location.href;
+                    this.page.identifier = new URLSearchParams(window.location.search).get('book') || window.location.pathname;
+                    this.page.title = document.querySelector('#bookSelector option:checked')?.textContent || 'Book Reader';
+                }
+            });
         }
     }
 }

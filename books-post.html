@@ -734,7 +734,7 @@
                 <h5>Share this book review</h5>
             </div>
             <div class="d-flex gap-2">
-                <a href="#" class="btn btn-sm btn-outline-primary" onclick="shareOnTwitter()"><i class="fab fa-twitter me-1"></i> Twitter</a>
+                <a href="#" class="btn btn-sm btn-outline-primary" onclick="shareOnX()"><i class="fab fa-x-twitter me-1"></i> X</a>
                 <a href="#" class="btn btn-sm btn-outline-primary" onclick="shareOnLinkedIn()"><i class="fab fa-linkedin-in me-1"></i> LinkedIn</a>
                 <a href="#" class="btn btn-sm btn-outline-primary" onclick="shareOnFacebook()"><i class="fab fa-facebook-f me-1"></i> Facebook</a>
             </div>
@@ -750,7 +750,7 @@
           };
           (function() {
             var d = document, s = d.createElement('script');
-            s.src = 'https://tamil-phy-github-io.disqus.com/embed.js';
+            s.src = 'https://tamilphy.disqus.com/embed.js';
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
           })();
@@ -776,7 +776,7 @@
 
     <script>
         // Social sharing functions
-        function shareOnTwitter() {
+        function shareOnX() {
             const url = encodeURIComponent(window.location.href);
             const title = encodeURIComponent(document.getElementById('book-title').textContent);
             window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`, '_blank');
@@ -793,7 +793,7 @@
         }
         
         // Make sharing functions globally available
-        window.shareOnTwitter = shareOnTwitter;
+        window.shareOnX = shareOnX;
         window.shareOnLinkedIn = shareOnLinkedIn;
         window.shareOnFacebook = shareOnFacebook;
         
@@ -1291,7 +1291,7 @@
         });
         
         // Social sharing functions
-        function shareOnTwitter() {
+        function shareOnX() {
             const url = encodeURIComponent(window.location.href);
             const title = encodeURIComponent(document.getElementById('book-title').textContent);
             window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`, '_blank');
@@ -1308,7 +1308,7 @@
         }
         
         // Make sharing functions globally available
-        window.shareOnTwitter = shareOnTwitter;
+        window.shareOnX = shareOnX;
         window.shareOnLinkedIn = shareOnLinkedIn;
         window.shareOnFacebook = shareOnFacebook;
     </script>

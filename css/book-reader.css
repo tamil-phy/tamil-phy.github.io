@@ -67,6 +67,77 @@ body {
     width: 100%;
 }
 
+/* Download buttons styling for book reader */
+.download-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.download-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border: none;
+    padding: 8px;
+    min-width: 120px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.download-dropdown.active .download-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.download-option {
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    text-decoration: none;
+    color: var(--dark-text);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.download-option:hover {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    text-decoration: none;
+}
+
+.download-option i {
+    margin-right: 6px;
+    width: 14px;
+    text-align: center;
+}
+
+.download-option.pdf-option i {
+    color: #dc3545;
+}
+
+.download-option.epub-option i {
+    color: #6f42c1;
+}
+
+.download-option:hover.pdf-option {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+.download-option:hover.epub-option {
+    background-color: rgba(111, 66, 193, 0.1);
+    color: #6f42c1;
+}
+
 /* Book Reader Container */
 .book-reader-container {
     display: flex;
