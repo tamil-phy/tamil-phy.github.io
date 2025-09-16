@@ -156,6 +156,8 @@
                             <p class="text-muted">Select a book from the sidebar to start reading</p>
                         </div>
                     </div>
+                    
+                    <!-- Comments section will be added dynamically after book content loads -->
                 </div>
 
                 <!-- Horizontal Layout Content -->
@@ -273,29 +275,37 @@
             }
         });
     </script>
-    <!-- Comments Section -->
-    <div class="container mt-5" id="engagementSection">
-        <hr class="my-4">
-        <h4 class="mb-3">Comments</h4>
-        <div id="disqus_thread"></div>
-        <script>
-          var disqus_config = function () {
-            this.page.url = window.location.href;
-            this.page.identifier = new URLSearchParams(window.location.search).get('book') || window.location.pathname;
-            this.page.title = document.querySelector('#bookSelector option:checked')?.textContent || 'Book Reader';
-          };
+    <script>
+      // Disqus configuration - will be initialized when book is loaded
+      var disqus_config = function () {
+        this.page.url = window.location.href;
+        this.page.identifier = new URLSearchParams(window.location.search).get('book') || window.location.pathname;
+        this.page.title = document.querySelector('#bookSelector option:checked')?.textContent || 'Book Reader';
+      };
+      
+      // Function to load Disqus comments
+      function loadDisqusComments() {
+        if (window.DISQUS) {
+          // Reset Disqus if already loaded
+          DISQUS.reset({
+            reload: true,
+            config: disqus_config
+          });
+        } else {
+          // Load Disqus for the first time
           (function() {
             var d = document, s = d.createElement('script');
             s.src = 'https://tamil-phy-github-io.disqus.com/embed.js';
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
           })();
-        </script>
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
-        </noscript>
-    </div>
+        }
+      }
+    </script>
+    <noscript>
+      Please enable JavaScript to view the
+      <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+    </noscript>
 
     <script>
         // Initialize the book reader and make it globally available

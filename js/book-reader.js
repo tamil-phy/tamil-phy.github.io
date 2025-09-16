@@ -396,22 +396,46 @@ console.log('Hello World');
                 throw new Error('markdownContent element not found');
             }
             
-            markdownContent.innerHTML = html;
-            console.log('Content inserted into DOM');
+            // Create a wrapper for the book content
+            const bookContentWrapper = document.createElement('div');
+            bookContentWrapper.className = 'book-content-wrapper';
+            bookContentWrapper.innerHTML = html;
             
-            // Hide welcome message
+            // Clear existing content but preserve the comments section structure
+            const existingComments = markdownContent.querySelector('#commentsSection');
+            markdownContent.innerHTML = '';
+            
+            // Add the book content
+            markdownContent.appendChild(bookContentWrapper);
+            
+            // Add comments section after the content
+            const commentsSection = document.createElement('div');
+            commentsSection.className = 'comments-section mt-5';
+            commentsSection.id = 'commentsSection';
+            commentsSection.innerHTML = `
+                <hr class="my-4">
+                <div class="container-fluid px-0">
+                    <h4 class="mb-3">Comments</h4>
+                    <div id="disqus_thread"></div>
+                </div>
+            `;
+            markdownContent.appendChild(commentsSection);
+            
+            console.log('Content and comments section inserted into DOM');
+            
+            // Hide welcome message if it exists
             const welcomeMessage = markdownContent.querySelector('.welcome-message');
             if (welcomeMessage) {
                 welcomeMessage.style.display = 'none';
             }
             
-            // Apply syntax highlighting
-            markdownContent.querySelectorAll('pre code').forEach((block) => {
+            // Apply syntax highlighting to the book content wrapper
+            bookContentWrapper.querySelectorAll('pre code').forEach((block) => {
                 hljs.highlightElement(block);
             });
             
             // Add IDs to headings for TOC navigation
-            markdownContent.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((heading, index) => {
+            bookContentWrapper.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((heading, index) => {
                 heading.id = `heading-${index}`;
             });
             
@@ -1373,14 +1397,46 @@ console.log('Hello World');
     }
 
     showEngagementSection() {
-        console.log('Attempting to show engagement section...');
-        const engagementSection = document.getElementById('engagementSection');
-        console.log('Engagement section element:', engagementSection);
-        if (engagementSection) {
-            engagementSection.style.display = 'block';
-            console.log('Engagement section displayed successfully');
+        console.log('Attempting to show comments section...');
+        // Comments section is now created dynamically in renderMarkdown, so just load Disqus
+        setTimeout(() => {
+            const commentsSection = document.getElementById('commentsSection');
+            console.log('Comments section element:', commentsSection);
+            if (commentsSection) {
+                console.log('Comments section found, loading Disqus...');
+                // Load Disqus comments
+                if (typeof loadDisqusComments === 'function') {
+                    loadDisqusComments();
+                } else {
+                    console.log('loadDisqusComments function not found, loading directly...');
+                    this.loadDisqusDirectly();
+                }
+            } else {
+                console.error('Comments section element not found!');
+            }
+        }, 100); // Small delay to ensure DOM is updated
+    }
+    
+    loadDisqusDirectly() {
+        console.log('Loading Disqus directly...');
+        if (window.DISQUS) {
+            console.log('Resetting existing Disqus...');
+            DISQUS.reset({
+                reload: true,
+                config: function () {
+                    this.page.url = window.location.href;
+                    this.page.identifier = new URLSearchParams(window.location.search).get('book') || window.location.pathname;
+                    this.page.title = document.querySelector('#bookSelector option:checked')?.textContent || 'Book Reader';
+                }
+            });
         } else {
-            console.error('Engagement section element not found!');
+            console.log('Loading Disqus for the first time...');
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://tamil-phy-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
         }
     }
 
