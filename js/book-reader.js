@@ -242,9 +242,9 @@ class BookReader {
             {
                 id: 'numpy',
                 title: 'NumPy Guide',
-                markdownPath: 'books/NumPy_in_tamil.md',
-                pdfPath: 'books/NumPy_in_tamil.pdf',
-                epubPath: 'books/NumPy_in_tamil.epub',
+                markdownPath: 'books/numpy.md',
+                pdfPath: 'books/numpy.pdf',
+                epubPath: 'books/numpy.epub',
                 coverImage: 'images/numpy-cover.jpeg',
                 language: 'ta'
             },
