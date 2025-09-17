@@ -439,6 +439,36 @@ console.log('Hello World');
                 heading.id = `heading-${index}`;
             });
             
+            // Typeset math equations with MathJax (with delay to ensure DOM is ready)
+            setTimeout(() => {
+                if (window.MathJax) {
+                    console.log('MathJax found, attempting to typeset...');
+                    if (MathJax.startup && MathJax.startup.promise) {
+                        MathJax.startup.promise.then(() => {
+                            console.log('MathJax startup complete, typesetting...');
+                            return MathJax.typesetPromise([bookContentWrapper]);
+                        }).then(() => {
+                            console.log('MathJax typesetting complete.');
+                        }).catch((err) => {
+                            console.error('MathJax typesetting failed:', err);
+                        });
+                    } else if (MathJax.typesetPromise) {
+                        // Fallback for immediate typesetting
+                        MathJax.typesetPromise([bookContentWrapper])
+                            .then(() => {
+                                console.log('MathJax typesetting complete (fallback).');
+                            })
+                            .catch((err) => {
+                                console.error('MathJax typesetting failed (fallback):', err);
+                            });
+                    } else {
+                        console.warn('MathJax found but no typesetting method available');
+                    }
+                } else {
+                    console.warn('MathJax not found - equations will not be rendered');
+                }
+            }, 100);
+            
             // Add scroll listener for progress bar
             markdownContent.addEventListener('scroll', () => {
                 console.log('Scroll event triggered');
