@@ -21,25 +21,16 @@
                 inlineMath: [['$', '$'], ['\\(', '\\)']],
                 displayMath: [['$$', '$$'], ['\\[', '\\]']],
                 processEscapes: true,
-                processEnvironments: true,
-                tags: 'ams',
-                packages: {'[+]': ['ams', 'newcommand', 'configmacros']},
-                macros: {
-                    R: "{\\mathbb{R}}",
-                    N: "{\\mathbb{N}}",
-                    Z: "{\\mathbb{Z}}",
-                    C: "{\\mathbb{C}}",
-                    F: "{\\mathbb{F}}"
-                }
+                processEnvironments: true
             },
             startup: {
-                pageReady: function () {
-                    console.log('MathJax is ready, typesetting will be done manually.');
+                ready: function () {
+                    console.log('MathJax is ready');
+                    MathJax.startup.defaultReady();
                 }
             },
-            chtml: {
-                scale: 1.1,
-                minScale: 0.5
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
             }
         };
     </script>
