@@ -41,7 +41,7 @@ Brazil,47,79000,No
 India,31,?,Yes
 Japan,39,66000,No
 USA,25,45000,Y
-Brazil,Thirty-seven,61000,No
+Brazil,37,61000,No
 India,42,1200000,Yes
 ```
 
