@@ -333,6 +333,4 @@ If we print y now, we won't see any text. We will just see this:
 
 And with that, our work is done. What started as a messy, "unclean" CSV file with missing numbers, text categories, and inconsistent labels has been transformed. Both `X` and `y` are now 100% pure, machine-readable numerical arrays.
 
-Our data preprocessing journey is complete. The "fuel" is refined, and it's finally ready for the engine.
-
-That's it folks this is my Diwali Gift !
+Our data preprocessing journey is complete. The "fuel" is refined and it's finally ready for the engine.
