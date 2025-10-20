@@ -109,3 +109,5 @@ This is the most critical part of the whole operation.
 With this final step, our data is truly ready. We have handled missing values, encoded text, split our data for validation and now, we have scaled our features to remove all bias.
 
 Our `X_train` and `X_test` are now perfectly prepared numerical matrices. The engine is primed.
+
+# [Code: Data_Preprocessing_blog.ipynb](https://colab.research.google.com/drive/15Sw6JI4rcXD9w941nvtWYgCRM5Uv6cq9?usp=sharing)
