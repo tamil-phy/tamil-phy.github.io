@@ -328,3 +328,6 @@ If we print y now, we won't see any text. We will just see this:
 And with that, our work is done. What started as a messy, "unclean" CSV file with missing numbers, text categories, and inconsistent labels has been transformed. Both `X` and `y` are now 100% pure, machine-readable numerical arrays.
 
 Our data preprocessing journey is complete. The "fuel" is refined and it's finally ready for the engine.
+
+## [Code: Data_Preprocessing_blog.ipynb](https://colab.research.google.com/drive/15Sw6JI4rcXD9w941nvtWYgCRM5Uv6cq9?usp=sharing)
+
