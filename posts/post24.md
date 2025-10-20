@@ -1,25 +1,25 @@
 # ML Series : Part 1
-I have decided to write this series as some of my colleagues want to learn machine learning. But the problem with materials out there is they had to spend at least six months to understand what is behind real machine learning and how deep learning works. But the way Generative AI is accelerating makes it tough to spare huge time on learning something.
+I have decided to write this series as some of my colleagues want to learn machine learning. But the problem with materials out there is they had to spend at least six months to understand what is behind real machine learning and how deep learning works. The way Generative AI is accelerating makes it tough to spare huge time on learning something.
 
-So I decided to bypass some items that can be tricky. If you are a newbie and if someone says, "hey, if you learn machine learning you should know this topic," my apologies. At least I have spent a decade in this, and every time something new surprises me. So spare me for the concepts I miss and, above all, I will be genuine. I am a copy cat; whatever I learnt all these years, I am going to use that material and knowledge to sketch up this content. So if I resemble some author's content, that’s not plagiarism I intended to do, but rather inspiration.
+So I decided to bypass some items that can be tricky. If you are a newbie and if someone says, “hey, if you learn machine learning you should know this topic,” my apologies. At least I have spent a decade in this, and every time something new surprises me. So spare me for the concepts I miss and, above all, I will be genuine. I am a copy cat; whatever I learnt all these years, I am going to use that material and knowledge to sketch up this content. So if I resemble some author’s content, that’s not plagiarism I intended to do, but rather inspiration.
 
 Above all, I am going to try avoiding any LLM in writing this material. I will try my best to be as humane as possible.
 
-Most of you might be experienced people in software, and all these years you have likely spent long hours cracking a problem. Using the inputs you are given, you sketch out a way to attain an output. That is, you must have an input and a "rule scheme" which will give an output.
+Most of you might be experienced people in software, and all these years you have likely spent long hours cracking a problem — using the inputs you are given, you sketch out a way to attain an output. That is, you must have an input and a “rule scheme” which will give an output.
 
-But as the Internet era has been around for a while, the data accumulated in these years speaks volumes. Ah! Now here's the interesting story: we now have both inputs and outputs. We want to figure out what made the connection, so we are going to use machine learning.
+But as the Internet era has been around for a while, the data accumulated in these years speaks volumes. Ah! Now here’s the interesting story: we now have both inputs and outputs. We want to figure out what made the connection, so we are going to use machine learning.
 
 This is the exact opposite of traditional programming, which takes inputs and rules to produce outputs. But in the case of machine learning, it takes inputs and outputs to *infer* the rules.
 
-Yeah! I hear you all saying, 'I know this, what is the next step? Can you fast-forward?'
+Yeah! I hear you all saying, “I know this, what is the next step? Can you fast-forward?”
 
-Right away, let's take some data and understand the preprocessing steps.
+Right away, let’s take some data and understand the preprocessing steps.
 
-The first thing is data, because it’s the fuel for any task we're gonna work on. Without that, having a sophisticated algorithm is like having a Ferrari without fuel. (To be frank, I would love to have it in my garage).
+The first thing is data, because it’s the fuel for any task we’re gonna work on. Without that, having a sophisticated algorithm is like having a Ferrari without fuel. (To be frank, I would love to have it in my garage).
 
 So what data shall we use?
 
-Now, you're gonna role-play as a sales analyst. You have data with two columns: the first one is "Country Name," and the second is whether or not that person bought your product. Your task is to predict if he or she will purchase your product.
+Now, you’re gonna role-play as a sales analyst. You have data with two columns: the first one is “Country Name,” and the second is whether or not that person bought your product. Your task is to predict if he or she will purchase your product.
 
 Now, as an SME (Subject Matter Expert), you ask your team to collect some more data on these individuals. You have them collect their info about age and salary. Now, the data looks as below:
 
@@ -48,12 +48,6 @@ India,42,1200000,Yes
 Ah, we have four countries in our data: India, USA, Japan, and Brazil. As an analyst, you wanna predict which customers based on their country, age, and salary will buy your product.
 
 Now, you are gonna do the data preprocessing, for which we will need the NumPy and Pandas packages. Let's load the dependencies using the imports below.
-
-```python
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-```
 
 Here is how we will load that data and split it into our "features" (the things we know) and our "target" (the thing we want to predict).
 
