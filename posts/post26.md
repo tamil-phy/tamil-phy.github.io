@@ -15,7 +15,7 @@ SquareFeet,Price
 
 The first thing you would do as a human is plot it on a graph. You would put `SquareFeet` on the bottom (the x-axis) and `Price` on the side (the y-axis).
 
-<img src="/Users/tamilarasan/Projects/tamil-phy.github.io/images/scatter-plot.png" style="zoom: 25%;" />
+<img src="{{ '/images/scatter-plot.png' | relative_url }}" style="width:25%;" alt="scatter plot">
 
 You'd end up with a "scatter plot" of dots.
 
@@ -82,11 +82,13 @@ Once the computer runs this OLS process, it hands us back the final, "learned" v
 
 We are now armed with a powerful model:
 
-**`Price = 200 * SquareFeet + 50,000`**
+```
+Price = 200 * SquareFeet + 50,000
+```
 
 Now, when a *new* house (one not in our data) comes on the market, and we're told it's 1,500 sq ft, we don't have to guess. We can *predict*:
 
-```
+```math
 Price = 200 * (1500) + 50,000 = $350,000
 ```
 
