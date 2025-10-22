@@ -15,8 +15,6 @@ SquareFeet,Price
 
 The first thing you would do as a human is plot it on a graph. You would put `SquareFeet` on the bottom (the x-axis) and `Price` on the side (the y-axis).
 
-<img src="{{ '/images/scatter-plot.png' | relative_url }}" style="width:25%;" alt="scatter plot">
-
 You'd end up with a "scatter plot" of dots.
 
 Even without a computer, your brain would instantly see a pattern. You'd see that, in general, as the square footage goes up, the price goes up. You could even take a ruler and draw a single straight line that you feel "best" represents that upward trend.
@@ -81,17 +79,13 @@ Once the computer runs this OLS process, it hands us back the final, "learned" v
 - $m$ (coefficient) = 200
 
 We are now armed with a powerful model:
-
-```
+$$
 Price = 200 * SquareFeet + 50,000
-```
-
+$$
 Now, when a *new* house (one not in our data) comes on the market, and we're told it's 1,500 sq ft, we don't have to guess. We can *predict*:
-
-```math
+$$
 Price = 200 * (1500) + 50,000 = $350,000
-```
-
+$$
 And *that* is the "so what." We've used past data to find a mathematical rule that lets us forecast the future. 
 
 Now let's delve into coding what we learnt so far. 
@@ -125,7 +119,9 @@ Look at our new dataset. It's clean, simple, and intuitive.
 
 The relationship is almost primal. We have a hypothesis that a **house's price is connected to its size (square footage)**. Our task is to find the *exact* mathematical nature of that connection.
 
-We are, in effect, trying to find the "equation of the line" that best describes this relationship. We have seen this before  **$y = mx + b$**.
+We are, in effect, trying to find the "equation of the line" that best describes this relationship. 
+
+We have seen this before  **$y = mx + b$**.
 
 ##### From Splitting to Fitting
 
