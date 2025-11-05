@@ -60,7 +60,7 @@ Let's translate this back into our practical terms:
 - **$x_{i1}$** is the `R&D Spend` for that startup.
 - **$x_{i2}$** is the `Marketing Spend` for that startup.
 - **$x_{i3}$** is the `Administration Cost` for that startup.
-- **$\beta_0$** is the **intercept**. It's our theoretical baseline profit if a startup somehow spent $0 on everything.
+- **$\beta_0$** is the **intercept**. It's our theoretical baseline profit if a startup somehow spent $0$ on everything.
 - **$\varepsilon_i$** is the **error** (or "residual"). It's the slice of reality that our model can't explain—the random luck or the unmeasured factors.
 
 ### The "So What?": The Meaning of the $\beta$'s
