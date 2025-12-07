@@ -1,3 +1,5 @@
+<img src="../images/book-cover-python-tamil.png" alt="coverpage" style="zoom: 58%;" />
+
 # அகர முதலே Python
 
 ## 1. பைதானில்  எண்கள் (Numeric Data Types) 
