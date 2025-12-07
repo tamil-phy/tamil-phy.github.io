@@ -493,20 +493,27 @@ html {
 /* ========================================
    ENHANCED CODE BLOCKS
    ======================================== */
+/* Don't override pre background - let Highlight.js handle it */
 .markdown-content pre {
     position: relative;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 20px;
     overflow-x: auto;
-    box-shadow: var(--shadow-sm);
+    /* Keep existing background from book-reader.css or Highlight.js */
 }
 
+/* Dark mode adjustments for code blocks */
+[data-theme="dark"] .markdown-content pre {
+    background-color: #1e1e1e !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Don't override code text colors - Highlight.js handles syntax highlighting */
 .markdown-content pre code {
     font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Consolas', monospace;
     font-size: 14px;
     line-height: 1.6;
+    /* Don't set color or background - let Highlight.js handle it */
 }
 
 /* Code copy button */
