@@ -47,6 +47,20 @@ class ReadingEnhancements {
         if (metaThemeColor) {
             metaThemeColor.setAttribute('content', theme === 'dark' ? '#1a202c' : '#ffffff');
         }
+        
+        // Toggle Highlight.js theme
+        const lightTheme = document.getElementById('highlight-light-theme');
+        const darkTheme = document.getElementById('highlight-dark-theme');
+        
+        if (lightTheme && darkTheme) {
+            if (theme === 'dark') {
+                lightTheme.disabled = true;
+                darkTheme.disabled = false;
+            } else {
+                lightTheme.disabled = false;
+                darkTheme.disabled = true;
+            }
+        }
     }
 
     toggleTheme() {

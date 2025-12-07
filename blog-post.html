@@ -9,6 +9,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&family=Hind+Madurai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Highlight.js themes - will be toggled based on theme -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="highlight-light-theme">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="highlight-dark-theme" disabled>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!-- Load MathJax first, then configure it -->    
     <script>
@@ -451,6 +457,11 @@
 
                         // 4. Set the final content
                         content.innerHTML = htmlContent;
+
+                        // 5. Apply syntax highlighting
+                        if (typeof hljs !== 'undefined') {
+                            hljs.highlightAll();
+                        }
 
                         // Add language attribute if needed
                         if (detectedLang === 'ta') {
