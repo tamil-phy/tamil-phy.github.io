@@ -429,6 +429,19 @@
                         // 4. Set the final content
                         content.innerHTML = htmlContent;
 
+                        // Fix image paths - convert absolute local paths to relative website paths
+                        document.querySelectorAll('#markdown-content img').forEach(img => {
+                            const src = img.getAttribute('src');
+                            if (src) {
+                                // Fix absolute local paths like /Users/tamilarasan/learning/NumPy_Book_Tamil/images/...
+                                if (src.includes('/images/') && (src.startsWith('/Users/') || src.startsWith('/'))) {
+                                    const filename = src.split('/images/').pop();
+                                    img.setAttribute('src', 'images/' + filename);
+                                    console.log('Fixed image path:', filename);
+                                }
+                            }
+                        });
+
                         // 5. Generate simple table of contents
                         const headings = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
                         if (headings.length >= 3) {

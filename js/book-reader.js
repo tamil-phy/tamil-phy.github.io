@@ -408,6 +408,19 @@ console.log('Hello World');
             // Add the book content
             markdownContent.appendChild(bookContentWrapper);
             
+            // Fix image paths - convert absolute local paths to relative website paths
+            markdownContent.querySelectorAll('img').forEach(img => {
+                const src = img.getAttribute('src');
+                if (src) {
+                    // Fix absolute local paths like /Users/tamilarasan/learning/NumPy_Book_Tamil/images/...
+                    if (src.includes('/images/') && (src.startsWith('/Users/') || src.startsWith('/'))) {
+                        const filename = src.split('/images/').pop();
+                        img.setAttribute('src', 'images/' + filename);
+                        console.log('Fixed image path:', filename);
+                    }
+                }
+            });
+            
             // Add comments section after the content
             const commentsSection = document.createElement('div');
             commentsSection.className = 'comments-section mt-5';
