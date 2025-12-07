@@ -1,0 +1,29 @@
+{
+  "name": "tamil-phy-portfolio",
+  "version": "1.0.0",
+  "description": "Personal portfolio website for Tamil Arasan Bakthavatchalam",
+  "scripts": {
+    "dev": "python3 -m http.server 8080",
+    "lint:html": "htmlhint *.html",
+    "lint:css": "stylelint 'css/**/*.css'",
+    "optimize:images": "imagemin images/* --out-dir=images/optimized",
+    "build": "echo 'Static site - no build needed'",
+    "test": "echo 'No tests configured yet'"
+  },
+  "keywords": [
+    "portfolio",
+    "physics",
+    "machine-learning",
+    "AI",
+    "tamil"
+  ],
+  "author": "Tamil Arasan Bakthavatchalam",
+  "license": "MIT",
+  "devDependencies": {
+    "htmlhint": "^1.1.4",
+    "stylelint": "^15.10.3",
+    "stylelint-config-standard": "^34.0.0",
+    "imagemin": "^8.0.1",
+    "imagemin-cli": "^7.0.0"
+  }
+}
