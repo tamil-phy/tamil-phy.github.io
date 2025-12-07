@@ -433,11 +433,20 @@
                         document.querySelectorAll('#markdown-content img').forEach(img => {
                             const src = img.getAttribute('src');
                             if (src) {
+                                console.log('Found image with src:', src);
                                 // Fix absolute local paths like /Users/tamilarasan/learning/NumPy_Book_Tamil/images/...
-                                if (src.includes('/images/') && (src.startsWith('/Users/') || src.startsWith('/'))) {
+                                if (src.includes('/images/') && (src.startsWith('/Users/') || src.startsWith('/home/') || src.startsWith('/c:/') || src.startsWith('C:\\'))) {
                                     const filename = src.split('/images/').pop();
-                                    img.setAttribute('src', 'images/' + filename);
-                                    console.log('Fixed image path:', filename);
+                                    const newSrc = 'images/' + filename;
+                                    img.setAttribute('src', newSrc);
+                                    console.log('Fixed image path from:', src, 'to:', newSrc);
+                                }
+                                // Fix relative paths with ../ that might break
+                                else if (src.startsWith('../images/')) {
+                                    const filename = src.replace('../images/', '');
+                                    const newSrc = 'images/' + filename;
+                                    img.setAttribute('src', newSrc);
+                                    console.log('Fixed relative image path from:', src, 'to:', newSrc);
                                 }
                             }
                         });
