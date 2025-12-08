@@ -308,36 +308,15 @@ class BookReader {
         // Show loading state
         this.showLoading();
 
-        // Test with simple content first
-        const testContent = `# Test Content
-        
-This is a test to see if markdown rendering works.
-
-## Section 1
-Some text here.
-
-\`\`\`javascript
-console.log('Hello World');
-\`\`\`
-
-- Item 1
-- Item 2
-- Item 3`;
-
         try {
-            console.log('Testing with simple content first...');
-            this.renderMarkdown(testContent);
-            
-            // Now try loading the actual file
+            // Load the actual book file
             console.log('Fetching:', book.markdownPath);
             const cacheBuster = '?v=' + Date.now();
             const response = await fetch(book.markdownPath + cacheBuster);
             console.log('Response status:', response.status, response.ok);
             
             if (!response.ok) {
-                console.error('Fetch failed, using test content');
-                this.hideLoading();
-                return;
+                throw new Error(`Failed to fetch book: ${response.status} ${response.statusText}`);
             }
             
             const markdownContent = await response.text();
