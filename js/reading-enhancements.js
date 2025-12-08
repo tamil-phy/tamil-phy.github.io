@@ -12,7 +12,7 @@ class ReadingEnhancements {
         this.setupTheme();
         this.setupReadingProgress();
         this.setupFloatingButtons();
-        this.setupReadingMeta();
+        // this.setupReadingMeta(); // DISABLED: Reading time/word count display
         this.setupSmoothScroll();
         this.setupKeyboardShortcuts();
         this.setupTOCHighlight();
@@ -193,6 +193,7 @@ class ReadingEnhancements {
 
     // ========================================
     // READING META (Time & Word Count)
+    // DISABLED - Causing confusion with inaccurate word counts
     // ========================================
     setupReadingMeta() {
         const content = document.querySelector('.markdown-content') || 
